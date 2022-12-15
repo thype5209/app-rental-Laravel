@@ -1,6 +1,7 @@
 
 <script setup>
 import { Link } from '@inertiajs/inertia-vue3';
+import ResponsiveNavLinkVue from './ResponsiveNavLink.vue';
 </script>
 <template>
     <div
@@ -13,8 +14,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                     </div>
                 </li>
                 <li>
-                    <Link :to="{name: 'dashboard'}" :active-class="`border-blue-500`"
-                        class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-default-dark dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <ResponsiveNavLinkVue :href="route('dashboard')"  >
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -24,11 +24,10 @@ import { Link } from '@inertiajs/inertia-vue3';
                             </svg>
                         </span>
                         <span class="ml-2 text-sm tracking-wide truncate">Dashboard</span>
-                    </Link>
+                    </ResponsiveNavLinkVue>
                 </li>
                 <li>
-                    <Link :to="{name: 'mobil'}" :active-class="`border-blue-500`"
-                        class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-default-dark dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                    <ResponsiveNavLinkVue :href="route('Mobil.index')" :active="route().current('Mobil.index')">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -40,11 +39,11 @@ import { Link } from '@inertiajs/inertia-vue3';
                         <span class="ml-2 text-sm tracking-wide truncate">Data Mobil</span>
                         <span
                             class="hidden md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-blue-500 bg-indigo-50 rounded-full">New</span>
-                    </Link>
+                    </ResponsiveNavLinkVue>
                 </li>
 
                 <li>
-                    <Link :to="{name:'Pinjam'}" :active-class="`border-blue-500`"
+                    <ResponsiveNavLinkVue :to="{name:'Pinjam'}" :active-class="`border-blue-500`"
                         class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-default-dark dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -55,7 +54,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                             </svg>
                         </span>
                         <span class="ml-2 text-sm tracking-wide truncate">Data Penyewaan Mobil</span>
-                    </Link>
+                    </ResponsiveNavLinkVue>
                 </li>
                 <li>
                     <Link  :to="{name:'Riwayat'}" :active-class="`border-blue-500`"
@@ -79,7 +78,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                     </div>
                 </li>
                 <li>
-                    <Link :to="{name: 'penggunaAll'}" :active-class="`border-blue-500`"
+                    <ResponsiveNavLinkVue :to="{name: 'penggunaAll'}" :active-class="`border-blue-500`"
                         class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-default-dark dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -90,10 +89,10 @@ import { Link } from '@inertiajs/inertia-vue3';
 
                         </span>
                         <span class="ml-2 text-sm tracking-wide truncate">Data Penyewa</span>
-                    </Link>
+                    </ResponsiveNavLinkVue>
                 </li>
                 <li>
-                    <Link :to="{name: 'LaporanSewa'}" :active-class="`border-blue-500`"
+                    <ResponsiveNavLinkVue :href="route('Laporan.index')" :active="route().current('Laporan.index')"
                         class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-default-dark dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                         <span class="inline-flex justify-center items-center ml-4">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -106,7 +105,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                             </svg>
                         </span>
                         <span class="ml-2 text-sm tracking-wide truncate">Laporan</span>
-                    </Link>
+                    </ResponsiveNavLinkVue>
                 </li>
             </ul>
             <p class="mb-14 px-5 py-3 hidden md:block text-center text-xs">Copyright @2021</p>

@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\MobilController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    // Controller Mobil
+    Route::group(['prefix'=> 'Mobil', 'as'=> 'Mobil.'],function(){
+        Route::controller(MobilController::class)->group(function(){
+            Route::get('/', 'index')->name('index');
+        });
+    });
+    Route::group(['prefix'=> 'Laporan', 'as'=> 'Laporan.'],function(){
+        Route::controller(LaporanController::class)->group(function(){
+            Route::get('/', 'index')->name('index');
+        });
+    });
 });
 
 require __DIR__.'/auth.php';
+
+
