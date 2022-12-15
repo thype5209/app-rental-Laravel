@@ -1,8 +1,18 @@
+<script setup>
+import { defineProps } from 'vue';
+import { Head, Link } from '@inertiajs/inertia-vue3';
 
+const props = defineProps({
+    mobil: Object,
+})
+</script>
 
 <template>
     <AuthenticatedLayout>
-        <div class="w-full rounded-lg bg-gray-200 flex flex-wrap justify-between flex-col-reverse md:flex-row overflow-auto">
+
+        <Head title="Mobil" />
+        <div
+            class="w-full rounded-lg bg-gray-200 flex flex-wrap justify-between flex-col-reverse md:flex-row overflow-auto">
             <nav class="flex flex-row">
                 <button v-on:click="TabClick(0)" v-bind:class=" Tab == 0 ? TabActive : TabNonActive">
                     Semua
@@ -15,8 +25,9 @@
                 </button>
             </nav>
             <div class="p-3 w-32">
-                <router-link :to="{ name: 'formmobil' }"
-                    class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Tambah</router-link>
+                <Link :href="route('Mobil.create')"
+                    class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
+                Tambah</Link>
             </div>
         </div>
         <div class="w-full overflow-hidden rounded-lg shadow-lg">
@@ -27,17 +38,21 @@
                             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                             <th class="px-4 py-3">Unit Kendaraan</th>
                             <th class="px-4 py-3">No. Polisi</th>
+                            <th class="px-4 py-3">Harga</th>
                             <th class="px-4 py-3">Status</th>
                             <th class="px-4 py-3">Detail</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                        <tr v-for="mobil in dataMobil" :key="mobil" class="text-gray-700 dark:text-gray-400">
+                        <tr v-for="mobil in mobil" :key="mobil" class="text-gray-700 dark:text-gray-400">
                             <td class="px-4 py-3 text-sm">
                                 {{ mobil.unit }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ mobil.nopol }}
+                            </td>
+                            <td class="px-4 py-3 text-xs">
+                                {{ mobil.harga }}
                             </td>
                             <td class="px-4 py-3 text-xs">
                                 <span
@@ -69,7 +84,7 @@
         </div>
     </AuthenticatedLayout>
 </template>
- 
+
 <script>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
@@ -91,28 +106,6 @@ export default {
             fotokiri: '',
             fotokanan: '',
             status: '',
-            dataMobil: [
-                {
-                    unit: 'Toyota',
-                    nopol: '92398310310',
-                    status: '3'
-                },
-                {
-                    unit: 'Avanza',
-                    nopol: '92398310310',
-                    status: '1'
-                },
-                {
-                    unit: 'Toyota',
-                    nopol: '30309301',
-                    status: '2'
-                },
-                {
-                    unit: 'Avanza',
-                    nopol: '23002',
-                    status: '1'
-                },
-            ]
         }
     },
     beforeMount() {

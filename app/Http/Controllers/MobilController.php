@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Mobil;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
 
 class MobilController extends Controller
 {
@@ -28,7 +29,7 @@ class MobilController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Mobil/FormMobil');
     }
 
     /**
@@ -39,7 +40,18 @@ class MobilController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Mobil::create([
+            'unit'=>$request->unit,
+            'harga'=>$request->harga,
+            'nopol'=>$request->nopol,
+            'foto1'=>$request->foto1,
+            'foto2'=>$request->foto2,
+            'foto3'=>$request->foto3,
+            'foto4'=>$request->foto4,
+            'status'=> '1'
+        ]);
+
+        return Redirect::route('Mobil.index');
     }
 
     /**

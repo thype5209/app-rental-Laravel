@@ -41,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix'=> 'Mobil', 'as'=> 'Mobil.'],function(){
         Route::controller(MobilController::class)->group(function(){
             Route::get('/', 'index')->name('index');
+            Route::get('/Form/Mobil', 'create')->name('create');
+            Route::post('/Form/store', 'store')->name('store');
         });
     });
     Route::group(['prefix'=> 'Laporan', 'as'=> 'Laporan.'],function(){
