@@ -12,8 +12,14 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['Poppins', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'default-yellow': '#F1A02F',
+                'default-red': '#CF4647',
+                'default-dark': '#2A363B',
+                'default-white': '#F8F6F6',
+            }
         },
     },
 

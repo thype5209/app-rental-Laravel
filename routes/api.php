@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::controller(UserController::class)->group(function(){
+    Route::get('allUser', 'getAllUser')->name('user.getAllUser');
+});
+Route::controller(PenggunaController::class)->group(function(){
+    Route::get('GetPengguna', 'GetPengguna')->name('Pengguna.GetPengguna');
 });

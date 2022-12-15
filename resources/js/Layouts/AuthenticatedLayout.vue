@@ -1,152 +1,190 @@
-<script setup>
-import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/inertia-vue3';
-
-const showingNavigationDropdown = ref(false);
-</script>
 
 <template>
+    <!-- component -->
     <div>
-        <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
-                <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
-                        <div class="flex">
-                            <!-- Logo -->
-                            <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
-                                </Link>
-                            </div>
+        <div
+            class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white">
 
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </NavLink>
-                            </div>
-                        </div>
+            <!-- Header -->
+            <NavLink></NavLink>
+            <!-- ./Header -->
 
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <!-- Settings Dropdown -->
-                            <div class="ml-3 relative">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                            >
-                                                {{ $page.props.auth.user.name }}
+            <!-- Sidebar -->
+            <SidebarVue></SidebarVue>
+            <!-- ./Sidebar -->
 
-                                                <svg
-                                                    class="ml-2 -mr-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <!-- Hamburger -->
-                        <div class="-mr-2 flex items-center sm:hidden">
-                            <button
-                                @click="showingNavigationDropdown = !showingNavigationDropdown"
-                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-                            >
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex': !showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex': showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
-                >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
-                        <div class="px-4">
-                            <div class="font-medium text-base text-gray-800">
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
-                        </div>
-
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- Page Heading -->
-            <header class="bg-white shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-
-            <!-- Page Content -->
-            <main>
+            <div class="h-full ml-14 mt-14 mb-10 md:ml-64 md:px-2 md:py-5">
                 <slot />
-            </main>
+            </div>
         </div>
     </div>
+
 </template>
+
+<script>
+import NavLink from '@/Components/NavLink.vue';
+import SidebarVue from '../Components/Sidebar.vue';
+
+
+export default {
+    name: "AuthenticatedLayoutVue",
+    components: { NavLink,SidebarVue }
+}
+</script>
+<style>
+/* Compiled dark classes from Tailwind */
+.dark .dark\:divide-gray-700> :not([hidden])~ :not([hidden]) {
+    border-color: rgba(55, 65, 81);
+}
+
+.dark .dark\:bg-gray-50 {
+    background-color: rgba(249, 250, 251);
+}
+
+.dark .dark\:bg-gray-100 {
+    background-color: rgba(243, 244, 246);
+}
+
+.dark .dark\:bg-gray-600 {
+    background-color: rgba(75, 85, 99);
+}
+
+.dark .dark\:bg-gray-700 {
+    background-color: rgba(55, 65, 81);
+}
+
+.dark .dark\:bg-gray-800 {
+    background-color: rgba(31, 41, 55);
+}
+
+.dark .dark\:bg-gray-900 {
+    background-color: rgba(17, 24, 39);
+}
+
+.dark .dark\:bg-red-700 {
+    background-color: rgba(185, 28, 28);
+}
+
+.dark .dark\:bg-green-700 {
+    background-color: rgba(4, 120, 87);
+}
+
+.dark .dark\:hover\:bg-gray-200:hover {
+    background-color: rgba(229, 231, 235);
+}
+
+.dark .dark\:hover\:bg-gray-600:hover {
+    background-color: rgba(75, 85, 99);
+}
+
+.dark .dark\:hover\:bg-gray-700:hover {
+    background-color: rgba(55, 65, 81);
+}
+
+.dark .dark\:hover\:bg-gray-900:hover {
+    background-color: rgba(17, 24, 39);
+}
+
+.dark .dark\:border-gray-100 {
+    border-color: rgba(243, 244, 246);
+}
+
+.dark .dark\:border-gray-400 {
+    border-color: rgba(156, 163, 175);
+}
+
+.dark .dark\:border-gray-500 {
+    border-color: rgba(107, 114, 128);
+}
+
+.dark .dark\:border-gray-600 {
+    border-color: rgba(75, 85, 99);
+}
+
+.dark .dark\:border-gray-700 {
+    border-color: rgba(55, 65, 81);
+}
+
+.dark .dark\:border-gray-900 {
+    border-color: rgba(17, 24, 39);
+}
+
+.dark .dark\:hover\:border-gray-800:hover {
+    border-color: rgba(31, 41, 55);
+}
+
+.dark .dark\:text-white {
+    color: rgba(255, 255, 255);
+}
+
+.dark .dark\:text-gray-50 {
+    color: rgba(249, 250, 251);
+}
+
+.dark .dark\:text-gray-100 {
+    color: rgba(243, 244, 246);
+}
+
+.dark .dark\:text-gray-200 {
+    color: rgba(229, 231, 235);
+}
+
+.dark .dark\:text-gray-400 {
+    color: rgba(156, 163, 175);
+}
+
+.dark .dark\:text-gray-500 {
+    color: rgba(107, 114, 128);
+}
+
+.dark .dark\:text-gray-700 {
+    color: rgba(55, 65, 81);
+}
+
+.dark .dark\:text-gray-800 {
+    color: rgba(31, 41, 55);
+}
+
+.dark .dark\:text-red-100 {
+    color: rgba(254, 226, 226);
+}
+
+.dark .dark\:text-green-100 {
+    color: rgba(209, 250, 229);
+}
+
+.dark .dark\:text-blue-400 {
+    color: rgba(96, 165, 250);
+}
+
+.dark .group:hover .dark\:group-hover\:text-gray-500 {
+    color: rgba(107, 114, 128);
+}
+
+.dark .group:focus .dark\:group-focus\:text-gray-700 {
+    color: rgba(55, 65, 81);
+}
+
+.dark .dark\:hover\:text-gray-100:hover {
+    color: rgba(243, 244, 246);
+}
+
+.dark .dark\:hover\:text-blue-500:hover {
+    color: rgba(59, 130, 246);
+}
+
+/* Custom style */
+.header-right {
+    width: calc(100% - 3.5rem);
+}
+
+.sidebar:hover {
+    width: 16rem;
+}
+
+@media only screen and (min-width: 768px) {
+    .header-right {
+        width: calc(100% - 16rem);
+    }
+}
+</style>
