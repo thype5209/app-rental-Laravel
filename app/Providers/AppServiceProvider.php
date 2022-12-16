@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Inertia\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        ResponseFactory::macro('dialog', function ($modal) {
+            inertia()->share(['dialog' => $modal]);
+        });
     }
 }

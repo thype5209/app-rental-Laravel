@@ -1,24 +1,52 @@
 <script setup>
-import { defineProps } from 'vue';
-import { Head, Link } from '@inertiajs/inertia-vue3';
-
+import { defineProps, ref, onMounted, defineEmits } from 'vue';
+import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import Modal from '@/Components/Modal.vue'
 const props = defineProps({
     mobil: Object,
+    TabStatus: Object.toString()
 })
+const form = useForm();
+function destroy(id) {
+    if (confirm("Are you sure you want to Delete")) {
+        form.delete(route('Mobil.destroy', id));
+    }
+}
+let Tab = 0;
+var TabActive = ' py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500'
+var TabNonActive = 'text-gray-600 py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none';
+function TabClick(num) {
+    form.get(route('Mobil.index', { status: num }))
+}
+
+// Modal
+var ModalShow = ref(false);
+const StatusForm = useForm({
+    status: "",
+})
+function isOpen() {
+    ModalShow = true;
+}
 </script>
 
 <template>
     <AuthenticatedLayout>
 
         <Head title="Mobil" />
+
+        <!-- Modal toggle -->
+        <Modal :show="ModalShow" @close="ModalShow = false">
+            Hai
+        </Modal>
+
         <div
             class="w-full rounded-lg bg-gray-200 flex flex-wrap justify-between flex-col-reverse md:flex-row overflow-auto">
             <nav class="flex flex-row">
-                <button v-on:click="TabClick(0)" v-bind:class=" Tab == 0 ? TabActive : TabNonActive">
+                <button v-on:click="ModalShow =true" v-bind:class="Tab == '0' ? TabActive : TabNonActive">
                     Semua
                 </button><button v-on:click="TabClick(1)" v-bind:class="Tab == 1 ? TabActive : TabNonActive">
                     Disewa
-                </button><button v-on:click="TabClick(2)" v-bind:class="Tab == 2 ? TabActive : TabNonActive">
+                </button><button v-on:click="TabClick(2)" v-bind:class="Tab == '2' ? TabActive : TabNonActive">
                     Tersedia
                 </button><button v-on:click="TabClick(3)" v-bind:class="Tab == 3 ? TabActive : TabNonActive">
                     Perbaikan
@@ -54,21 +82,28 @@ const props = defineProps({
                             <td class="px-4 py-3 text-xs">
                                 {{ mobil.harga }}
                             </td>
-                            <td class="px-4 py-3 text-xs">
-                                <span
-                                    class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                            <td class="px-4 py-3 text-xs ">
+                                <Link :href="route('Mobil.StatusModal')"
+                                    class="px-2 py-1 font-semibold cursor-pointer capitalize leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
                                     {{ Status(mobil.status) }}
-                                </span>
+                                </Link>
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 <button class="bg-blue-700 text-white px-2 py-1 rounded-md ml-2">
+                                    <Link
+                                        :href="route('Mobil.show', [{ id: mobil.id, search: mobil.unit + mobil.nopol }])">
+
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
+                                    </Link>
                                 </button>
-                                <button class="bg-default-red text-white px-2 py-1 rounded-md ml-2">
+                                <button @click="destroy(mobil.id)"
+                                    class="bg-default-red text-white px-2 py-1 rounded-md ml-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -76,6 +111,16 @@ const props = defineProps({
                                     </svg>
 
                                 </button>
+                                <button class=" bg-green-600 text-white px-2 py-1 rounded-md ml-2">
+                                    <Link :href="route('Mobil.edit', [{ id: mobil.id }])">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                    </svg>
+                                    </Link>
+                                </button>
+
                             </td>
                         </tr>
                     </tbody>
@@ -86,8 +131,7 @@ const props = defineProps({
 </template>
 
 <script>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 export default {
     name: 'MobilVue',
     components: {
@@ -95,9 +139,6 @@ export default {
     },
     data() {
         return {
-            Tab: 0,
-            TabActive: '',
-            TabNonActive: '',
             txt: '',
             unit: '',
             nopol: '',
@@ -108,27 +149,18 @@ export default {
             status: '',
         }
     },
-    beforeMount() {
-        this.Tab = 1;
-        this.TabActive = ' py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500'
-        this.TabNonActive = 'text-gray-600 py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none'
-    },
     methods: {
-        TabClick: function (num) {
 
-            return this.Tab = num;
-
-        },
         Status(n) {
             var msg = '';
             switch (n) {
-                case '1':
+                case 1:
                     msg = 'siap'
                     break;
-                case '2':
+                case 2:
                     msg = 'disewa'
                     break;
-                case '3':
+                case 3:
                     msg = 'perbaikan'
                     break;
 

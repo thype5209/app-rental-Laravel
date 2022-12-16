@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Mobil;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 
 class MobilController extends Controller
@@ -14,11 +16,18 @@ class MobilController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $mobil = Mobil::all();
-        return Inertia::render('Mobil/Mobil',[
-            'mobil'=> $mobil
+        $status = 0;
+        if($request->status == null || $request->status == 0){
+            $mobil = Mobil::all();
+            $status = ['nilai'=>$request->status];
+        }else{
+            $mobil = Mobil::where('status', $request->status)->get();
+        }
+        return Inertia::render('Mobil/Mobil', [
+            'mobil' => $mobil,
+            'TabStatus'=> $status
         ]);
     }
 
@@ -40,15 +49,29 @@ class MobilController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'unit' => ['required', 'string'],
+            'harga' => ['required', 'numeric'],
+            'nopol' => ['required', 'string'],
+        ]);
+        $nama1 = $request->unit . '-' . $request->foto1->getClientOriginalName();
+        $nama2 = $request->unit . '-' . $request->foto2->getClientOriginalName();
+        $nama3 = $request->unit . '-' . $request->foto3->getClientOriginalName();
+        $nama4 = $request->unit . '-' . $request->foto4->getClientOriginalName();
+
+        $request->foto1->move('fotoMobil/', $nama1);
+        $request->foto2->move('fotoMobil/', $nama2);
+        $request->foto3->move('fotoMobil/', $nama3);
+        $request->foto4->move('fotoMobil/', $nama4);
         Mobil::create([
-            'unit'=>$request->unit,
-            'harga'=>$request->harga,
-            'nopol'=>$request->nopol,
-            'foto1'=>$request->foto1,
-            'foto2'=>$request->foto2,
-            'foto3'=>$request->foto3,
-            'foto4'=>$request->foto4,
-            'status'=> '1'
+            'unit' => $request->unit,
+            'harga' => $request->harga,
+            'nopol' => $request->nopol,
+            'foto1' => $nama1,
+            'foto2' => $nama2,
+            'foto3' => $nama3,
+            'foto4' => $nama4,
+            'status' => '1'
         ]);
 
         return Redirect::route('Mobil.index');
@@ -60,9 +83,12 @@ class MobilController extends Controller
      * @param  \App\Models\Mobil  $mobil
      * @return \Illuminate\Http\Response
      */
-    public function show(Mobil $mobil)
+    public function show(Mobil $mobil, $id)
     {
-        //
+        return Inertia::render('Mobil/Show',[
+            'mobil'=> $mobil,
+            'id'=> $id,
+        ]);
     }
 
     /**
@@ -71,9 +97,12 @@ class MobilController extends Controller
      * @param  \App\Models\Mobil  $mobil
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mobil $mobil)
+    public function edit(Mobil $mobil, $id)
     {
-        //
+        $data = $mobil->find($id);
+        return Inertia::render('Mobil/EditMobil', [
+            'mobil' => $data,
+        ]);
     }
 
     /**
@@ -83,9 +112,41 @@ class MobilController extends Controller
      * @param  \App\Models\Mobil  $mobil
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mobil $mobil)
+    public function update(Request $request, Mobil $mobil,$id)
     {
-        //
+        $this->validate($request, [
+            'unit' => ['required', 'string'],
+            'harga' => ['required', 'numeric'],
+            'nopol' => ['required', 'string'],
+        ]);
+        $file1 = $request->file('foto1');
+        $file2 = $request->file('foto2');
+        $file3 = $request->file('foto3');
+        $file4 = $request->file('foto4');
+        $mobil = $mobil->find($request->id);
+
+        $nama = array($mobil->foto1, $mobil->foto2, $mobil->foto3, $mobil->foto4);
+        $collectFoto = [$file1, $file2, $file3, $file4];
+        for ($i = 0; $i < count($collectFoto); $i++) {
+            if ($collectFoto[$i] != null) {
+                $nama[] = $request->unit . '-' . $collectFoto[$i]->getClientOriginalName();
+                if (Storage::disk('public/mobil')->exists($nama[$i])) {
+                    Storage::disk('public/mobil')->delete($nama[$i]);
+                    Storage::put('public/fotoMobil/' . $nama[$i]);
+                }
+            }
+        }
+        Mobil::find($request->id)->update([
+            'unit' => $request->unit,
+            'harga' => $request->harga,
+            'nopol' => $request->nopol,
+            'foto1' => $nama[0],
+            'foto2' => $nama[1],
+            'foto3' => $nama[2],
+            'foto4' => $nama[3],
+            'status' => '1'
+        ]);
+        return Redirect::route('Mobil.index');
     }
 
     /**
@@ -94,8 +155,12 @@ class MobilController extends Controller
      * @param  \App\Models\Mobil  $mobil
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Mobil $mobil)
+    public function destroy(Mobil $mobil,$id)
     {
-        //
+        $mobil->find($id)->delete();
+    }
+
+    public function StatusModal(){
+        return Inertia::dialog('Mobil/status');
     }
 }

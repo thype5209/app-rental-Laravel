@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sewa;
+use Inertia\Inertia;
 use App\Http\Requests\StoreSewaRequest;
 use App\Http\Requests\UpdateSewaRequest;
+use Illuminate\Http\Request;
 
 class SewaController extends Controller
 {
@@ -13,9 +15,12 @@ class SewaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $sewa = Sewa::all();
+        return Inertia::render('Pinjam/Pinjam',[
+            'sewa'=> $sewa,
+        ]);
     }
 
     /**

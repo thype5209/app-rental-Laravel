@@ -1,34 +1,42 @@
 
 <script setup>
 import { Head, useForm } from '@inertiajs/inertia-vue3';
+import { defineProps } from 'vue';
+
+var mobil = null;
+const data = defineProps({
+    mobil: {
+        type: Object,
+        default: () => ({})
+    }
+})
+mobil = data.mobil.id;
+const edit =  true;
 const form = useForm({
-    unit: '',
-    nopol: '',
-    harga: '',
-    foto1: '',
-    foto2: '',
-    foto3: '',
-    foto4: '',
+    unit: data.mobil.unit,
+    nopol: data.mobil.nopol,
+    harga: data.mobil.harga,
+    foto1: data.mobil.foto1,
+    foto2: data.mobil.foto2,
+    foto3: data.mobil.foto3,
+    foto4: data.mobil.foto4,
 })
 const submit = () => {
-
-    form.post(route('Mobil.store'), {
-        forceFormData: true,
-
-    });
+    form.put(route('Mobil.update', data.mobil.id));
 };
 </script>
 
 <template>
     <AuthenticatedLayoutVue>
 
-        <Head title="FormMobil" />
+        <Head title="Edit Mobil" />
         <!-- component -->
+
         <div class="flex items-center justify-center md:px-12 py-3 ">
             <!-- Author: FormBold Team -->
             <!-- Learn More: https://formbold.com -->
             <div class="mx-auto w-full max-w-[550px] bg-white shadow-default-dark shadow-lg">
-                <label v-for="error in Error" :key="error" for="unit" class=" block text-sm font-medium text-black">
+                <label v-for="error in form.errors" :key="error" for="unit" class=" block text-sm font-medium text-black">
                     {{ error }}
                 </label>
                 <form @submit.prevent="submit" class="py-6 px-9" method="POST">
@@ -62,6 +70,9 @@ const submit = () => {
                         <div class="border border-gray-400 p-2 rounded-lg">
                             <input type="file" name="file" id="file" @input="form.foto1 = $event.target.files[0]" />
                         </div>
+                        <label v-if="edit == true" class=" mb-4 block text-xs font-semibold text-gray-500">
+                            Kosongkan Jika tidak ingin di Edit
+                        </label>
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-semibold text-black">
@@ -72,6 +83,9 @@ const submit = () => {
                             <input type="file" name="file" id="file" @change="form.foto2 = $event.target.files[0]" />
 
                         </div>
+                        <label v-if="edit == true" class=" mb-4 block text-xs font-semibold text-gray-500">
+                            Kosongkan Jika tidak ingin di Edit
+                        </label>
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-semibold text-black">
@@ -82,6 +96,9 @@ const submit = () => {
                             <input type="file" name="file" id="file" @input="form.foto3 = $event.target.files[0]" />
 
                         </div>
+                        <label v-if="edit == true" class=" mb-4 block text-xs font-semibold text-gray-500">
+                            Kosongkan Jika tidak ingin di Edit
+                        </label>
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-semibold text-black">
@@ -91,6 +108,9 @@ const submit = () => {
                         <div class="border border-gray-400 p-2 rounded-lg">
                             <input type="file" name="file" id="file" @input="form.foto4 = $event.target.files[0]" />
                         </div>
+                        <label v-if="edit == true" class=" mb-4 block text-xs font-semibold text-gray-500">
+                            Kosongkan Jika tidak ingin di Edit
+                        </label>
                     </div>
                     <progress v-if="form.progress" :value="form.progress.percentage"
                         class="bg-blue-600 h-2.5 rounded-full" max="100">
@@ -111,7 +131,7 @@ const submit = () => {
 <script>
 import AuthenticatedLayoutVue from '@/Layouts/AuthenticatedLayout.vue';
 export default {
-    name: "FormMobil.vue",
+    name: "EditMobil.vue",
     components: {
         AuthenticatedLayoutVue
     },

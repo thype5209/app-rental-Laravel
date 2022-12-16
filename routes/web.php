@@ -41,10 +41,17 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix'=> 'Mobil', 'as'=> 'Mobil.'],function(){
         Route::controller(MobilController::class)->group(function(){
             Route::get('/', 'index')->name('index');
+            Route::get('/Form/Status', 'StatusModal')->name('StatusModal');
             Route::get('/Form/Mobil', 'create')->name('create');
             Route::post('/Form/store', 'store')->name('store');
+            Route::get('/Edit/{id}', 'edit')->name('edit');
+            Route::get('/detail/{id}', 'show')->name('show');
+            Route::put('/Update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
         });
     });
+
+    // Controller Laporan
     Route::group(['prefix'=> 'Laporan', 'as'=> 'Laporan.'],function(){
         Route::controller(LaporanController::class)->group(function(){
             Route::get('/', 'index')->name('index');
