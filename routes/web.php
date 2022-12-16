@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\SewaController;
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
@@ -42,7 +43,21 @@ Route::middleware('auth')->group(function () {
         Route::controller(MobilController::class)->group(function(){
             Route::get('/', 'index')->name('index');
             Route::get('/Form/Status', 'StatusModal')->name('StatusModal');
+            Route::put('/update/Status/{id}', 'StatusUpdate')->name('StatusUpdate');
             Route::get('/Form/Mobil', 'create')->name('create');
+            Route::post('/Form/store', 'store')->name('store');
+            Route::get('/Edit/{id}', 'edit')->name('edit');
+            Route::get('/detail/{id}', 'show')->name('show');
+            Route::put('/Update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+        });
+    });
+
+    // Controller Sewa
+    Route::group(['prefix'=> 'Sewa', 'as'=> 'Sewa.'],function(){
+        Route::controller(SewaController::class)->group(function(){
+            Route::get('/', 'index')->name('index');
+            Route::get('/Form/Sewa', 'create')->name('create');
             Route::post('/Form/store', 'store')->name('store');
             Route::get('/Edit/{id}', 'edit')->name('edit');
             Route::get('/detail/{id}', 'show')->name('show');

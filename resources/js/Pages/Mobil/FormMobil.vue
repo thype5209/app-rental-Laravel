@@ -9,6 +9,7 @@ const form = useForm({
     foto2: '',
     foto3: '',
     foto4: '',
+    spesifikasi: '',
 })
 const submit = () => {
 
@@ -37,6 +38,13 @@ const submit = () => {
                             Unit Mobil
                         </label>
                         <input type="text" name="unit" id="unit" v-model="form.unit" placeholder=".............."
+                            class="w-full rounded-md border border-[#e0e0e0] bg-white text-sm font-medium text-black outline-none focus:border-default-dark focus:shadow-md" />
+                    </div>
+                    <div class=" mb-2">
+                        <label for="nopol" class=" block text-sm font-medium text-black">
+                            spesifikasi
+                        </label>
+                        <input type="text" name="spesifikasi" id="spesifikasi" v-model="form.spesifikasi" placeholder=".............."
                             class="w-full rounded-md border border-[#e0e0e0] bg-white text-sm font-medium text-black outline-none focus:border-default-dark focus:shadow-md" />
                     </div>
                     <div class=" mb-2">

@@ -18,6 +18,7 @@ const form = useForm({
     harga: data.mobil.harga,
     foto1: data.mobil.foto1,
     foto2: data.mobil.foto2,
+    spesifikasi: data.mobil.spesifikasi,
     foto3: data.mobil.foto3,
     foto4: data.mobil.foto4,
 })
@@ -47,6 +48,13 @@ const submit = () => {
                         <input type="text" name="unit" id="unit" v-model="form.unit" placeholder=".............."
                             class="w-full rounded-md border border-[#e0e0e0] bg-white text-sm font-medium text-black outline-none focus:border-default-dark focus:shadow-md" />
                     </div>
+                    <div class="mb-2">
+                        <label for="harga" class=" block text-sm font-medium text-black">
+                            Spesifikasi
+                        </label>
+                        <input type="number" name="spesifikasi" id="spesifikasi" v-model="form.spesifikasi" placeholder=".............."
+                            class="w-full rounded-md border border-[#e0e0e0] bg-white text-sm font-medium text-black outline-none focus:border-default-dark focus:shadow-md" />
+                    </div>
                     <div class=" mb-2">
                         <label for="nopol" class=" block text-sm font-medium text-black">
                             Nomor Polisi
@@ -61,6 +69,7 @@ const submit = () => {
                         <input type="number" name="harga" id="harga" v-model="form.harga" placeholder=".............."
                             class="w-full rounded-md border border-[#e0e0e0] bg-white text-sm font-medium text-black outline-none focus:border-default-dark focus:shadow-md" />
                     </div>
+
 
                     <div class="mb-4">
                         <label class="block text-sm font-semibold text-black">

@@ -19,15 +19,16 @@ class MobilController extends Controller
     public function index(Request $request)
     {
         $status = 0;
-        if($request->status == null || $request->status == 0){
+        if ($request->status == null || $request->status == 0) {
             $mobil = Mobil::all();
-            $status = ['nilai'=>$request->status];
-        }else{
+            $status = $request->status;
+        } else {
             $mobil = Mobil::where('status', $request->status)->get();
+            $status = 0;
         }
         return Inertia::render('Mobil/Mobil', [
             'mobil' => $mobil,
-            'TabStatus'=> $status
+            'TabStatus' => $status
         ]);
     }
 
@@ -67,6 +68,7 @@ class MobilController extends Controller
             'unit' => $request->unit,
             'harga' => $request->harga,
             'nopol' => $request->nopol,
+            'spesifikasi' => $request->spesifikasi,
             'foto1' => $nama1,
             'foto2' => $nama2,
             'foto3' => $nama3,
@@ -85,9 +87,10 @@ class MobilController extends Controller
      */
     public function show(Mobil $mobil, $id)
     {
-        return Inertia::render('Mobil/Show',[
-            'mobil'=> $mobil,
-            'id'=> $id,
+
+        return Inertia::render('Mobil/Show', [
+            'mobil' => $mobil->find($id),
+            'id' => $id,
         ]);
     }
 
@@ -112,7 +115,7 @@ class MobilController extends Controller
      * @param  \App\Models\Mobil  $mobil
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mobil $mobil,$id)
+    public function update(Request $request, Mobil $mobil, $id)
     {
         $this->validate($request, [
             'unit' => ['required', 'string'],
@@ -140,6 +143,7 @@ class MobilController extends Controller
             'unit' => $request->unit,
             'harga' => $request->harga,
             'nopol' => $request->nopol,
+            'spesifikasi' => $request->spesifikasi,
             'foto1' => $nama[0],
             'foto2' => $nama[1],
             'foto3' => $nama[2],
@@ -155,12 +159,19 @@ class MobilController extends Controller
      * @param  \App\Models\Mobil  $mobil
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Mobil $mobil,$id)
+    public function destroy(Mobil $mobil, $id)
     {
         $mobil->find($id)->delete();
     }
+    public function StatusUpdate(Mobil $mobil, $id, Request $request)
+    {
+        $mobil->find($id)->update([
+            'status' => $request->status,
+        ]);
+    }
 
-    public function StatusModal(){
+    public function StatusModal()
+    {
         return Inertia::dialog('Mobil/status');
     }
 }
