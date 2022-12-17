@@ -20,8 +20,11 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "pdfmake": "^0.2.7",
         "vue-carousel": "^0.18.0",
+        "vue-html2pdf": "^1.8.0",
         "vue-slick-carousel": "^1.0.6",
-        "vue3-carousel": "^0.2.9"
+        "vue3-carousel": "^0.2.9",
+        "vue3-html2pdf": "^1.1.2"
     }
 }

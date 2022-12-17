@@ -25,6 +25,7 @@ const Form = useForm({
     alamat: 'Makassar',
     no_hp: '02090910',
     no_hp_lain: '920201092',
+    pekerjaan: ''
     sosial: 'FB',
     mobil_id: '',
     unit: '',
@@ -88,7 +89,7 @@ function submit() {
                             for="grid-first-name">
                             NIK
                         </InputLabel>
-                        <TextInput id="grid-first-name" type="text" placeholder="Jane" />
+                        <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.nik"/>
                         <p v-if="Form.errors.nik" class="text-red text-xs italic text-red-500">Please fill out this
                             field.
                         </p>
@@ -98,7 +99,7 @@ function submit() {
                             for="grid-last-name">
                             Nama
                         </InputLabel>
-                        <TextInput id="grid-last-name" type="text" placeholder="Nama Lengkap" />
+                        <TextInput id="grid-last-name" type="text" placeholder="Nama Lengkap" v-model="Form.nama" />
                         <p v-if="Form.errors.nama" class="text-red text-xs italic text-red-500">Please fill out this
                             field.
                         </p>
@@ -112,8 +113,8 @@ function submit() {
                             Tempat/Tanggal Lahir
                         </InputLabel>
                         <div class="flex">
-                            <TextInput id="grid-last-name" class="1/2" type="text" placeholder="Tempat Lahir" />
-                            <TextInput id="grid-last-name" class="1/2" type="date" placeholder="Doe" />
+                            <TextInput id="grid-last-name" class="1/2" type="text" placeholder="Tempat Lahir" v-model="Form.tempat_lahir" />
+                            <TextInput id="grid-last-name" class="1/2" type="date" placeholder="Doe" v-model="Form.tgl_lahir"/>
                         </div>
                         <p v-if="Form.errors.tempat_lahir" class="text-red text-xs italic text-red-500">Please fill out
                             this
@@ -125,7 +126,18 @@ function submit() {
                             Alamat
                         </InputLabel>
 
-                        <TextInput id="grid-first-name" type="text" placeholder="Jane" />
+                        <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.alamat"/>
+                        <p v-if="Form.errors.tgl_lahir" class="text-red text-xs italic text-red-500">Please fill out
+                            this
+                            field.</p>
+                    </div>
+                    <div class="md:w-1/2 px-3">
+                        <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            for="grid-last-name">
+                            Pekerjaan
+                        </InputLabel>
+
+                        <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.pekerjaan" />
                         <p v-if="Form.errors.tgl_lahir" class="text-red text-xs italic text-red-500">Please fill out
                             this
                             field.</p>
@@ -137,7 +149,7 @@ function submit() {
                             for="grid-first-name">
                             Nomor HP
                         </InputLabel>
-                        <TextInput id="grid-first-name" type="tel" placeholder="+62" />
+                        <TextInput id="grid-first-name" type="tel" placeholder="+62" v-model="Form.no_hp" />
                         <p v-if="Form.errors.no_hp" class="text-red text-xs italic text-red-500">Please fill out this
                             field.
                         </p>
@@ -147,7 +159,7 @@ function submit() {
                             for="grid-last-name">
                             Nomor HP Kerabat lain
                         </InputLabel>
-                        <TextInput id="grid-last-name" type="tel" placeholder="+62" />
+                        <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.no_hp_lain"/>
                         <p v-if="Form.errors.no_hp_lain" class="text-red text-xs italic text-red-500">Please fill out
                             this
                             field.</p>
@@ -157,7 +169,7 @@ function submit() {
                             for="grid-last-name">
                             Sosial
                         </InputLabel>
-                        <TextInput id="grid-last-name" type="tel" placeholder="+62" />
+                        <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sosial_media" />
                     </div>
                 </div>
                 <div class="-mx-3 md:flex mb-6" v-if="TabStatus == '1'">
