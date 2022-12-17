@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Sewa;
 use Inertia\Inertia;
+use App\Models\Mobil;
+use App\Models\Pengguna;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreSewaRequest;
 use App\Http\Requests\UpdateSewaRequest;
-use Illuminate\Http\Request;
 
 class SewaController extends Controller
 {
@@ -18,7 +20,7 @@ class SewaController extends Controller
     public function index(Request $request)
     {
         $sewa = Sewa::all();
-        return Inertia::render('Pinjam/Pinjam',[
+        return Inertia::render('Sewa/Pinjam',[
             'sewa'=> $sewa,
         ]);
     }
@@ -30,7 +32,12 @@ class SewaController extends Controller
      */
     public function create()
     {
-        //
+        $mobil = Mobil::all();
+        $pengguna = Pengguna::all();
+        return Inertia::render('Sewa/FormSewa',[
+            'pengguna'=> $pengguna,
+            'mobil'=> $mobil,
+        ]);
     }
 
     /**
@@ -39,6 +46,13 @@ class SewaController extends Controller
      * @param  \App\Http\Requests\StoreSewaRequest  $request
      * @return \Illuminate\Http\Response
      */
+    public function formulir(Request $request)
+    {
+        $dat = $request->all();
+        return Inertia::render('Sewa/Formulir',[
+            'formulir'=>$dat,
+        ]);
+    }
     public function store(StoreSewaRequest $request)
     {
         //
@@ -87,5 +101,16 @@ class SewaController extends Controller
     public function destroy(Sewa $sewa)
     {
         //
+    }
+    public function StatusUpdate(Sewa $Sewa, $id, Request $request)
+    {
+        $Sewa->find($id)->update([
+            'status' => $request->status,
+        ]);
+    }
+
+    public function StatusModal()
+    {
+        return Inertia::dialog('Sewa/status');
     }
 }

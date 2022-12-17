@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('unit',30);
             $table->string('spesifikasi',100);
             $table->string('nopol',30);
+            $table->string('tahun',30);
             $table->bigInteger('harga');
             $table->string('foto1',100);
             $table->string('foto2',100);

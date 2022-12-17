@@ -1,23 +1,28 @@
 
+<script setup>
+import { ref } from 'vue';
+import { Head,Link } from '@inertiajs/inertia-vue3';
+</script>
+
 
 <template>
     <AuthenticatedLayout>
-
+        <Head title="Sewa Form"/>
         <div class="w-full rounded-lg bg-gray-200 flex flex-wrap justify-between flex-col-reverse md:flex-row overflow-auto">
             <nav class="flex flex-row">
-                <button v-on:click="TabClick(0)" v-bind:class=" Tab == 0 ? TabActive : TabNonActive">
+                <button v-on:click="TabClick(0)" v-bind:class=" Tab == '0' ? TabActive : TabNonActive">
                     Semua
                 </button>
-                <button v-on:click="TabClick(1)" v-bind:class="Tab == 1 ? TabActive : TabNonActive">
+                <button v-on:click="TabClick(1)" v-bind:class="Tab == '1' ? TabActive : TabNonActive">
                     Telat
                 </button>
-                <button v-on:click="TabClick(2)" v-bind:class="Tab == 2 ? TabActive : TabNonActive">
+                <button v-on:click="TabClick(2)" v-bind:class="Tab == '2' ? TabActive : TabNonActive">
                     Sewa
                 </button>
             </nav>
             <div class="p-3 w-32">
-                <router-link :to="{ name: 'formmobil' }"
-                    class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Tambah</router-link>
+                <Link :href="route('Sewa.create')"
+                    class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Tambah</Link>
             </div>
         </div>
         <div class="w-full overflow-hidden rounded-lg shadow-lg">
@@ -26,18 +31,18 @@
                     <thead>
                         <tr
                             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  bg-gray-50">
-                            <th class="md:px-4 md:py-3 px-2 py-2 text-xs whitespace-nowrap">Unit Kendaraan</th>
-                            <th class="md:px-4 md:py-3 px-2 py-2 text-xs whitespace-nowrap">No. Polisi</th>
-                            <th class="md:px-4 md:py-3 px-2 py-2 text-xs whitespace-nowrap">Nama Penyewa</th>
-                            <th class="md:px-4 md:py-3 px-2 py-2 text-xs whitespace-nowrap">NIK Penyewa</th>
-                            <th class="md:px-4 md:py-3 px-2 py-2 text-xs whitespace-nowrap">Tanggal Sewa</th>
-                            <th class="md:px-4 md:py-3 px-2 py-2 text-xs whitespace-nowrap">Tanggal Kembali</th>
-                            <th class="md:px-4 md:py-3 px-2 py-2 text-xs whitespace-nowrap">Status</th>
-                            <th class="md:px-4 md:py-3 px-2 py-2 text-xs whitespace-nowrap">Detail</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Unit Kendaraan</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">No. Polisi</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Nama Penyewa</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">NIK Penyewa</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Tanggal Sewa</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Tanggal Kembali</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Status</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Detail</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                        <tr v-for="mobil in DataPenyewa" :key="mobil" class="text-gray-700 dark:text-gray-400">
+                        <tr v-for="mobil in sewa" :key="mobil" class="text-gray-700 dark:text-gray-400">
                             <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
                                 {{ mobil.unit }}
                             </td>
@@ -86,7 +91,7 @@
         </div>
     </AuthenticatedLayout>
 </template>
- 
+
 <script>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
@@ -108,44 +113,6 @@ export default {
             fotokiri: '',
             fotokanan: '',
             status: '',
-            DataPenyewa: [
-                {
-                    unit: 'Toyota',
-                    nopol: '92398310310',
-                    nama_penyewa: 'syainuffin',
-                    nik: '92398310310',
-                    tgl_sewa: '2022-12-10',
-                    tgl_kembali: '2023-01-01',
-                    status: '2'
-                },
-                {
-                    unit: 'Avanza',
-                    nopol: '92398310310',
-                    nama_penyewa: 'Arman',
-                    nik: '92398310310',
-                    tgl_sewa: '2022-12-10',
-                    tgl_kembali: '2023-01-01',
-                    status: '1'
-                },
-                {
-                    unit: 'Toyota',
-                    nopol: '30309301',
-                    nama_penyewa: 'Syainal',
-                    nik: '30309301',
-                    tgl_sewa: '2023-02-10',
-                    tgl_kembali: '2023-02-10',
-                    status: '2'
-                },
-                {
-                    unit: 'Avanza',
-                    nopol: '23002',
-                    nama_penyewa: 'Judi',
-                    nik: '23002',
-                    tgl_sewa: '2023-02-01',
-                    tgl_kembali: '2023-02-01',
-                    status: '1'
-                },
-            ]
         }
     },
     beforeMount() {
@@ -177,6 +144,12 @@ export default {
 
     },
     mounted() {
+    },
+    props:{
+        sewa:{
+            type: Object,
+            default: ()=>({})
+        }
     }
 }
 </script>

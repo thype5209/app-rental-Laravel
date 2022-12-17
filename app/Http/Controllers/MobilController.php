@@ -18,13 +18,14 @@ class MobilController extends Controller
      */
     public function index(Request $request)
     {
-        $status = 0;
+        $status = $request->status;
+
         if ($request->status == null || $request->status == 0) {
             $mobil = Mobil::all();
             $status = $request->status;
         } else {
             $mobil = Mobil::where('status', $request->status)->get();
-            $status = 0;
+
         }
         return Inertia::render('Mobil/Mobil', [
             'mobil' => $mobil,
@@ -68,6 +69,7 @@ class MobilController extends Controller
             'unit' => $request->unit,
             'harga' => $request->harga,
             'nopol' => $request->nopol,
+            'tahun' => $request->tahun,
             'spesifikasi' => $request->spesifikasi,
             'foto1' => $nama1,
             'foto2' => $nama2,
@@ -143,6 +145,7 @@ class MobilController extends Controller
             'unit' => $request->unit,
             'harga' => $request->harga,
             'nopol' => $request->nopol,
+            'tahun' => $request->tahun,
             'spesifikasi' => $request->spesifikasi,
             'foto1' => $nama[0],
             'foto2' => $nama[1],
@@ -173,5 +176,10 @@ class MobilController extends Controller
     public function StatusModal()
     {
         return Inertia::dialog('Mobil/status');
+    }
+    public function GetIDMobil($id){
+        $mobil = Mobil::find($id);
+
+        return response()->json($mobil);
     }
 }

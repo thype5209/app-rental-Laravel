@@ -1,6 +1,6 @@
 
 <script setup>
-import { Head, useForm } from '@inertiajs/inertia-vue3';
+import { Head, useForm , Link } from '@inertiajs/inertia-vue3';
 const form = useForm({
     unit: '',
     nopol: '',
@@ -10,6 +10,7 @@ const form = useForm({
     foto3: '',
     foto4: '',
     spesifikasi: '',
+    tahun: '',
 })
 const submit = () => {
 
@@ -52,6 +53,13 @@ const submit = () => {
                             Nomor Polisi
                         </label>
                         <input type="text" name="nopol" id="nopol" v-model="form.nopol" placeholder=".............."
+                            class="w-full rounded-md border border-[#e0e0e0] bg-white text-sm font-medium text-black outline-none focus:border-default-dark focus:shadow-md" />
+                    </div>
+                    <div class=" mb-2">
+                        <label for="nopol" class=" block text-sm font-medium text-black">
+                            Tahun
+                        </label>
+                        <input type="text" name="nopol" id="nopol" v-model="form.tahun" placeholder=".............."
                             class="w-full rounded-md border border-[#e0e0e0] bg-white text-sm font-medium text-black outline-none focus:border-default-dark focus:shadow-md" />
                     </div>
                     <div class="mb-2">
@@ -104,8 +112,12 @@ const submit = () => {
                         class="bg-blue-600 h-2.5 rounded-full" max="100">
                         {{ form.progress.percentage }}%
                     </progress>
-                    <div>
-                        <button
+                    <div class="flex justify-around gap-2">
+                        <Link :href="route('Mobil.index')"
+                            class="hover:shadow-form w-full rounded-md bg-default-red py-3 px-8 text-center text-base font-semibold text-white outline-none">
+                            Kembali
+                        </Link>
+                        <button type="submit"
                             class="hover:shadow-form w-full rounded-md bg-default-dark py-3 px-8 text-center text-base font-semibold text-white outline-none">
                             Simpan
                         </button>
