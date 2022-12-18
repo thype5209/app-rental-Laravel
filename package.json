@@ -15,14 +15,18 @@
         "laravel-vite-plugin": "^0.7.0",
         "lodash": "^4.17.19",
         "postcss": "^8.4.18",
+        "sass": "^1.57.0",
         "tailwindcss": "^3.2.1",
         "vite": "^3.0.0",
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "jspdf": "^2.5.1",
         "pdfmake": "^0.2.7",
+        "pspdfkit": "^2022.5.2",
         "vue-carousel": "^0.18.0",
         "vue-html2pdf": "^1.8.0",
+        "vue-pdf": "^4.3.0",
         "vue-slick-carousel": "^1.0.6",
         "vue3-carousel": "^0.2.9",
         "vue3-html2pdf": "^1.1.2"

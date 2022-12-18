@@ -27,24 +27,18 @@ const FormPDF = useForm({
     sosial: data.formulir.sosial,
     no_hp: data.formulir.no_hp,
     no_hp_lain: data.formulir.no_hp_lain,
+    nilaisewahari: data.formulir.nilaisewahari,
+    nilaisewabulan: data.formulir.nilaisewabulan,
+    tgl_sewa: data.formulir.tgl_sewa,
+    tgl_kembali: data.formulir.tgl_kembali,
+    lama_sewa: data.formulir.lama_sewa,
+    tujuan: data.formulir.tujuan,
+    jaminan: data.formulir.jaminan,
+    unit: data.formulir.unit,
+    nopol: data.formulir.nopol,
+    tahun: data.formulir.tahun,
 })
 
-const nik = data.formulir.nik;
-const nama = data.formulir.nama;
-const tempat_lahir = data.formulir.tempat_lahir;
-const tgl_lahir = data.formulir.tgl_lahir;
-const alamat = data.formulir.alamat;
-const pekerjaan = data.formulir.pekerjaan;
-const sosial = data.formulir.sosial;
-const unit = data.formulir.unit;
-const no_hp = data.formulir.no_hp;
-const no_hp_lain = data.formulir.no_hp_lain;
-const nilaisewahari = data.formulir.nilaisewahari;
-const nilaisewabulan = data.formulir.nilaisewabulan;
-const tujuan = data.formulir.tujuan;
-const lama_sewa = data.formulir.lama_sewa;
-const jaminan = data.formulir.jaminan;
-console.log(data.formulir)
 
 const date = new Date();
 const today = `${date.getUTCDate()} ${parseMonth(date.getMonth())}, ${date.getFullYear()}`
@@ -95,14 +89,21 @@ function parseMonth(value) {
     }
     return msg;
 }
+
+function cetakDanSave() {
+    FormPDF.get(route('Laporan.saveSewa'));
+}
 </script>
 
 <template>
     <AuthenticatedLayoutVue class="bg-gray-200">
 
         <Head title="Formulir Sewa Mobil" />
-        <PrimaryButtonVue><Link :href="route('Sewa.create')" :data="{ FormPDF }" >Kembali</Link></PrimaryButtonVue>
-        <div class="bg-gray-200 container mx-auto md:px-10 flex justify-center">
+        <PrimaryButtonVue>
+            <Link :href="route('Sewa.create')" :data="{ FormPDF }">Kembali</Link>
+        </PrimaryButtonVue>
+        <form @submit.prevent="cetakDanSave()"
+            class="bg-gray-200 container mx-auto md:px-10 flex flex-col justify-center items-center">
             <section class=" md:w-[70%] py-5 px-3 bg-white sm:px-10 md:px-20">
                 <!-- Head -->
                 <div
@@ -133,7 +134,7 @@ function parseMonth(value) {
                     </tr>
 
                 </table>
-                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5">
+                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left">
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
                         <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.nik"
@@ -149,7 +150,8 @@ function parseMonth(value) {
                         <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="tempat_lahir"
                                 v-model="FormPDF.tempat_lahir" class="border-none text-xs p-0 m-0 w-16 max-w-max ">/
                             <input type="text" name="nik" v-model="FormPDF.tgl_lahir"
-                                class="border-none text-xs p-0 m-0"></td>
+                                class="border-none text-xs p-0 m-0">
+                        </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">Pekerjaan</td>
@@ -184,7 +186,7 @@ function parseMonth(value) {
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan</td>
                         <td>
                             <ul class=" list-none flex flex-row gap-3">
-                                <li class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ nik }}</li>
+                                <li class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.nik }}</li>
                                 <li class=" whitespace-nowrap mb-0 p-0"> <span class="font-bold">No. Kendaraan <span
                                             class="font-bold">:</span></span> {{ data.formulir.nopol }}</li>
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">Tahun <span
@@ -197,26 +199,26 @@ function parseMonth(value) {
                         <td>
                             <ul class="list-none flex flex-row gap-4">
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{
-                                        nilaisewahari
+                                        FormPDF.nilaisewahari
                                 }}/Per Hari</li>
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{
-                                        nilaisewabulan
+                                        FormPDF.nilaisewabulan
                                 }}/Per Bulan</li>
                             </ul>
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Masa Sewa</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ lama_sewa }}
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.lama_sewa }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tujuan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ tujuan }} </td>
+                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.tujuan }} </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jaminan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ jaminan }}</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.jaminan }}</td>
                     </tr>
                 </table>
 
@@ -286,7 +288,8 @@ function parseMonth(value) {
                     </tr>
                 </table>
             </section>
-        </div>
+            <PrimaryButtonVue class=" w-1/2 text-center flex justify-center">Cetak</PrimaryButtonVue>
+        </form>
     </AuthenticatedLayoutVue>
 </template>
 
