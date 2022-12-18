@@ -9,9 +9,12 @@ class Sewa extends Model
 {
     use HasFactory;
     protected $table = 'sewas';
-    protected $fillable = ['kode','nopol','nik','penanggung_jawab','harga','denda','status','harga_bulan','pdf_url'];
+    protected $fillable = ['kode','nopol','unit','tahun','nik','penanggung_jawab','harga','denda','status','harga_bulan','pdf_url'];
 
     public function waktusewa(){
-        return $this->belongsTo(WaktuSewa::class, 'sewa_id');
+        return $this->hasOne(WaktuSewa::class, 'sewa_id','id');
+    }
+    public function pengguna(){
+        return $this->hasOne(Pengguna::class,'nik','nik');
     }
 }

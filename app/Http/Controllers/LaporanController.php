@@ -33,13 +33,15 @@ class LaporanController extends Controller
         $req = (object) $this->data();
         //buat pengguna
         $kode = 'S001';
+        $path =  '/storage/SewaPDF/';
+        $namaPDF = $path. $kode.'-'.$req->nama. '-'. $req->tgl_sewa. '.pdf';
         $this->createPengguna($req);
-        $this->sewaCreate($req,$kode);
+        $this->sewaCreate($req,$kode, $namaPDF);
 
         // Tanggal
         $carbon = $this->today();
         $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon]);
-        $namaPDF = $kode.'-'.$req->nama. '-'. $req->tgl_sewa. '.pdf';
+
         Storage::put('public/SewaPDF/'. $namaPDF, $pdf->download()->getOriginalContent());
         // return $pdf->stream('sewa.pdf');
         return Redirect::route('Laporan.saveSewaDanCetak', ['pdf'=>$namaPDF]);
@@ -134,17 +136,20 @@ class LaporanController extends Controller
             ]);
         }
     }
-    public function sewaCreate($request,$kode)
+    public function sewaCreate($request,$kode,$pdf_url)
     {
         $sewa = Sewa::create([
             'kode' => $kode,
             'nopol' => $request->nopol,
+            'unit' => $request->unit,
+            'tahun' => $request->tahun,
             'harga' => $request->nilaisewahari,
             'harga_bulan' => $request->nilaisewabulan,
             'nik' => $request->nik,
             'tujuan' => $request->tujuan,
             'jaminan' => $request->jaminan,
             'penanggung_jawab' => Auth::user()->name,
+            'pdf_url'=> $pdf_url,
             'denda' => '0',
             'status' => '0',
         ]);

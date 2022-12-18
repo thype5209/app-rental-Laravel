@@ -19,7 +19,7 @@ class SewaController extends Controller
      */
     public function index(Request $request)
     {
-        $sewa = Sewa::all();
+        $sewa = Sewa::with(['pengguna', 'waktusewa'])->where('status','0')->get();
         return Inertia::render('Sewa/Pinjam',[
             'sewa'=> $sewa,
         ]);

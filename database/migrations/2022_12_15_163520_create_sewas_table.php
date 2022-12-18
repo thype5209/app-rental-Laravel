@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('kode', 30);
             $table->string('nopol', 30);
+            $table->string('unit', 30);
+            $table->string('tahun', 30);
             $table->string('harga_bulan')->comment('bulan/hari');
             $table->bigInteger('harga');
             $table->string('nik', 100);
@@ -24,6 +26,7 @@ return new class extends Migration
             $table->string('tujuan', 100);
             $table->string('jaminan', 100)->nullable();
             $table->string('denda', 100);
+            $table->string('pdf_url', 100);
             $table->integer('status');
             $table->timestamps();
         });
