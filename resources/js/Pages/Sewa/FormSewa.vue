@@ -1,5 +1,5 @@
 <script setup>
-import { Link, Head, useForm } from '@inertiajs/inertia-vue3';
+import { Link, Head, useForm, usePage } from '@inertiajs/inertia-vue3';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue'
 import SelectVUe from '@/Components/Select.vue';
@@ -15,17 +15,20 @@ const props = defineProps({
         type: Object,
         default: () => ({})
     },
+    data: {
+        type: Object,
+        default: {}
+    }
 })
-
-const Form = useForm({
-    nik: '019020101',
+const dataInputSewa = {
+    nik: '',
     nama: 'AGustiawan',
     tempat_lahir: 'Bulukumba',
     tgl_lahir: '1999-10-17',
     alamat: 'Makassar',
     no_hp: '02090910',
     no_hp_lain: '920201092',
-    pekerjaan: ''
+    pekerjaan: '',
     sosial: 'FB',
     mobil_id: '',
     unit: '',
@@ -38,7 +41,31 @@ const Form = useForm({
     lama_sewa: '31',
     tujuan: 'Pinjam',
     jaminan: 'KTP',
-})
+};
+
+if (props.data.req == null || props.data.length > 0) {
+    const DataKembali = props.data.req.FormPDF;
+    dataInputSewa.nik = DataKembali.nik;
+    dataInputSewa.nama = DataKembali.nama;
+    dataInputSewa.tempat_lahir = DataKembali.tempat_lahir;
+    dataInputSewa.tgl_lahir = DataKembali.tgl_lahir;
+    dataInputSewa.alamat = DataKembali.alamat;
+    dataInputSewa.pekerjaan = DataKembali.pekerjaan;
+    dataInputSewa.sosial = DataKembali.sosial;
+    dataInputSewa.unit = DataKembali.unit;
+    dataInputSewa.no_hp = DataKembali.no_hp;
+    dataInputSewa.no_hp_lain = DataKembali.no_hp_lain;
+    dataInputSewa.nilaisewahari = DataKembali.nilaisewahari;
+    dataInputSewa.nilaisewabulan = DataKembali.nilaisewabulan;
+    dataInputSewa.tujuan = DataKembali.tujuan;
+    dataInputSewa.lama_sewa = DataKembali.lama_sew
+    dataInputSewa.jaminan = DataKembali.jaminan;
+
+    GetMobil(DataKembali.mobil_id)
+}
+console.log(props.data.req.FormPDF)
+
+const Form = useForm(dataInputSewa)
 var TabActive = 'bg-default-red py-2 md:px-6 block hover:text-default-red focus:outline-none text-white border-b-2 font-medium border-default-dark'
 var TabNonActive = 'text-gray-600 py-2 md:px-6 block hover:text-blue-500 focus:outline-none';
 let TabStatus = ref(0);
@@ -62,7 +89,33 @@ function GetMobil(event) {
 function submit() {
     Form.get(route('Sewa.formulir'))
 }
+//
+function diff_date(date1, date2) {
+    var d = Math.abs(date1 - date2) / 1000; // delta
+    var r = {}; // result
+    var s = { // structure
+        year: 31536000,
+        month: 2592000,
+        week: 604800, // uncomment row to ignore
+        day: 86400, // feel free to add your own row
+        hour: 3600,
+        minute: 60,
+        second: 1
+    };
 
+    Object.keys(s).forEach(function (key) {
+        r[key] = Math.floor(d / s[key]);
+        d -= r[key] * s[key];
+    });
+    console.log(r)
+    return ` ${r.month} Bulan, ${r.week} Minggu, ${r.day} Hari `;
+}
+function getTanggal(event) {
+    var tgl_pengajuan = new Date(Form.tgl_sewa);
+    var tgl_kembali = new Date(event.target.value);
+    var diff = diff_date(tgl_pengajuan, tgl_kembali)
+    Form.lama_sewa = diff;
+}
 </script>
 
 <template>
@@ -89,7 +142,7 @@ function submit() {
                             for="grid-first-name">
                             NIK
                         </InputLabel>
-                        <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.nik"/>
+                        <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.nik" />
                         <p v-if="Form.errors.nik" class="text-red text-xs italic text-red-500">Please fill out this
                             field.
                         </p>
@@ -113,8 +166,10 @@ function submit() {
                             Tempat/Tanggal Lahir
                         </InputLabel>
                         <div class="flex">
-                            <TextInput id="grid-last-name" class="1/2" type="text" placeholder="Tempat Lahir" v-model="Form.tempat_lahir" />
-                            <TextInput id="grid-last-name" class="1/2" type="date" placeholder="Doe" v-model="Form.tgl_lahir"/>
+                            <TextInput id="grid-last-name" class="1/2" type="text" placeholder="Tempat Lahir"
+                                v-model="Form.tempat_lahir" />
+                            <TextInput id="grid-last-name" class="1/2" type="date" placeholder="Doe"
+                                v-model="Form.tgl_lahir" />
                         </div>
                         <p v-if="Form.errors.tempat_lahir" class="text-red text-xs italic text-red-500">Please fill out
                             this
@@ -126,7 +181,7 @@ function submit() {
                             Alamat
                         </InputLabel>
 
-                        <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.alamat"/>
+                        <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.alamat" />
                         <p v-if="Form.errors.tgl_lahir" class="text-red text-xs italic text-red-500">Please fill out
                             this
                             field.</p>
@@ -159,7 +214,7 @@ function submit() {
                             for="grid-last-name">
                             Nomor HP Kerabat lain
                         </InputLabel>
-                        <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.no_hp_lain"/>
+                        <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.no_hp_lain" />
                         <p v-if="Form.errors.no_hp_lain" class="text-red text-xs italic text-red-500">Please fill out
                             this
                             field.</p>
@@ -169,7 +224,7 @@ function submit() {
                             for="grid-last-name">
                             Sosial
                         </InputLabel>
-                        <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sosial_media" />
+                        <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sosial" />
                     </div>
                 </div>
                 <div class="-mx-3 md:flex mb-6" v-if="TabStatus == '1'">
@@ -278,7 +333,7 @@ function submit() {
                             for="grid-first-name">
                             Tanggal Sewa
                         </InputLabel>
-                        <TextInput id="grid-first-name" type="date" placeholder="+62" />
+                        <TextInput id="grid-first-name" type="date" placeholder="+62" v-model="Form.tgl_sewa" />
                         <p v-if="Form.errors.tgl_sewa" class="text-red text-xs italic text-red-500">Please fill out this
                             field.</p>
                     </div>
@@ -287,17 +342,18 @@ function submit() {
                             for="grid-last-name">
                             Tanggal Kembali
                         </InputLabel>
-                        <TextInput id="grid-last-name" type="date" placeholder="+62" />
+                        <TextInput id="grid-last-name" type="date" placeholder="+62" @change="getTanggal($event)"
+                            v-model="Form.tgl_kembali" />
                         <p v-if="Form.errors.tgl_kembali" class="text-red text-xs italic text-red-500">Please fill out
                             this
                             field.</p>
                     </div>
-                    <div class="md:w-1/2 px-3">
+                    <div class="md:w-full px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-last-name">
                             Lama Sewa
                         </InputLabel>
-                        <TextInput id="grid-last-name" type="text" placeholder="...." />
+                        <TextInput id="grid-last-name" type="text" placeholder="...." v-model="Form.lama_sewa" />
                         <p v-if="Form.errors.lama_sewa" class="text-red text-xs italic text-red-500">Please fill out
                             this
                             field.</p>

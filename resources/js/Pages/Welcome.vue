@@ -1,7 +1,7 @@
 <script setup>
 import CardMobil from '@/Components/home/CardMobil.vue'
 import CarouselVue from '@/Components/home/Carousel.vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, Head } from '@inertiajs/inertia-vue3';
 //
 var scrol = window.scrollY;
 const ActiveNav = "fixed z-10 bg-default-dark  w-[80%] h-20 top-10 text-white rounded-b-md transition-all";
@@ -24,7 +24,7 @@ window.onscroll = function () { NavbarScroll() };
 </script>
 
 <template>
-
+    <Head title="CV. JASA SAUDAGAR"/>
     <!-- component -->
     <div
         class="h-screen relative flex flex-col box-border bg-gradient-to-t from-yellow-500 to-yellow-200 overflow-hidden">

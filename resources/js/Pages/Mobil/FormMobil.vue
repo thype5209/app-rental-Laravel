@@ -1,6 +1,6 @@
 
 <script setup>
-import { Head, useForm , Link } from '@inertiajs/inertia-vue3';
+import { Head, useForm, Link } from '@inertiajs/inertia-vue3';
 const form = useForm({
     unit: '',
     nopol: '',
@@ -16,9 +16,11 @@ const submit = () => {
 
     form.post(route('Mobil.store'), {
         forceFormData: true,
+        onError: (error)=> console.log(error)
 
     });
 };
+const Error = form.errors;
 </script>
 
 <template>
@@ -45,7 +47,8 @@ const submit = () => {
                         <label for="nopol" class=" block text-sm font-medium text-black">
                             spesifikasi
                         </label>
-                        <input type="text" name="spesifikasi" id="spesifikasi" v-model="form.spesifikasi" placeholder=".............."
+                        <input type="text" name="spesifikasi" id="spesifikasi" v-model="form.spesifikasi"
+                            placeholder=".............."
                             class="w-full rounded-md border border-[#e0e0e0] bg-white text-sm font-medium text-black outline-none focus:border-default-dark focus:shadow-md" />
                     </div>
                     <div class=" mb-2">
@@ -115,7 +118,7 @@ const submit = () => {
                     <div class="flex justify-around gap-2">
                         <Link :href="route('Mobil.index')"
                             class="hover:shadow-form w-full rounded-md bg-default-red py-3 px-8 text-center text-base font-semibold text-white outline-none">
-                            Kembali
+                        Kembali
                         </Link>
                         <button type="submit"
                             class="hover:shadow-form w-full rounded-md bg-default-dark py-3 px-8 text-center text-base font-semibold text-white outline-none">

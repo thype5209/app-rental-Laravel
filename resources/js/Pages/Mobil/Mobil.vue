@@ -151,7 +151,7 @@ function submitStatus(){
                             <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-sm">
                                 <button class="bg-blue-700 text-white px-2 py-1 rounded-md ml-2 font-semibold">
                                     <Link
-                                        :href="route('Mobil.show', [{ id: mobil.id, search: mobil.unit + mobil.nopol }])">
+                                        :href="route('Mobil.show', [{ id: mobil.id }])" :data="{data:mobil.unit + mobil.nopol}">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5 font-semibold">
@@ -172,7 +172,7 @@ function submitStatus(){
 
                                 </button>
                                 <button class=" bg-green-600 text-white px-2 py-1 rounded-md ml-2 font-semibold">
-                                    <Link :href="route('Mobil.edit', [{ id: mobil.id }])">
+                                    <Link :href="route('Mobil.edit', [{ id: mobil.id }])" :data="{mobil: mobil.unit}">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5 font-semibold">
                                         <path stroke-linecap="round" stroke-linejoin="round"

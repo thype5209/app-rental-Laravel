@@ -2,6 +2,7 @@
 import AuthenticatedLayoutVue from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, usePage, useForm } from '@inertiajs/inertia-vue3';
 import { defineProps, computed } from 'vue';
+import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
 
 const data = defineProps({
     formulir: {
@@ -16,6 +17,7 @@ const data = defineProps({
 })
 
 const FormPDF = useForm({
+    mobil_id: data.formulir.mobil_id,
     nik: data.formulir.nik,
     nama: data.formulir.nama,
     tempat_lahir: data.formulir.tempat_lahir,
@@ -99,6 +101,7 @@ function parseMonth(value) {
     <AuthenticatedLayoutVue class="bg-gray-200">
 
         <Head title="Formulir Sewa Mobil" />
+        <PrimaryButtonVue><Link :href="route('Sewa.create')" :data="{ FormPDF }" >Kembali</Link></PrimaryButtonVue>
         <div class="bg-gray-200 container mx-auto md:px-10 flex justify-center">
             <section class=" md:w-[70%] py-5 px-3 bg-white sm:px-10 md:px-20">
                 <!-- Head -->
@@ -133,35 +136,45 @@ function parseMonth(value) {
                 <table class="table w-max sm:w-1/4 md:w-1/3 mb-5">
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.nik" class="border-none text-xs p-0 m-0"></td>
+                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.nik"
+                                class="border-none text-xs p-0 m-0"></td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">Nama</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nama" v-model="FormPDF.nama" class="border-none text-xs p-0 m-0 capitalize"></td>
+                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nama" v-model="FormPDF.nama"
+                                class="border-none text-xs p-0 m-0 capitalize"></td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">Tempat/Tanggal Lahir</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="tempat_lahir" v-model="FormPDF.tempat_lahir" class="border-none text-xs p-0 m-0 w-16 max-w-max ">/ <input type="text" name="nik" v-model="FormPDF.tgl_lahir" class="border-none text-xs p-0 m-0"></td>
+                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="tempat_lahir"
+                                v-model="FormPDF.tempat_lahir" class="border-none text-xs p-0 m-0 w-16 max-w-max ">/
+                            <input type="text" name="nik" v-model="FormPDF.tgl_lahir"
+                                class="border-none text-xs p-0 m-0"></td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">Pekerjaan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.pekerjaan" class="border-none text-xs p-0 m-0 w-max max-w-max "></td>
+                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik"
+                                v-model="FormPDF.pekerjaan" class="border-none text-xs p-0 m-0 w-max max-w-max "></td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">Alamat</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.alamat" class="border-none text-xs p-0 m-0 w-max max-w-max "></td>
+                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.alamat"
+                                class="border-none text-xs p-0 m-0 w-max max-w-max "></td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">No. HP</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.no_hp" class="border-none text-xs p-0 m-0 w-16 max-w-max " > </td>
+                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.no_hp"
+                                class="border-none text-xs p-0 m-0 w-16 max-w-max "> </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">No. HP Kerabat Lain</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.no_hp_lain" class="border-none text-xs p-0 m-0 w-16 max-w-max "> </td>
+                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik"
+                                v-model="FormPDF.no_hp_lain" class="border-none text-xs p-0 m-0 w-16 max-w-max "> </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">Sosial Media</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.sosial" class="border-none text-xs p-0 m-0 w-16 max-w-max " /> </td>
+                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.sosial"
+                                class="border-none text-xs p-0 m-0 w-16 max-w-max " /> </td>
                     </tr>
                 </table>
                 <p class="w-full text-justify font-bold">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
@@ -171,7 +184,7 @@ function parseMonth(value) {
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan</td>
                         <td>
                             <ul class=" list-none flex flex-row gap-3">
-                                <li class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span>  {{ nik }}</li>
+                                <li class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ nik }}</li>
                                 <li class=" whitespace-nowrap mb-0 p-0"> <span class="font-bold">No. Kendaraan <span
                                             class="font-bold">:</span></span> {{ data.formulir.nopol }}</li>
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">Tahun <span
@@ -194,15 +207,16 @@ function parseMonth(value) {
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Masa Sewa</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ lama_sewa }} Hari</td>
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ lama_sewa }}
+                        </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tujuan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span>  {{ tujuan }} </td>
+                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ tujuan }} </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jaminan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span>  {{ jaminan }}</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ jaminan }}</td>
                     </tr>
                 </table>
 
@@ -256,9 +270,12 @@ function parseMonth(value) {
                         <td class="text-center"></td>
                     </tr>
                     <tr>
-                        <td class="text-center h-10 "><span class="border-b-2 border-black">(..................................)</span></td>
-                        <td class="text-center h-10 "><span class="border-b-2 border-black">(..................................)</span></td>
-                        <td class="text-center h-10 "><span class="border-b-2 border-black">(..................................)</span></td>
+                        <td class="text-center h-10 "><span
+                                class="border-b-2 border-black">(..................................)</span></td>
+                        <td class="text-center h-10 "><span
+                                class="border-b-2 border-black">(..................................)</span></td>
+                        <td class="text-center h-10 "><span
+                                class="border-b-2 border-black">(..................................)</span></td>
                     </tr>
                     <tr>
                         <td class="text-center">Yang Menyerahkan Kendaraan</td>
