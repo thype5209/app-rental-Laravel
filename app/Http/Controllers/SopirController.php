@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sopir;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SopirController extends Controller
 {
@@ -14,7 +15,7 @@ class SopirController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Sopir/Sopir');
     }
 
     /**

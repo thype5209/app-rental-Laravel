@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\SewaController;
 use App\Http\Controllers\MobilController;
+use App\Http\Controllers\SopirController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PenggunaController;
@@ -68,6 +69,7 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
             Route::put('/Update/{id}', 'update')->name('update');
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::get('/Formulir' , 'formulir')->name('formulir');
+            Route::put('/updateStatusModal/{id}' , 'updateStatusModal')->name('updateStatusModal');
         });
     });
 
@@ -82,6 +84,11 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
     // Controller Pengguna
     Route::group(['prefix'=> 'Pengguna', 'as'=> 'Pengguna.'],function(){
         Route::controller(PenggunaController::class)->group(function(){
+            Route::get('/', 'index')->name('index');
+        });
+    });
+    Route::group(['prefix'=> 'Sopir', 'as'=> 'Sopir.'],function(){
+        Route::controller(SopirController::class)->group(function(){
             Route::get('/', 'index')->name('index');
         });
     });

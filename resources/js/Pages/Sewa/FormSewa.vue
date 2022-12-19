@@ -67,7 +67,7 @@ if (props.data.req == null || props.data.length > 0) {
 console.log(props.data.req.FormPDF)
 
 const Form = useForm(dataInputSewa)
-var TabActive = 'bg-default-red py-2 md:px-6 block hover:text-default-red focus:outline-none text-white border-b-2 font-medium border-default-dark'
+var TabActive = 'bg-green-500 py-2 md:px-6 block hover:text-green-500 focus:outline-none text-white border-b-2 font-medium border-default-dark'
 var TabNonActive = 'text-gray-600 py-2 md:px-6 block hover:text-blue-500 focus:outline-none';
 let TabStatus = ref(0);
 
@@ -132,6 +132,12 @@ function getTanggal(event) {
         <form class="w-full" @submit.prevent="submit">
 
             <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2">
+                <div class="flex flex-row justify-left">
+                    <Link :href="route('Sewa.index')" ><PrimaryButtonVue type="button" class="bg-red-500">
+                        Kembali
+                    </PrimaryButtonVue></Link>
+
+                </div>
                 <nav class="flex justify-center gap-4">
                     <PrimaryButtonVue @click="TabStatus = '0'"
                         v-bind:class="TabStatus == '0' ? TabActive : TabNonActive">
