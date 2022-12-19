@@ -66,6 +66,26 @@ watch(search, (value)=>{
 function cariMobil(event) {
     return event;
 }
+
+function   Status(n) {
+            var msg = '';
+            switch (n) {
+                case 1:
+                    msg = 'Disewa'
+                    break;
+                case 2:
+                    msg = 'Siap'
+                    break;
+                case 3:
+                    msg = 'perbaikan'
+                    break;
+
+                default:
+                    msg = 'semua'
+                    break;
+            }
+            return msg;
+        }
 </script>
 
 <template>
@@ -238,46 +258,3 @@ function cariMobil(event) {
         </div>
     </AuthenticatedLayout>
 </template>
-
-<script>
-export default {
-    name: 'MobilVue',
-    data() {
-        return {
-            txt: '',
-            unit: '',
-            nopol: '',
-            fotodepan: '',
-            fotobelakang: '',
-            fotokiri: '',
-            fotokanan: '',
-            status: '',
-        }
-    },
-    methods: {
-
-        Status(n) {
-            var msg = '';
-            switch (n) {
-                case 1:
-                    msg = 'Disewa'
-                    break;
-                case 2:
-                    msg = 'Siap'
-                    break;
-                case 3:
-                    msg = 'perbaikan'
-                    break;
-
-                default:
-                    msg = 'semua'
-                    break;
-            }
-            return msg;
-        }
-
-    },
-    mounted() {
-    }
-}
-</script>

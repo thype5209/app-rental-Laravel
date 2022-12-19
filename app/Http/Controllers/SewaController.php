@@ -20,13 +20,22 @@ class SewaController extends Controller
      */
     public function index()
     {
+
         return Inertia::render('Sewa/Pinjam', [
-            'sewa' => Sewa::query()
-                ->with(['pengguna', 'waktusewa'])
-                ->orderBy('status', 'asc')
-                ->filter(FacadesRequest::only('search', 'status'))
-                ->paginate(10),
-            'Tab' => FacadesRequest::input('status'),
+            'sewa' => $sewa =  Sewa::query()
+            ->with(['pengguna', 'waktusewa'])
+            ->orderBy('status', 'asc')
+            ->filter(FacadesRequest::only('search'))
+            ->when(FacadesRequest::input('status','Sewa'), function($query,$status){
+                if ( $status != 'semua') {
+                    $query->orWhere('status', $status);
+                    $query->orderBy('status','asc');
+                } elseif ($status == 'semua') {
+                    $query->orderBy('status','desc');
+                }
+            })
+            ->paginate(10) ?? Sewa::where('status', '=', 'Sewa')->paginate(10),
+            'Tab' => FacadesRequest::input('status', 'Sewa'),
         ]);
     }
     public function riwayat()

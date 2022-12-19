@@ -20,7 +20,7 @@ class MobilController extends Controller
     public function index(FacadesRequest $request)
     {
         return Inertia::render('Mobil/Mobil', [
-            'TabStatus' => FacadesRequest::input('status'),
+            'TabStatus' => FacadesRequest::input('status', '0'),
             'filter' => FacadesRequest::all('search'),
             'mobil' => Mobil::query()
                 ->orderBy("unit")

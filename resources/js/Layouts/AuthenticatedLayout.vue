@@ -28,7 +28,7 @@ onMounted(()=>{
                     class="flex items-center justify-start md:justify-center pl-3 w-14 md:w-64 h-14 bg-gray-700 dark:bg-gray-800 border-none">
                     <img class=" hidden md:block w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden"
                         src="https://therminic2018.eu/wp-content/uploads/2018/07/dummy-avatar.jpg" />
-                    <span class=" md:block" @click="ShowNav = !ShowNav">
+                    <span class=" md:block cursor-pointer " @click="ShowNav = !ShowNav">
                         <svg v-if="ShowNav" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
