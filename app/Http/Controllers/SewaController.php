@@ -29,6 +29,17 @@ class SewaController extends Controller
             'Tab' => FacadesRequest::input('status'),
         ]);
     }
+    public function riwayat()
+    {
+        return Inertia::render('Sewa/Riwayat', [
+            'sewa' => Sewa::query()
+                ->with(['pengguna', 'waktusewa'])
+                ->orderBy('status', 'asc')
+                ->where('status', 'Selesai')
+                ->filter(FacadesRequest::only('search'))
+                ->paginate(10),
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -88,9 +99,11 @@ class SewaController extends Controller
      * @param  \App\Models\Sewa  $sewa
      * @return \Illuminate\Http\Response
      */
-    public function show(Sewa $sewa)
+    public function show(Sewa $sewa,$id)
     {
-        //
+        return Inertia::render('Sewa/Show', [
+            'sewa'=> $sewa->with(['pengguna', 'waktusewa'])->find($id)
+        ]);
     }
 
     /**

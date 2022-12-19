@@ -13,7 +13,6 @@ const status = defineProps({
         type: Object,
         default: () => ({})
     },
-    Tab: Object.toString(),
 })
 
 const deleteForm = useForm();
@@ -22,44 +21,6 @@ function destroy(id) {
         deleteForm.delete(route('Sewa.destroy', id));
     }
 }
-// Tab NAV
-const TabActive = 'py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500'
-const TabNonActive = 'text-gray-600 py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none'
-const form = useForm();
-function TabClick(num) {
-    form.get(route('Sewa.index', { status: num }))
-}
-// END TAB NAV
-
-// Modal
-var ModalShow = ref(false);
-
-var StatusForm = useForm({
-    status: null,
-    sewaid: null,
-})
-function isOpen(dataID) {
-    var data = status.sewa.data.find(function ({ id }) {
-        return id == dataID
-    });
-    StatusForm.status = data.status;
-    StatusForm.sewaid = data.id;
-    ModalShow.value = true;
-
-}
-const falshMessage = ref(false);
-function isClose() {
-    ModalShow.value = false;
-}
-function submitStatus() {
-    StatusForm.put(route('Sewa.updateStatusModal', StatusForm.sewaid), {
-        onFinish: () => { ModalShow.value = false; falshMessage.value = true; }
-    })
-}
-function CloseFlash() {
-    falshMessage.value = false
-}
-// EndModal
 
 // Cari Sewa
 
@@ -79,66 +40,7 @@ watch(search, (value) => {
 
         <Head title="Sewa Form" />
         <!-- Modal -->
-        <Modal v-bind:show="ModalShow" @close="isClose()" :max-width="`md`">
-            <div class="relative w-full h-full max-w-md md:h-auto">
-                <!-- Modal content -->
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <button type="button" @click="ModalShow = false"
-                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-                        data-modal-toggle="authentication-modal">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                    <div class="px-6 py-6 lg:px-8">
-                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Update Status Mobil
-                            {{ StatusForm.mobilid }}</h3>
-                        <form class="space-y-6" @submit.prevent="submitStatus">
-                            <div>
-                                <InputLabelVue for="email">Your email</InputLabelVue>
-                                <select id="countries" v-model="StatusForm.status"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="Sewa">Disewa</option>
-                                    <option value="Telat">Telat</option>
-                                    <option value="Selesai">Dikembalikan</option>
-                                </select>
-                            </div>
-                            <div>
-                                <TextInputVue type="hidden" name="sewaid" id="sewaid" v-model="StatusForm.sewaid" />
-                            </div>
-                            <button type="submit"
-                                class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </Modal>
-        <!-- EndModal -->
-        <!-- TAB NAV -->
-        <div
-            class="w-full rounded-lg bg-gray-200 flex flex-wrap justify-between flex-col-reverse md:flex-row overflow-auto">
-            <nav class="flex flex-row">
-                <button v-on:click="TabClick('semua')" v-bind:class="Tab == 'semua' ? TabActive : TabNonActive">
-                    Semua
-                </button>
-                <button v-on:click="TabClick('Telat')" v-bind:class="Tab == 'Telat' ? TabActive : TabNonActive">
-                    Telat
-                </button>
-                <button v-on:click="TabClick('Sewa')" v-bind:class="Tab == 'Sewa' ? TabActive : TabNonActive">
-                    Sewa
-                </button>
-            </nav>
-            <div class="p-3 w-32">
-                <Link :href="route('Sewa.create')"
-                    class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                Tambah</Link>
-            </div>
-        </div>
-        <!-- END TABNAV -->
+
         <!-- Search -->
 
         <div class="flex items-center max-w-sm py-3">
@@ -159,20 +61,6 @@ watch(search, (value) => {
         </div>
 
         <!-- Endsearch -->
-
-        <!-- Flash Message -->
-        <div v-if="falshMessage"
-            class=" flex flex-row justify-between p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
-            role="alert">
-            <span class="font-medium">Berhasil Diganti!</span>
-            <span @click="CloseFlash()" class="cursor-pointer" @mouseover="CloseFlash"><svg
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </span>
-        </div>
-
         <!-- TABLE -->
         <div class="w-full overflow-hidden rounded-lg shadow-lg flex flex-col">
             <div class="w-full overflow-x-auto">
@@ -216,7 +104,7 @@ watch(search, (value) => {
                                 {{ mobil.waktusewa.tgl_kembali }}
                             </td>
                             <td class="md:px-4 md:py-3 px-2 py-2 text-xs">
-                                <span @click="isOpen(mobil.id)"
+                                <span
                                     class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
                                     {{ mobil.status }}
                                 </span>
