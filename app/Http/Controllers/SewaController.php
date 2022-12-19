@@ -145,6 +145,9 @@ class SewaController extends Controller
         $sewa->update([
             'status' =>  $request->status,
         ]);
+        Mobil::where('nopol', '=' ,$sewa->nopol)->update([
+            'status'=> $request->status == 5 ? '2': '1',
+        ]);
         // Synchronously
     }
 }

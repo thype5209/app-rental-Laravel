@@ -15,7 +15,10 @@ class SopirController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Sopir/Sopir');
+        $sopir = Sopir::all();
+        return Inertia::render('Sopir/Sopir',[
+            'sopir'=> $sopir,
+        ]);
     }
 
     /**
