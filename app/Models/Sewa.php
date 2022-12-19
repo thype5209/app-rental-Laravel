@@ -9,7 +9,7 @@ class Sewa extends Model
 {
     use HasFactory;
     protected $table = 'sewas';
-    protected $fillable = ['kode','nopol','unit','tahun','nik','tujuan','jaminan','penanggung_jawab','harga','denda','status','harga_bulan','pdf_url'];
+    protected $fillable = ['jenis_sewa','kode','nopol','unit','tahun','nik','tujuan','jaminan','penanggung_jawab','harga','denda','status','harga_bulan','pdf_url'];
 
     public function waktusewa(){
         return $this->hasOne(WaktuSewa::class, 'sewa_id','id');

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Sopir extends Model
 {
     use HasFactory;
+    protected $table = 'sopir';
+    protected $fillable = ['nik','nama','alamat','no_hp','no_hp_lain','pekerjaan'];
 }

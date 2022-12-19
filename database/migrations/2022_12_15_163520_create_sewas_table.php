@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('sewas', function (Blueprint $table) {
             $table->id();
+            $table->enum('jenis_sewa', ['Lepas', 'Kunci'])->default('Lepas');
             $table->string('kode', 30)->unique();
             $table->string('nopol', 30);
             $table->string('unit', 30);
