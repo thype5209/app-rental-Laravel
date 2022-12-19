@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class MobilController extends Controller
 {
@@ -16,20 +17,21 @@ class MobilController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(FacadesRequest $request)
     {
-        $status = $request->status;
-
-        if ($request->status == null || $request->status == 0) {
-            $mobil = Mobil::all();
-            $status = $request->status;
-        } else {
-            $mobil = Mobil::where('status', $request->status)->get();
-
-        }
         return Inertia::render('Mobil/Mobil', [
-            'mobil' => $mobil,
-            'TabStatus' => $status
+            'TabStatus' => FacadesRequest::input('status'),
+            'filter' => FacadesRequest::all('search'),
+            'mobil' => Mobil::query()
+                ->orderBy("unit")
+                ->filter(FacadesRequest::only('search', 'status'))
+                ->when(FacadesRequest::input('search'), function ($qeury, $search) {
+                    return $qeury->where('unit', 'like', '%' . $search . '%')
+                        ->orWhere('nopol', 'like', '%' . $search . '%')
+                        ->orWhere('spesifikasi', 'like', '%' . $search . '%');
+                })
+                ->paginate(10),
+
         ]);
     }
 
@@ -177,7 +179,8 @@ class MobilController extends Controller
     {
         return Inertia::dialog('Mobil/status');
     }
-    public function GetIDMobil($id){
+    public function GetIDMobil($id)
+    {
         $mobil = Mobil::find($id);
 
         return response()->json($mobil);

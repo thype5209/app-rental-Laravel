@@ -165,7 +165,7 @@ class LaporanController extends Controller
             'penanggung_jawab' => Auth::user()->name,
             'pdf_url' => $pdf_url,
             'denda' => '0',
-            'status' => '0',
+            'status' => 'Sewa',
         ]);
         WaktuSewa::create([
             'sewa_id' => $sewa->id,

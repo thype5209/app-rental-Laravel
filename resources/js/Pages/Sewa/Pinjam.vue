@@ -1,10 +1,12 @@
 
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, watch } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 import Modal from '@/Components/Modal.vue';
 import InputLabelVue from '@/Components/InputLabel.vue';
 import TextInputVue from '@/Components/TextInput.vue';
+import PaginationVue from '@/Components/Pagination.vue';
+
 const num = ref(0);
 const status = defineProps({
     sewa: {
@@ -13,6 +15,13 @@ const status = defineProps({
     },
     Tab: Object.toString(),
 })
+
+const deleteForm = useForm();
+function destroy(id) {
+    if (confirm("Are you sure you want to Delete")) {
+        deleteForm.delete(route('Sewa.destroy', id));
+    }
+}
 // Tab NAV
 const TabActive = 'py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500'
 const TabNonActive = 'text-gray-600 py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none'
@@ -30,10 +39,9 @@ var StatusForm = useForm({
     sewaid: null,
 })
 function isOpen(dataID) {
-    var data = status.sewa.find(function ({ id }) {
+    var data = status.sewa.data.find(function ({ id }) {
         return id == dataID
     });
-    console.log(data);
     StatusForm.status = data.status;
     StatusForm.sewaid = data.id;
     ModalShow.value = true;
@@ -52,6 +60,17 @@ function CloseFlash() {
     falshMessage.value = false
 }
 // EndModal
+
+// Cari Sewa
+
+const search = ref('');
+const FormSearch = useForm();
+watch(search, (value) => {
+    FormSearch.get(route('Sewa.index', { search: value }), {
+        preserveState: true,
+    })
+});
+
 </script>
 
 
@@ -83,9 +102,9 @@ function CloseFlash() {
                                 <InputLabelVue for="email">Your email</InputLabelVue>
                                 <select id="countries" v-model="StatusForm.status"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="0">Disewa</option>
-                                    <option value="1">Telat</option>
-                                    <option value="5">Dikembalikan</option>
+                                    <option value="Sewa">Disewa</option>
+                                    <option value="Telat">Telat</option>
+                                    <option value="Selesai">Dikembalikan</option>
                                 </select>
                             </div>
                             <div>
@@ -106,10 +125,10 @@ function CloseFlash() {
                 <button v-on:click="TabClick('semua')" v-bind:class="Tab == 'semua' ? TabActive : TabNonActive">
                     Semua
                 </button>
-                <button v-on:click="TabClick(1)" v-bind:class="Tab == 1 ? TabActive : TabNonActive">
+                <button v-on:click="TabClick('Telat')" v-bind:class="Tab == 'Telat' ? TabActive : TabNonActive">
                     Telat
                 </button>
-                <button v-on:click="TabClick(0)" v-bind:class="Tab == 0 ? TabActive : TabNonActive">
+                <button v-on:click="TabClick('Sewa')" v-bind:class="Tab == 'Sewa' ? TabActive : TabNonActive">
                     Sewa
                 </button>
             </nav>
@@ -120,6 +139,27 @@ function CloseFlash() {
             </div>
         </div>
         <!-- END TABNAV -->
+        <!-- Search -->
+
+        <div class="flex items-center max-w-sm py-3">
+            <label for="simple-search" class="sr-only">Search</label>
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <input type="text" id="simple-search" v-model="search"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search" required>
+            </div>
+        </div>
+
+        <!-- Endsearch -->
+
         <!-- Flash Message -->
         <div v-if="falshMessage"
             class=" flex flex-row justify-between p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
@@ -134,7 +174,7 @@ function CloseFlash() {
         </div>
 
         <!-- TABLE -->
-        <div class="w-full overflow-hidden rounded-lg shadow-lg">
+        <div class="w-full overflow-hidden rounded-lg shadow-lg flex flex-col">
             <div class="w-full overflow-x-auto">
                 <table class="w-full whitespace-no-wrap">
                     <thead>
@@ -152,9 +192,9 @@ function CloseFlash() {
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                        <tr v-for="mobil in status.sewa" :key="mobil" class="text-gray-700 dark:text-gray-400">
+                        <tr v-for="(mobil,index) in status.sewa.data" :key="mobil" :index="index" class="text-gray-700 dark:text-gray-400">
                             <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
-                                {{ num + 1 }}
+                                {{ index + 1 }}
                             </td>
                             <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
                                 {{ mobil.kode }}
@@ -177,7 +217,7 @@ function CloseFlash() {
                             <td class="md:px-4 md:py-3 px-2 py-2 text-xs">
                                 <span @click="isOpen(mobil.id)"
                                     class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                    {{ Status(mobil.status) }}
+                                    {{ mobil.status }}
                                 </span>
                             </td>
                             <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
@@ -192,7 +232,7 @@ function CloseFlash() {
                                     </svg>
 
                                 </a>
-                                <button class="bg-default-red text-white px-2 py-1 rounded-md ml-2">
+                                <button class="bg-default-red text-white px-2 py-1 rounded-md ml-2" @click="destroy(mobil.id)">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -205,12 +245,13 @@ function CloseFlash() {
                     </tbody>
                 </table>
             </div>
+            <PaginationVue :links="status.sewa.data" class="mt-3 text-black"></PaginationVue>
         </div>
     </AuthenticatedLayout>
 </template>
 
 <script>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 export default {
     name: 'MobilVue',

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('jaminan', 100)->nullable();
             $table->string('denda', 100);
             $table->string('pdf_url', 100);
-            $table->integer('status');
+            $table->string('status',20);
             $table->timestamps();
         });
     }

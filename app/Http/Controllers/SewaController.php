@@ -9,6 +9,7 @@ use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSewaRequest;
 use App\Http\Requests\UpdateSewaRequest;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class SewaController extends Controller
 {
@@ -17,18 +18,15 @@ class SewaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $status = $request->status;
-        $sewa = Sewa::with(['pengguna', 'waktusewa'])->get();
-        if ($status == 0) {
-            $sewa = Sewa::with(['pengguna', 'waktusewa'])->where('status', '0')->get();
-        } else if ($status == 1) {
-            $sewa = Sewa::with(['pengguna', 'waktusewa'])->where('status', '1')->get();
-        }
         return Inertia::render('Sewa/Pinjam', [
-            'sewa' => $sewa,
-            'Tab' => $request->status,
+            'sewa' => Sewa::query()
+                ->with(['pengguna', 'waktusewa'])
+                ->orderBy('status', 'asc')
+                ->filter(FacadesRequest::only('search', 'status'))
+                ->paginate(10),
+            'Tab' => FacadesRequest::input('status'),
         ]);
     }
 
@@ -124,9 +122,9 @@ class SewaController extends Controller
      * @param  \App\Models\Sewa  $sewa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sewa $sewa)
+    public function destroy(Sewa $sewa,$id)
     {
-        //
+        $sewa->find($id)->delete();
     }
     public function StatusUpdate(Sewa $Sewa, $id, Request $request)
     {
@@ -145,8 +143,8 @@ class SewaController extends Controller
         $sewa->update([
             'status' =>  $request->status,
         ]);
-        Mobil::where('nopol', '=' ,$sewa->nopol)->update([
-            'status'=> $request->status == 5 ? '2': '1',
+        Mobil::where('nopol', '=', $sewa->nopol)->update([
+            'status' => $request->status == 5 ? '2' : '1',
         ]);
         // Synchronously
     }
