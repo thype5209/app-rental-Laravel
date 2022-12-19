@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sopir;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Sopir;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class SopirController extends Controller
 {
@@ -15,7 +16,10 @@ class SopirController extends Controller
      */
     public function index()
     {
-        $sopir = Sopir::all();
+        $sopir = Sopir::query()->when(Request::input('search'), function($qeury,$search){
+            return $qeury->where('nama', 'like', '%'. $search .'%')
+                ->where('nik', 'like',  '%'. $search .'%');
+        })->orderBy('id', 'desc')->paginate(10);
         return Inertia::render('Sopir/Sopir',[
             'sopir'=> $sopir,
         ]);
@@ -28,18 +32,27 @@ class SopirController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Sopir/FormSupir', [
+            'sopir'=> null,
+        ]);
     }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        Sopir::create(
+            Request::validate([
+                'nama' => ['required', 'string'],
+                'nik' => ['required', 'numeric'],
+                'alamat' => ['required', 'string'],
+                'no_hp' => ['required', 'numeric'],
+            ])
+        );
+        return Redirect::route('Sopir.index')->with('success', 'Berhasil Di Tambah!!');
     }
 
     /**
@@ -59,9 +72,11 @@ class SopirController extends Controller
      * @param  \App\Models\Sopir  $sopir
      * @return \Illuminate\Http\Response
      */
-    public function edit(Sopir $sopir)
+    public function edit(Sopir $sopir,$id)
     {
-        //
+        return Inertia::render('Sopir/FormSupir', [
+            'sopir'=> $sopir->find($id),
+        ]);
     }
 
     /**
@@ -71,9 +86,17 @@ class SopirController extends Controller
      * @param  \App\Models\Sopir  $sopir
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sopir $sopir)
+    public function update(Sopir $sopir,$id)
     {
-        //
+        $sopir->find($id)->update(
+            Request::validate([
+                'nama' => ['required', 'string'],
+                'nik' => ['required', 'numeric'],
+                'alamat' => ['required', 'string'],
+                'no_hp' => ['required', 'numeric'],
+            ])
+        );
+        return Redirect::route('Sopir.index')->with('success', 'Berhasil Di Edit!!');
     }
 
     /**
@@ -82,8 +105,9 @@ class SopirController extends Controller
      * @param  \App\Models\Sopir  $sopir
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sopir $sopir)
+    public function destroy(Sopir $sopir,$id)
     {
-        //
+        $sopir->find($id)->delete();
+        return Redirect::route('Sopir.index')->with('success', 'Berhasil Di Hapus!!');
     }
 }

@@ -92,6 +92,12 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
     Route::group(['prefix'=> 'Sopir', 'as'=> 'Sopir.'],function(){
         Route::controller(SopirController::class)->group(function(){
             Route::get('/', 'index')->name('index');
+            Route::get('/Form/Sopir', 'create')->name('create');
+            Route::post('/Form/store', 'store')->name('store');
+            Route::get('/Form/edit/{id}', 'edit')->name('edit');
+            Route::put('/Form/update/{id}', 'update')->name('update');
+            Route::get('/Form/show/{id}', 'show')->name('show');
+            Route::delete('/Form/destroy/{id}', 'destroy')->name('destroy');
         });
     });
 });
