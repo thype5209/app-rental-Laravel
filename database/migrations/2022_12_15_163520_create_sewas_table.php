@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('sewas', function (Blueprint $table) {
             $table->id();
-            $table->string('kode', 30);
+            $table->string('kode', 30)->unique();
             $table->string('nopol', 30);
             $table->string('unit', 30);
             $table->string('tahun', 30);
             $table->string('harga_bulan')->comment('bulan/hari');
-            $table->bigInteger('harga');
+            $table->string('harga');
             $table->string('nik', 100);
             $table->string('penanggung_jawab', 100);
             $table->string('tujuan', 100);

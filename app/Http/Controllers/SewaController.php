@@ -19,9 +19,17 @@ class SewaController extends Controller
      */
     public function index(Request $request)
     {
-        $sewa = Sewa::with(['pengguna', 'waktusewa'])->where('status','0')->get();
+        $status = $request->status;
+        $sewa = Sewa::with(['pengguna', 'waktusewa'])->get();
+       if($status == 0){
+            $sewa = Sewa::with(['pengguna', 'waktusewa'])->where('status','0')->get();
+        }else if($status == 1){
+            $sewa = Sewa::with(['pengguna', 'waktusewa'])->where('status','1')->get();
+
+        }
         return Inertia::render('Sewa/Pinjam',[
             'sewa'=> $sewa,
+            'Tab'=> $request->status,
         ]);
     }
 
@@ -32,7 +40,7 @@ class SewaController extends Controller
      */
     public function create()
     {
-        $mobil = Mobil::all();
+        $mobil = Mobil::where('status', '2')->get();
         $pengguna = Pengguna::all();
         return Inertia::render('Sewa/FormSewa',[
             'pengguna'=> $pengguna,
@@ -48,6 +56,25 @@ class SewaController extends Controller
      */
     public function formulir(Request $request)
     {
+        $request->validate([
+            'nik'=> 'required|numeric',
+            'nama'=> 'required|string',
+            'tempat_lahir'=> 'required|string',
+            'tgl_lahir'=> 'required|date',
+            'pekerjaan'=> 'required|string',
+            'no_hp'=> 'required|numeric',
+            'no_hp_lain'=> 'required|numeric',
+            'unit'=> 'required|string',
+            'nopol'=> 'required|string',
+            'tahun'=> 'required|string',
+            'nilaisewahari'=> 'required|string',
+            'nilaisewabulan'=> 'required|string',
+            'tgl_sewa'=> 'required|date',
+            'tgl_kembali'=> 'required|date',
+            'lama_sewa'=> 'required|string',
+            'tujuan'=> 'required|string',
+            'jaminan'=> 'string',
+        ]);
         $dat = $request->all();
         return Inertia::render('Sewa/Formulir',[
             'formulir'=>$dat,

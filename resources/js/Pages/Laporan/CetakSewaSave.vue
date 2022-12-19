@@ -10,7 +10,7 @@ const pdfFile = defineProps({
         default: () => ({})
     }
 })
-const myinput = window.location.origin+ '/'+ pdfFile.pdf;
+const myinput = window.location.origin +'/storage/'+ pdfFile.pdf;
 const input = ref(null)
 
 onMounted(() => {
@@ -32,7 +32,7 @@ function copy() {
         <PrimaryButtonVue @click="copy">Copy Link</PrimaryButtonVue>
 
         </div>
-        <iframe :src="`/storage/SewaPDF/${pdf}`" class="w-full h-screen"></iframe>
+        <iframe :src="`/storage/${pdf}`" class="w-full h-screen"></iframe>
 
     </AuthenticatedLayoutVue>
 </template>

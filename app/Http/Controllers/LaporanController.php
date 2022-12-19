@@ -27,24 +27,38 @@ class LaporanController extends Controller
             'pdf' => $request->pdf,
         ]);
     }
+
+    public function kodeSewa()
+    {
+        $sewa = Sewa::max('kode');
+        if ($sewa == null) {
+            $kode = 'S001';
+        } else {
+            $k = substr($sewa, 1, 3);
+            $k++;
+            $kode ='S'. sprintf('%03s', $k);
+        }
+        return $kode;
+    }
     public function saveSewa(Request $request)
     {
+
         // dd($request->all());
-        $req = (object) $this->data();
+        $req = $request;
         //buat pengguna
-        $kode = 'S001';
-        $path =  '/storage/SewaPDF/';
-        $namaPDF = $path. $kode.'-'.$req->nama. '-'. $req->tgl_sewa. '.pdf';
+        $kode = $this->kodeSewa();
+        $path =  'SewaPDF/';
+        $namaPDF = $path . $kode . '-' . $req->nama . '-' . $req->tgl_sewa . '.pdf';
         $this->createPengguna($req);
-        $this->sewaCreate($req,$kode, $namaPDF);
+        $this->sewaCreate($req, $kode, $namaPDF);
 
         // Tanggal
         $carbon = $this->today();
-        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon]);
+        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon , 'kode'=> $kode]);
 
-        Storage::put('public/SewaPDF/'. $namaPDF, $pdf->download()->getOriginalContent());
+        Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
         // return $pdf->stream('sewa.pdf');
-        return Redirect::route('Laporan.saveSewaDanCetak', ['pdf'=>$namaPDF]);
+        return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF]);
     }
 
     public function today()
@@ -94,7 +108,7 @@ class LaporanController extends Controller
                 $msg = 'Error';
                 break;
         }
-        return $parse[0] .' '. $msg .' '. $parse[2];
+        return $parse[0] . ' ' . $msg . ' ' . $parse[2];
     }
     public function data()
     {
@@ -125,7 +139,7 @@ class LaporanController extends Controller
     public function createPengguna($request)
     {
         $pengguna = Pengguna::where('nik', $request->nik)->get();
-        if($pengguna->count() < 1){
+        if ($pengguna->count() < 1) {
             Pengguna::create([
                 'nama' => $request->nama,
                 'nik' => $request->nik,
@@ -136,7 +150,7 @@ class LaporanController extends Controller
             ]);
         }
     }
-    public function sewaCreate($request,$kode,$pdf_url)
+    public function sewaCreate($request, $kode, $pdf_url)
     {
         $sewa = Sewa::create([
             'kode' => $kode,
@@ -149,17 +163,20 @@ class LaporanController extends Controller
             'tujuan' => $request->tujuan,
             'jaminan' => $request->jaminan,
             'penanggung_jawab' => Auth::user()->name,
-            'pdf_url'=> $pdf_url,
+            'pdf_url' => $pdf_url,
             'denda' => '0',
             'status' => '0',
         ]);
         WaktuSewa::create([
             'sewa_id' => $sewa->id,
             'tgl_sewa' => $request->tgl_sewa,
-            // 'jam_sewa' => $request->jam_sewa,
+            'jam_sewa' => '00:00',
             'tgl_kembali' => $request->tgl_kembali,
-            // 'jam_kembali' => $request->jam_kembali,
+            'jam_kembali' => "00:00",
             'lama_sewa' => $request->lama_sewa,
+        ]);
+        $mobil = Mobil::find($request->mobil_id)->update([
+            'status'=>'1',
         ]);
     }
     public function waktu_sewa()

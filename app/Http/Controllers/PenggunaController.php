@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PenggunaController extends Controller
 {
@@ -16,6 +17,13 @@ class PenggunaController extends Controller
     {
         $pengguna = Pengguna::all();
         return response()->json($pengguna);
+    }
+    public function index()
+    {
+        $pengguna = Pengguna::all();
+        return Inertia::render('Pengguna/Pengguna',[
+            'pengguna'=> $pengguna
+        ]);
     }
 
     /**

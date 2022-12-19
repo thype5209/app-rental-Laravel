@@ -7,6 +7,7 @@ use App\Http\Controllers\SewaController;
 use App\Http\Controllers\MobilController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PenggunaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,7 +76,13 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
         Route::controller(LaporanController::class)->group(function(){
             Route::get('/', 'index')->name('index');
             Route::get('/CetakSewa', 'saveSewaCetak')->name('saveSewaDanCetak');
-            Route::get('/saveSewa', 'saveSewa')->name('saveSewa');
+            Route::post('/saveSewa', 'saveSewa')->name('saveSewa');
+        });
+    });
+    // Controller Pengguna
+    Route::group(['prefix'=> 'Pengguna', 'as'=> 'Pengguna.'],function(){
+        Route::controller(PenggunaController::class)->group(function(){
+            Route::get('/', 'index')->name('index');
         });
     });
 });

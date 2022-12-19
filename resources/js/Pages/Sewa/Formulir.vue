@@ -91,7 +91,7 @@ function parseMonth(value) {
 }
 
 function cetakDanSave() {
-    FormPDF.get(route('Laporan.saveSewa'));
+    FormPDF.post(route('Laporan.saveSewa'));
 }
 </script>
 
@@ -118,7 +118,7 @@ function cetakDanSave() {
                             <li><span>Tlp( 0411 )8985984, mobile 0811 4145 999</span></li>
                             <li>
                                 <span>Email : <a class="text-blue-500"
-                                        href="email:cvjasasaudagar@gmail.com">cvjasasaudagar@gmail.com</a>
+                                        href="mailto:cvjasasaudagar@gmail.com">cvjasasaudagar@gmail.com</a>
                                 </span>
                             </li>
                         </ul>

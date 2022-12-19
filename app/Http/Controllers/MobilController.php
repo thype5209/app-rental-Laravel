@@ -75,7 +75,7 @@ class MobilController extends Controller
             'foto2' => $nama2,
             'foto3' => $nama3,
             'foto4' => $nama4,
-            'status' => '1'
+            'status' => '2'
         ]);
 
         return Redirect::route('Mobil.index');

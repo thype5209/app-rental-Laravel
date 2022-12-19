@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Document</title>
+    <title>{{ $kode }}-{{ $data->nik }}/{{ $data->nopol }}</title>
     <link rel="stylesheet" type="text/css" href="{{ public_path('/css/pdfstyle.css') }}">
 </head>
 
@@ -53,7 +53,7 @@
                             <li class=" text-center"><span>Tlp( 0411 )8985984, mobile 0811 4145 999</span></li>
                             <li class=" text-center">
                                 <span>Email : <a style="color: blue"
-                                        href="email:cvjasasaudagar@gmail.com">cvjasasaudagar@gmail.com</a>
+                                        href="mailto:cvjasasaudagar@gmail.com">cvjasasaudagar@gmail.com</a>
                                 </span>
                             </li>
                         </ul>
@@ -65,8 +65,8 @@
         <table class="table w-full bg-white">
             <tr class=" p-0 m-0">
                 <td colspan="4" class="text-center flex flex-col ">
-                    <span class="text-center font-bold underline">SURAT PERNYATAAN SEWA KENDARAAN</span>
-                    <span class="font-semibold">No:</span>
+                    <span class="text-center font-bold underline">SURAT PERNYATAAN SEWA KENDARAAN</span><br>
+                    <span class="font-semibold">No:{{ $kode }}</span>
                 </td>
             </tr>
 
@@ -110,19 +110,21 @@
         <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
             <tr class=" p-0 m-0">
                 <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan</td>
-                <td>
-                    <span class="font-bold capitalize" >:</span>&nbsp;&nbsp;
-                    {{ $data->unit }}
-                </td>
-                <td class=" whitespace-nowrap mb-0 p-0 font-bold">No. Kendaraan</td>
-                <td>
-                    <span class="font-bold capitalize">:</span>
-                    {{ $data->nopol }}&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
-                <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tahun</td>
-                <td>
-                    <span class="font-bold capitalize">:</span>
-                    {{ $data->tahun }}
+                <td class=" whitespace-nowrap mb-0 p-0">
+                    <span>
+                        <span class="font-bold capitalize" >:</span>&nbsp;&nbsp;
+                        {{ $data->unit }}
+                    </span>
+                    <span class=" whitespace-nowrap mb-0 p-0 font-bold">No. Kendaraan</span>
+                    <span>
+                        <span class="font-bold capitalize">:</span>
+                        {{ $data->nopol }}&nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>
+                    <span class=" whitespace-nowrap mb-0 p-0 font-bold">Tahun</span>
+                    <span>
+                        <span class="font-bold capitalize">:</span>
+                        {{ $data->tahun }}
+                    </span>
                 </td>
             </tr>
             <tr class=" p-0 m-0">

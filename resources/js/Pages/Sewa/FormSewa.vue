@@ -18,7 +18,8 @@ const props = defineProps({
     data: {
         type: Object,
         default: {}
-    }
+    },
+    errors: Object,
 })
 const dataInputSewa = {
     nik: '',
@@ -87,7 +88,7 @@ function GetMobil(event) {
 
 // Kirim Data
 function submit() {
-    Form.get(route('Sewa.formulir'))
+    Form.get(route('Sewa.formulir'),{ preserveState: true })
 }
 //
 function diff_date(date1, date2) {
@@ -102,13 +103,18 @@ function diff_date(date1, date2) {
         minute: 60,
         second: 1
     };
+    	// hitung perbedaan waktu dari dua tanggal
+	var Difference_In_Time = date2 - date1;
+
+  // hitung jml hari antara dua tanggal
+  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
     Object.keys(s).forEach(function (key) {
         r[key] = Math.floor(d / s[key]);
         d -= r[key] * s[key];
     });
-    console.log(r)
-    return ` ${r.month} Bulan, ${r.week} Minggu, ${r.day} Hari `;
+    console.log(Difference_In_Days)
+    return Difference_In_Days;
 }
 function getTanggal(event) {
     var tgl_pengajuan = new Date(Form.tgl_sewa);
@@ -143,8 +149,7 @@ function getTanggal(event) {
                             NIK
                         </InputLabel>
                         <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.nik" />
-                        <p v-if="Form.errors.nik" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.
+                        <p v-if="errors.nik" class="text-red text-xs italic text-red-500">Mohon Di Isi
                         </p>
                     </div>
                     <div class="md:w-1/2 px-3">
@@ -153,8 +158,7 @@ function getTanggal(event) {
                             Nama
                         </InputLabel>
                         <TextInput id="grid-last-name" type="text" placeholder="Nama Lengkap" v-model="Form.nama" />
-                        <p v-if="Form.errors.nama" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.
+                        <p v-if="errors.nama" class="text-red text-xs italic text-red-500">Mohon Di Isi
                         </p>
                     </div>
 
@@ -171,9 +175,7 @@ function getTanggal(event) {
                             <TextInput id="grid-last-name" class="1/2" type="date" placeholder="Doe"
                                 v-model="Form.tgl_lahir" />
                         </div>
-                        <p v-if="Form.errors.tempat_lahir" class="text-red text-xs italic text-red-500">Please fill out
-                            this
-                            field.</p>
+                        <p v-if="errors.tempat_lahir" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
@@ -182,9 +184,7 @@ function getTanggal(event) {
                         </InputLabel>
 
                         <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.alamat" />
-                        <p v-if="Form.errors.tgl_lahir" class="text-red text-xs italic text-red-500">Please fill out
-                            this
-                            field.</p>
+                        <p v-if="errors.tgl_lahir" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
@@ -193,9 +193,7 @@ function getTanggal(event) {
                         </InputLabel>
 
                         <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.pekerjaan" />
-                        <p v-if="Form.errors.tgl_lahir" class="text-red text-xs italic text-red-500">Please fill out
-                            this
-                            field.</p>
+                        <p v-if="errors.pekerjaan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                 </div>
                 <div class="-mx-3 md:flex mb-6" v-if="TabStatus == '0'">
@@ -205,8 +203,7 @@ function getTanggal(event) {
                             Nomor HP
                         </InputLabel>
                         <TextInput id="grid-first-name" type="tel" placeholder="+62" v-model="Form.no_hp" />
-                        <p v-if="Form.errors.no_hp" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.
+                        <p v-if="errors.no_hp" class="text-red text-xs italic text-red-500">Mohon Di Isi
                         </p>
                     </div>
                     <div class="md:w-1/2 px-3 mb-4">
@@ -215,9 +212,7 @@ function getTanggal(event) {
                             Nomor HP Kerabat lain
                         </InputLabel>
                         <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.no_hp_lain" />
-                        <p v-if="Form.errors.no_hp_lain" class="text-red text-xs italic text-red-500">Please fill out
-                            this
-                            field.</p>
+                        <p v-if="errors.no_hp_lain" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3 mb-4">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
@@ -239,8 +234,7 @@ function getTanggal(event) {
                                 Unit= {{ mobil.unit }} | Nopol= {{ mobil.nopol }} | Tahun= {{ mobil.tahun }}
                             </option>
                         </SelectVUe>
-                        <p v-if="Form.errors.mobil_id" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.</p>
+                        <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                 </div>
             </div>
@@ -265,8 +259,7 @@ function getTanggal(event) {
                                 Unit= {{ mobil.unit }} | Nopol= {{ mobil.nopol }} | Tahun= {{ mobil.tahun }}
                             </option>
                         </SelectVUe>
-                        <p v-if="Form.errors.mobil_id" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.</p>
+                        <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                 </div>
                 <div class="-mx-3 sm:flex mb-6">
@@ -277,8 +270,7 @@ function getTanggal(event) {
                         </InputLabel>
                         <TextInput id="grid-last-name" type="text" placeholder="Jenis Kendaraan" readonly required
                             v-model="Form.unit" />
-                        <p v-if="Form.errors.unit" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.
+                        <p v-if="errors.unit" class="text-red text-xs italic text-red-500">Mohon Di Isi
                         </p>
                     </div>
                     <div class="sm:w-1/3 px-3 ">
@@ -288,8 +280,7 @@ function getTanggal(event) {
                         </InputLabel>
                         <TextInput id="grid-last-name" class="1/2" type="text" placeholder="No. Kendaraan" readonly
                             required v-model="Form.nopol" />
-                        <p v-if="Form.errors.nopol" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.
+                        <p v-if="errors.nopol" class="text-red text-xs italic text-red-500">Mohon Di Isi
                         </p>
                     </div>
                     <div class="sm:w-1/2 px-3">
@@ -300,8 +291,7 @@ function getTanggal(event) {
 
                         <TextInput id="grid-first-name" type="number" placeholder="0000" readonly required
                             v-model="Form.tahun" />
-                        <p v-if="Form.errors.tahun" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.
+                        <p v-if="errors.tahun" class="text-red text-xs italic text-red-500">Mohon Di Isi
                         </p>
                     </div>
                 </div>
@@ -312,7 +302,7 @@ function getTanggal(event) {
                             Nilai Sewa/Hari
                         </InputLabel>
                         <TextInput id="grid-first-name" type="text" placeholder="0000" v-model="Form.nilaisewahari" />
-                        <p v-if="Form.errors.nilaisewahari" class="text-red text-xs italic text-red-500">Please fill out
+                        <p v-if="errors.nilaisewahari" class="text-red text-xs italic text-red-500">Please fill out
                             this field.</p>
                     </div>
                     <div class="md:w-1/2 px-3">
@@ -321,7 +311,7 @@ function getTanggal(event) {
                             Nilai Sewa/Bulan
                         </InputLabel>
                         <TextInput id="grid-last-name" type="text" placeholder="0000" v-model="Form.nilaisewabulan" />
-                        <p v-if="Form.errors.nilaisewabulan" class="text-red text-xs italic text-red-500">Please fill
+                        <p v-if="errors.nilaisewabulan" class="text-red text-xs italic text-red-500">Please fill
                             out
                             this field.</p>
                     </div>
@@ -334,8 +324,7 @@ function getTanggal(event) {
                             Tanggal Sewa
                         </InputLabel>
                         <TextInput id="grid-first-name" type="date" placeholder="+62" v-model="Form.tgl_sewa" />
-                        <p v-if="Form.errors.tgl_sewa" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.</p>
+                        <p v-if="errors.tgl_sewa" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
@@ -344,9 +333,7 @@ function getTanggal(event) {
                         </InputLabel>
                         <TextInput id="grid-last-name" type="date" placeholder="+62" @change="getTanggal($event)"
                             v-model="Form.tgl_kembali" />
-                        <p v-if="Form.errors.tgl_kembali" class="text-red text-xs italic text-red-500">Please fill out
-                            this
-                            field.</p>
+                        <p v-if="errors.tgl_kembali" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-full px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
@@ -354,9 +341,7 @@ function getTanggal(event) {
                             Lama Sewa
                         </InputLabel>
                         <TextInput id="grid-last-name" type="text" placeholder="...." v-model="Form.lama_sewa" />
-                        <p v-if="Form.errors.lama_sewa" class="text-red text-xs italic text-red-500">Please fill out
-                            this
-                            field.</p>
+                        <p v-if="errors.lama_sewa" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                 </div>
                 <div class="-mx-3 grid grid-cols-1 sm:grid-cols-2 justify-center mb-2">
@@ -366,8 +351,7 @@ function getTanggal(event) {
                             Tujuan Penyewa
                         </InputLabel>
                         <TextInput id="grid-first-name" type="text" placeholder="......................" />
-                        <p v-if="Form.errors.tujuan" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.</p>
+                        <p v-if="errors.tujuan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
@@ -375,8 +359,7 @@ function getTanggal(event) {
                             Jaminan Sewa
                         </InputLabel>
                         <TextInput id="grid-last-name" type="text" placeholder="......................" />
-                        <p v-if="Form.errors.jaminan" class="text-red text-xs italic text-red-500">Please fill out this
-                            field.</p>
+                        <p v-if="errors.jaminan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                 </div>
                 <PrimaryButtonVue type="submit" class="block w-full mb-3 text-center">Lanjutkan</PrimaryButtonVue>
