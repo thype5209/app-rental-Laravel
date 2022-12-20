@@ -10,10 +10,17 @@ use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSewaRequest;
 use App\Http\Requests\UpdateSewaRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class SewaController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->CekSewaTelat();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,11 +30,9 @@ class SewaController extends Controller
     {
 
         return Inertia::render('Sewa/Pinjam', [
-            'sewa' => $sewa =  Sewa::query()
-            ->with(['pengguna', 'waktusewa'])
-            ->orderBy('status', 'asc')
-            ->filter(FacadesRequest::only('search'))
-            ->when(FacadesRequest::input('status','Sewa'), function($query,$status){
+            'sewa' =>  Sewa::orderBy('status','desc')
+            ->with(['pengguna', 'waktusewa', 'user'])
+            ->when(FacadesRequest::input('status'), function($query,$status){
                 if ( $status != 'semua') {
                     $query->orWhere('status', $status);
                     $query->orderBy('status','asc');
@@ -35,8 +40,9 @@ class SewaController extends Controller
                     $query->orderBy('status','desc');
                 }
             })
-            ->paginate(10) ?? Sewa::where('status', '=', 'Sewa')->paginate(10),
-            'Tab' => FacadesRequest::input('status', 'Sewa'),
+            ->filter(FacadesRequest::only('search'))
+            ->paginate(10) ?? null,
+            'Tab' => FacadesRequest::input('status', 'semua'),
         ]);
     }
     public function riwayat()
@@ -159,10 +165,22 @@ class SewaController extends Controller
         ]);
     }
 
-    public function StatusModal()
+    public function CekSewaTelat()
     {
-        return Inertia::dialog('Sewa/status');
+        $carbon = Carbon::now()->format("Y-m-d");
+        Sewa::whereHas('waktusewa', function($query) use($carbon){
+            $query->whereDate('tgl_kembali', '<', $carbon);
+        })->whereNot('status', '=', 'Selesai')->update([
+            'status'=>"Telat",
+        ]);
     }
+    /**
+     * updateStatusModal
+     *  Update Status Dari Modal
+     * @param  mixed $id
+     * @param  mixed $request
+     * @return void
+     */
     public function updateStatusModal($id, Request $request)
     {
         $sewa = Sewa::find($id);

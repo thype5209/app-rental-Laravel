@@ -61,7 +61,6 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
         Route::controller(SewaController::class)->group(function(){
             Route::get('/', 'index')->name('index');
             Route::get('/Riwayat/Penyewaan', 'riwayat')->name('riwayat');
-            Route::get('/Form/Status', 'StatusModal')->name('StatusModal');
             Route::put('/update/Status/{id}', 'StatusUpdate')->name('StatusUpdate');
             Route::get('/Form/Mobil', 'create')->name('create');
             Route::post('/Form/store', 'store')->name('store');

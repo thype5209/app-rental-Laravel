@@ -93,7 +93,9 @@ function parseMonth(value) {
 }
 
 function cetakDanSave() {
-    FormPDF.post(route('Laporan.saveSewa'));
+    FormPDF.post(route('Laporan.saveSewa'), {
+        onSuccess: window.location.href = 'Laporan/CetakSewa'
+    });
 }
 </script>
 

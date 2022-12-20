@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Sewa extends Model
 {
@@ -35,6 +36,7 @@ class Sewa extends Model
                 ->orWhere('tujuan', 'like', '%' . $search . '%')
                 ->orWhere('jaminan', 'like', '%' . $search . '%')
                 ->orWhere('nopol', 'like', '%' . $search . '%')
+                ->orWhere('status', 'like', '%' . $search . '%')
                 ->orWhereHas('waktusewa', function ($query) use ($search) {
                     $query->whereDate('tgl_sewa', 'like', '%' . $search . '%')
                         ->orWhereDate('tgl_kembali', 'like', '%' . $search . '%')
@@ -51,6 +53,12 @@ class Sewa extends Model
                 $query->orWhere('status', $status);
             } elseif ($status == 'semua') {
                 $query->orderBy('status','desc');
+            }
+        })->whereHas('user', function($query){
+            if(Auth::user()->role != 1){
+                $query->where('id', Auth::user()->id);
+            }else{
+                $query->orderBy('role','asc');
             }
         });
     }
