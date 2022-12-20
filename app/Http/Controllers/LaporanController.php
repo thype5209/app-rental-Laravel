@@ -177,7 +177,8 @@ class LaporanController extends Controller
             'nik' => $request->nik,
             'tujuan' => $request->tujuan,
             'jaminan' => $request->jaminan,
-            'penanggung_jawab' => Auth::user()->name,
+            // Penanggung Jawab Bersal Dari Data User ID
+            'penanggung_jawab' => Auth::user()->id,
             'pdf_url' => $pdf_url,
             'denda' => '0',
             'status' => 'Sewa',
