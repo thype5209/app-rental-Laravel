@@ -60,7 +60,7 @@ onMounted(()=>{
                             <div class="block w-px h-6 mx-3 bg-gray-400 dark:bg-gray-700"></div>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center mr-4 hover:text-blue-100">
+                            <Link :href="route('logout')" method="POST" class="flex items-center mr-4 hover:text-blue-100">
                                 <span class="inline-flex mr-1">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +70,7 @@ onMounted(()=>{
                                     </svg>
                                 </span>
                                 Logout
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -92,11 +92,12 @@ onMounted(()=>{
 <script>
 import NavLink from '@/Components/NavLink.vue';
 import SidebarVue from '../Components/Sidebar.vue';
+import {Link} from '@inertiajs/inertia-vue3'
 
 
 export default {
     name: "AuthenticatedLayoutVue",
-    components: { NavLink, SidebarVue }
+    components: { NavLink, SidebarVue,Link }
 }
 </script>
 <style>
