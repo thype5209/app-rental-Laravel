@@ -4,7 +4,7 @@ import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import SelectVUe from "@/Components/Select.vue";
 import PrimaryButtonVue from "@/Components/PrimaryButton.vue";
-import { defineProps, ref, watch, onBeforeMount, onMounted } from "vue";
+import { defineProps, ref, watch, onBeforeMount, onMounted, h } from "vue";
 
 const props = defineProps({
     pengguna: {
@@ -70,7 +70,7 @@ if (props.data.req == null || props.data.length > 0) {
 
     GetMobil(DataKembali.mobil_id);
 }
-console.log(props.sopir);
+
 
 const Form = useForm(dataInputSewa);
 var TabActive =
@@ -79,6 +79,40 @@ var TabNonActive =
     "text-gray-600 bg-blue-500 py-2 md:px-6 block hover:text-blue-500 focus:outline-none";
 Form.jenis_sewa = ref("Lepas");
 
+// Fungsi Cari Pengguna Dengan Nik
+const SearchNIK = ref('')
+let ulNik = ref({});
+const NIKPengguna = ref(null)
+function CariNIK(event) {
+    console.log(event.target.value)
+    axios.get(route('Pengguna.GetID', { id: event.target.value }))
+        .then(response => {
+            Form.nik = response.data.nik;
+            Form.nama = response.data.nama;
+            Form.tempat_lahir = response.data.tempat_lahir;
+            Form.tgl_lahir = response.data.tgl_lahir;
+            Form.no_hp = response.data.no_hp;
+            Form.no_hp_lain = response.data.no_hp_lain;
+            Form.alamat = response.data.alamat;
+            Form.pekerjaan = response.data.pekerjaan;
+        }).catch(error=>console.log(error))
+
+}
+watch(SearchNIK, value => {
+    axios.get(route('Pengguna.CariNIK', { search: value })).then((response) => {
+        var li = "";
+        if(response.data.length > 0){
+            response.data.forEach(element => {
+            // li+= `<option class="text-sm text-gray-500 border-b px-3 cursor-pointer py-2 hover:bg-gray-200" v-bind:on-click="CariNIK(${element.nik},${element.nama},${element.tempat_lahir},${element.tgl_lahir},${element.no_hp},${element.no_hp_lain},${element.alamat},${element.pekerjaan})">${element.nama}</option>`;
+            li += `<option class="text-sm text-gray-500 border-b px-3 cursor-pointer py-2 hover:bg-gray-200" value="${element.id}">${element.nama}</option>`;
+        });
+        ulNik = li;
+        }else{
+            ulNik = `<option class="text-sm text-gray-500 border-b px-3 cursor-pointer py-2 hover:bg-gray-200">Tidak Ada</option>`
+        }
+    })
+})
+// Fungsi Cari Mobil Dengan Select ID
 function GetMobil(event) {
     axios
         .get("/Mobil/GetIDMobil/" + event.target.value)
@@ -99,7 +133,9 @@ function GetMobil(event) {
 function submit() {
     Form.get(route("Sewa.formulir"), { preserveState: true });
 }
-//
+
+
+// Fungsi Lama Sewa
 function diff_date(date1, date2) {
     var d = Math.abs(date1 - date2) / 1000; // delta
     var r = {}; // result
@@ -126,6 +162,7 @@ function diff_date(date1, date2) {
     console.log(Difference_In_Days);
     return Difference_In_Days;
 }
+// Cetak Tanggal
 function getTanggal(event) {
     var tgl_pengajuan = new Date(Form.tgl_sewa);
     var tgl_kembali = new Date(event.target.value);
@@ -148,11 +185,27 @@ function getTanggal(event) {
                 </div>
                 <nav class="flex justify-center gap-4 pb-5">
                     <PrimaryButtonVue @click="Form.jenis_sewa = 'Lepas'"
-                        v-bind:class="Form.jenis_sewa == 'Lepas' ? TabActive : TabNonActive">Lepas Kunci</PrimaryButtonVue>
+                        v-bind:class="Form.jenis_sewa == 'Lepas' ? TabActive : TabNonActive">Lepas Kunci
+                    </PrimaryButtonVue>
                     <PrimaryButtonVue @click="Form.jenis_sewa = 'Kunci'"
                         v-bind:class="Form.jenis_sewa == 'Kunci' ? TabActive : TabNonActive">Kunci</PrimaryButtonVue>
                 </nav>
+                <div class="-mx-3 md:flex mb-6"  v-if="Form.jenis_sewa == 'Lepas'">
+                    <div class="w-full px-3 relative">
+                        <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            for="grid-first-name">Pilih Pengguna </InputLabel>
+                        <TextInput id="grid-first-name" type="search" placeholder="Jane" v-model="SearchNIK" />
+                        <div v-if="SearchNIK"
+                            class="HasilNik bg-white shadow-lg rounded-md py-1 w-64 absolute box-border">
+                            <SelectVUe v-model="NIKPengguna" v-html="ulNik" multiple @change="CariNIK($event)" @mouseleave="SearchNIK = ''">
+
+                            </SelectVUe>
+                        </div>
+                        <p class="text-red text-xs italic text-gray-500">Cari Data Pengguna Yang Ada</p>
+                    </div>
+                </div>
                 <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Lepas'">
+
                     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-first-name">NIK</InputLabel>
@@ -217,11 +270,11 @@ function getTanggal(event) {
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-first-name">Nama Supir</InputLabel>
                         <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            id="mobil_id" for="grid-first-name" v-model="Form.sopir_id" >
+                            id="mobil_id" for="grid-first-name" v-model="Form.sopir_id">
                             <option value="">---</option>
                             <option v-for="sopir in props.sopir" :key="sopir.id" :value="sopir.id">
                                 Nama= {{ sopir.nama }} | Nik= {{ sopir.nik }} | No.HP= {{ sopir.no_hp }}
-                        </option>
+                            </option>
                         </SelectVUe>
                         <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
@@ -317,14 +370,16 @@ function getTanggal(event) {
                     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-first-name">Tujuan Penyewa</InputLabel>
-                        <TextInput id="grid-first-name" type="text" placeholder="......................" v-model="Form.tujuan" />
+                        <TextInput id="grid-first-name" type="text" placeholder="......................"
+                            v-model="Form.tujuan" />
                         <p v-if="errors.tujuan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-last-name">Jaminan Sewa</InputLabel>
-                        <TextInput id="grid-last-name" type="text" placeholder="......................" v-model="Form.jaminan" />
-                        <p v-if="errors.jaminan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                        <TextInput id="grid-last-name" type="text" placeholder="......................"
+                            v-model="Form.jaminan" />
+                        <!-- <p v-if="errors.jaminan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p> -->
                     </div>
                 </div>
                 <PrimaryButtonVue type="submit" class="block w-full mb-3 text-center">Lanjutkan</PrimaryButtonVue>
@@ -335,6 +390,7 @@ function getTanggal(event) {
 <script>
 import AuthenticatedLayoutVue from "../../Layouts/AuthenticatedLayout.vue";
 import axios from "axios";
+import route from '../../../../vendor/tightenco/ziggy/src/js';
 
 export default {
     name: "FormPinjamVue",

@@ -9,5 +9,5 @@ class Pengguna extends Model
 {
     use HasFactory;
     protected $table = 'penggunas';
-    protected $fillable = ['nik','nama','alamat','no_hp','no_hp_lain','pekerjaan'];
+    protected $fillable = ['nik','nama','alamat','no_hp','no_hp_lain','pekerjaan','tempat_lahir','tgl_lahir'];
 }

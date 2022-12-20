@@ -142,7 +142,7 @@ class LaporanController extends Controller
     public function createPengguna($request)
     {
         $pengguna = Pengguna::where('nik', $request->nik)->get();
-        if ($pengguna->count() < 1) {
+        if ($pengguna->count() < 1 && $request->jenis_sewa == "Lepas") {
             Pengguna::create([
                 'nama' => $request->nama,
                 'nik' => $request->nik,
@@ -150,6 +150,8 @@ class LaporanController extends Controller
                 'no_hp' => $request->no_hp,
                 'no_hp_lain' => $request->no_hp_lain,
                 'pekerjaan' => $request->pekerjaan,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tgl_lahir' => $request->tgl_lahir,
             ]);
         }
     }
@@ -175,6 +177,7 @@ class LaporanController extends Controller
             'harga' => $request->nilaisewahari,
             'harga_bulan' => $request->nilaisewabulan,
             'nik' => $request->nik,
+            'sopir_id' => $request->sopir_id,
             'tujuan' => $request->tujuan,
             'jaminan' => $request->jaminan,
             // Penanggung Jawab Bersal Dari Data User ID

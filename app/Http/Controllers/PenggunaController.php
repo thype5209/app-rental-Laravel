@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Inertia\Inertia;
 
 class PenggunaController extends Controller
@@ -24,6 +25,16 @@ class PenggunaController extends Controller
         return Inertia::render('Pengguna/Pengguna',[
             'pengguna'=> $pengguna
         ]);
+    }
+    public function cariNIK()
+    {
+        $pengguna = Pengguna::where('nik', 'like', '%'.  FacadesRequest::input('search') .'%')->get();
+        return json_encode($pengguna);
+    }
+    public function GetID($id)
+    {
+        $pengguna = Pengguna::find($id);
+        return json_encode($pengguna);
     }
 
     /**

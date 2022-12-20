@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('pekerjaan',30);
             $table->string('no_hp',30);
             $table->string('no_hp_lain',30);
+            $table->string('tempat_lahir',30);
+            $table->date('tgl_lahir');
             $table->timestamps();
         });
     }

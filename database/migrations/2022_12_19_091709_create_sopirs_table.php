@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nama',30);
             $table->string('alamat',30);
             $table->string('no_hp',30);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

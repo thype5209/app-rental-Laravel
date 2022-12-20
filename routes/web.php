@@ -86,6 +86,8 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
     Route::group(['prefix'=> 'Pengguna', 'as'=> 'Pengguna.'],function(){
         Route::controller(PenggunaController::class)->group(function(){
             Route::get('/', 'index')->name('index');
+            Route::get('/NIK', 'CariNIK')->name('CariNIK');
+            Route::get('/GetID{id}', 'GetID')->name('GetID');
         });
     });
     Route::group(['prefix'=> 'Sopir', 'as'=> 'Sopir.'],function(){
