@@ -17,6 +17,8 @@ const data = defineProps({
 })
 
 const FormPDF = useForm({
+    jenis_sewa: data.formulir.jenis_sewa,
+    sopir_id: data.formulir.sopir_id,
     mobil_id: data.formulir.mobil_id,
     nik: data.formulir.nik,
     nama: data.formulir.nama,
@@ -134,7 +136,7 @@ function cetakDanSave() {
                     </tr>
 
                 </table>
-                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left">
+                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left" v-if="FormPDF.jenis_sewa == 'Lepas' ">
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
                         <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.nik"
@@ -179,7 +181,7 @@ function cetakDanSave() {
                                 class="border-none text-xs p-0 m-0 w-16 max-w-max " /> </td>
                     </tr>
                 </table>
-                <p class="w-full text-justify font-bold">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
+                <p v-if="FormPDF.jenis_sewa =='Lepas'" class="w-full text-justify font-bold">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
                     kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
                 <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
                     <tr class=" p-0 m-0">

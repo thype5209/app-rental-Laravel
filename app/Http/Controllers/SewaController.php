@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sewa;
 use Inertia\Inertia;
 use App\Models\Mobil;
+use App\Models\Sopir;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSewaRequest;
@@ -57,11 +58,13 @@ class SewaController extends Controller
      */
     public function create()
     {
-        $mobil = Mobil::where('status', '2')->get();
+        $mobil = Mobil::where('status', '!=','2')->get();
         $pengguna = Pengguna::all();
+        $sopir = Sopir::all();
         return Inertia::render('Sewa/FormSewa', [
             'pengguna' => $pengguna,
             'mobil' => $mobil,
+            'sopir'=> $sopir,
         ]);
     }
 
@@ -74,13 +77,14 @@ class SewaController extends Controller
     public function formulir(Request $request)
     {
         $request->validate([
-            'nik' => 'required|numeric',
-            'nama' => 'required|string',
-            'tempat_lahir' => 'required|string',
-            'tgl_lahir' => 'required|date',
-            'pekerjaan' => 'required|string',
-            'no_hp' => 'required|numeric',
-            'no_hp_lain' => 'required|numeric',
+            'jenis_sewa'=> 'required',
+            'nik' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|numeric',
+            'nama' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|string',
+            'tempat_lahir' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|string',
+            'tgl_lahir' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|date',
+            'pekerjaan' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|string',
+            'no_hp' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|numeric',
+            'no_hp_lain' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|numeric',
             'unit' => 'required|string',
             'nopol' => 'required|string',
             'tahun' => 'required|string',
@@ -166,7 +170,7 @@ class SewaController extends Controller
             'status' =>  $request->status,
         ]);
         Mobil::where('nopol', '=', $sewa->nopol)->update([
-            'status' => $request->status == 5 ? '2' : '1',
+            'status' => $request->status == 'Selesai' ? '2' : '1',
         ]);
         // Synchronously
     }

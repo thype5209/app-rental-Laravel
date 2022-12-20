@@ -1,10 +1,10 @@
 <script setup>
-import { Link, Head, useForm, usePage } from '@inertiajs/inertia-vue3';
-import TextInput from '@/Components/TextInput.vue';
-import InputLabel from '@/Components/InputLabel.vue'
-import SelectVUe from '@/Components/Select.vue';
-import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
-import { defineProps, ref, watch, onBeforeMount, onMounted } from 'vue';
+import { Link, Head, useForm, usePage } from "@inertiajs/inertia-vue3";
+import TextInput from "@/Components/TextInput.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import SelectVUe from "@/Components/Select.vue";
+import PrimaryButtonVue from "@/Components/PrimaryButton.vue";
+import { defineProps, ref, watch, onBeforeMount, onMounted } from "vue";
 
 const props = defineProps({
     pengguna: {
@@ -15,33 +15,39 @@ const props = defineProps({
         type: Object,
         default: () => ({})
     },
+    sopir: {
+        type: Object,
+        default: () => ({})
+    },
     data: {
         type: Object,
         default: {}
     },
-    errors: Object,
-})
+    errors: Object
+});
 const dataInputSewa = {
-    nik: '',
-    nama: 'AGustiawan',
-    tempat_lahir: 'Bulukumba',
-    tgl_lahir: '1999-10-17',
-    alamat: 'Makassar',
-    no_hp: '02090910',
-    no_hp_lain: '920201092',
-    pekerjaan: '',
-    sosial: 'FB',
-    mobil_id: '',
-    unit: '',
-    nopol: '',
-    tahun: '',
-    nilaisewahari: '',
-    nilaisewabulan: '',
-    tgl_sewa: '',
-    tgl_kembali: '',
-    lama_sewa: '31',
-    tujuan: 'Pinjam',
-    jaminan: 'KTP',
+    jenis_sewa: '',
+    sopir_id: '',
+    nik: "",
+    nama: "",
+    tempat_lahir: "",
+    tgl_lahir: "",
+    alamat: "",
+    no_hp: "",
+    no_hp_lain: "",
+    pekerjaan: "",
+    sosial: "FB",
+    mobil_id: "",
+    unit: "",
+    nopol: "",
+    tahun: "",
+    nilaisewahari: "",
+    nilaisewabulan: "",
+    tgl_sewa: "",
+    tgl_kembali: "",
+    lama_sewa: "",
+    tujuan: "",
+    jaminan: ""
 };
 
 if (props.data.req == null || props.data.length > 0) {
@@ -59,22 +65,25 @@ if (props.data.req == null || props.data.length > 0) {
     dataInputSewa.nilaisewahari = DataKembali.nilaisewahari;
     dataInputSewa.nilaisewabulan = DataKembali.nilaisewabulan;
     dataInputSewa.tujuan = DataKembali.tujuan;
-    dataInputSewa.lama_sewa = DataKembali.lama_sew
+    dataInputSewa.lama_sewa = DataKembali.lama_sew;
     dataInputSewa.jaminan = DataKembali.jaminan;
 
-    GetMobil(DataKembali.mobil_id)
+    GetMobil(DataKembali.mobil_id);
 }
-console.log(props.data.req.FormPDF)
+console.log(props.sopir);
 
-const Form = useForm(dataInputSewa)
-var TabActive = 'bg-green-500 py-2 md:px-6 block hover:text-green-500 focus:outline-none text-white border-b-2 font-medium border-default-dark'
-var TabNonActive = 'text-gray-600 py-2 md:px-6 block hover:text-blue-500 focus:outline-none';
-let TabStatus = ref(0);
+const Form = useForm(dataInputSewa);
+var TabActive =
+    "bg-green-500 py-2 md:px-6 block hover:text-green-500 focus:outline-none text-white border-b-2 font-medium border-default-dark";
+var TabNonActive =
+    "text-gray-600 bg-blue-500 py-2 md:px-6 block hover:text-blue-500 focus:outline-none";
+Form.jenis_sewa = ref("Lepas");
 
 function GetMobil(event) {
-    axios.get('/Mobil/GetIDMobil/' + event.target.value)
+    axios
+        .get("/Mobil/GetIDMobil/" + event.target.value)
         .then(function (response) {
-            console.log(response.data)
+            console.log(response.data);
             const mobil = response.data;
             Form.unit = mobil.unit;
             Form.nopol = mobil.nopol;
@@ -82,19 +91,20 @@ function GetMobil(event) {
             Form.nilaisewahari = Number(mobil.harga).toLocaleString();
             Form.nilaisewabulan = Number(mobil.harga * 30).toLocaleString();
             Form.mobil_id = mobil.id;
-
-        }).catch(errors => console.log(errors))
+        })
+        .catch(errors => console.log(errors));
 }
 
 // Kirim Data
 function submit() {
-    Form.get(route('Sewa.formulir'),{ preserveState: true })
+    Form.get(route("Sewa.formulir"), { preserveState: true });
 }
 //
 function diff_date(date1, date2) {
     var d = Math.abs(date1 - date2) / 1000; // delta
     var r = {}; // result
-    var s = { // structure
+    var s = {
+        // structure
         year: 31536000,
         month: 2592000,
         week: 604800, // uncomment row to ignore
@@ -103,23 +113,23 @@ function diff_date(date1, date2) {
         minute: 60,
         second: 1
     };
-    	// hitung perbedaan waktu dari dua tanggal
-	var Difference_In_Time = date2 - date1;
+    // hitung perbedaan waktu dari dua tanggal
+    var Difference_In_Time = date2 - date1;
 
-  // hitung jml hari antara dua tanggal
-  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    // hitung jml hari antara dua tanggal
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
     Object.keys(s).forEach(function (key) {
         r[key] = Math.floor(d / s[key]);
         d -= r[key] * s[key];
     });
-    console.log(Difference_In_Days)
+    console.log(Difference_In_Days);
     return Difference_In_Days;
 }
 function getTanggal(event) {
     var tgl_pengajuan = new Date(Form.tgl_sewa);
     var tgl_kembali = new Date(event.target.value);
-    var diff = diff_date(tgl_pengajuan, tgl_kembali)
+    var diff = diff_date(tgl_pengajuan, tgl_kembali);
     Form.lama_sewa = diff;
 }
 </script>
@@ -130,51 +140,36 @@ function getTanggal(event) {
         <Head title="Sewa Form" />
         <!-- component -->
         <form class="w-full" @submit.prevent="submit">
-
             <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2">
                 <div class="flex flex-row justify-left">
-                    <Link :href="route('Sewa.index')" ><PrimaryButtonVue type="button" class="bg-red-500">
-                        Kembali
-                    </PrimaryButtonVue></Link>
-
+                    <Link :href="route('Sewa.index')">
+                    <PrimaryButtonVue type="button" class="bg-red-500">Kembali</PrimaryButtonVue>
+                    </Link>
                 </div>
-                <nav class="flex justify-center gap-4">
-                    <PrimaryButtonVue @click="TabStatus = '0'"
-                        v-bind:class="TabStatus == '0' ? TabActive : TabNonActive">
-                        Kunci
-                    </PrimaryButtonVue>
-                    <PrimaryButtonVue @click="TabStatus = '1'"
-                        v-bind:class="TabStatus == '1' ? TabActive : TabNonActive">
-                        Lepas Kunci
-                    </PrimaryButtonVue>
+                <nav class="flex justify-center gap-4 pb-5">
+                    <PrimaryButtonVue @click="Form.jenis_sewa = 'Lepas'"
+                        v-bind:class="Form.jenis_sewa == 'Lepas' ? TabActive : TabNonActive">Lepas Kunci</PrimaryButtonVue>
+                    <PrimaryButtonVue @click="Form.jenis_sewa = 'Kunci'"
+                        v-bind:class="Form.jenis_sewa == 'Kunci' ? TabActive : TabNonActive">Kunci</PrimaryButtonVue>
                 </nav>
-                <div class="-mx-3 md:flex mb-6" v-if="TabStatus == '0'">
+                <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Lepas'">
                     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-first-name">
-                            NIK
-                        </InputLabel>
+                            for="grid-first-name">NIK</InputLabel>
                         <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.nik" />
-                        <p v-if="errors.nik" class="text-red text-xs italic text-red-500">Mohon Di Isi
-                        </p>
+                        <p v-if="errors.nik" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Nama
-                        </InputLabel>
+                            for="grid-last-name">Nama</InputLabel>
                         <TextInput id="grid-last-name" type="text" placeholder="Nama Lengkap" v-model="Form.nama" />
-                        <p v-if="errors.nama" class="text-red text-xs italic text-red-500">Mohon Di Isi
-                        </p>
+                        <p v-if="errors.nama" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
-
                 </div>
-                <div class="-mx-3 md:flex mb-6" v-if="TabStatus == '0'">
+                <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Lepas'">
                     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-first-name">
-                            Tempat/Tanggal Lahir
-                        </InputLabel>
+                            for="grid-first-name">Tempat/Tanggal Lahir</InputLabel>
                         <div class="flex">
                             <TextInput id="grid-last-name" class="1/2" type="text" placeholder="Tempat Lahir"
                                 v-model="Form.tempat_lahir" />
@@ -185,60 +180,48 @@ function getTanggal(event) {
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Alamat
-                        </InputLabel>
+                            for="grid-last-name">Alamat</InputLabel>
 
                         <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.alamat" />
                         <p v-if="errors.tgl_lahir" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Pekerjaan
-                        </InputLabel>
+                            for="grid-last-name">Pekerjaan</InputLabel>
 
                         <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.pekerjaan" />
                         <p v-if="errors.pekerjaan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                 </div>
-                <div class="-mx-3 md:flex mb-6" v-if="TabStatus == '0'">
+                <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Lepas'">
                     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-first-name">
-                            Nomor HP
-                        </InputLabel>
+                            for="grid-first-name">Nomor HP</InputLabel>
                         <TextInput id="grid-first-name" type="tel" placeholder="+62" v-model="Form.no_hp" />
-                        <p v-if="errors.no_hp" class="text-red text-xs italic text-red-500">Mohon Di Isi
-                        </p>
+                        <p v-if="errors.no_hp" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3 mb-4">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Nomor HP Kerabat lain
-                        </InputLabel>
+                            for="grid-last-name">Nomor HP Kerabat lain</InputLabel>
                         <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.no_hp_lain" />
                         <p v-if="errors.no_hp_lain" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3 mb-4">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Sosial
-                        </InputLabel>
+                            for="grid-last-name">Sosial</InputLabel>
                         <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sosial" />
                     </div>
                 </div>
-                <div class="-mx-3 md:flex mb-6" v-if="TabStatus == '1'">
-                    <div class="w-full px-3  ">
+                <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Kunci'">
+                    <div class="w-full px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-first-name">
-                            Nama Supir
-                        </InputLabel>
+                            for="grid-first-name">Nama Supir</InputLabel>
                         <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            id="mobil_id" for="grid-first-name" @change="GetMobil($event)">
-                            <option v-for="mobil in props.mobil" :key="mobil.id" :value="mobil.id">
-                                Unit= {{ mobil.unit }} | Nopol= {{ mobil.nopol }} | Tahun= {{ mobil.tahun }}
-                            </option>
+                            id="mobil_id" for="grid-first-name" v-model="Form.sopir_id" >
+                            <option value="">---</option>
+                            <option v-for="sopir in props.sopir" :key="sopir.id" :value="sopir.id">
+                                Nama= {{ sopir.nama }} | Nik= {{ sopir.nik }} | No.HP= {{ sopir.no_hp }}
+                        </option>
                         </SelectVUe>
                         <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
@@ -246,24 +229,19 @@ function getTanggal(event) {
             </div>
 
             <div class="inline-flex justify-center items-center w-full">
-                <hr class="my-1 w-full h-1 bg-gray-200 rounded border-0 dark:bg-gray-700">
-                <div class="absolute left-1/2 px-4 bg-white -translate-x-1/2 dark:bg-gray-900">
-                    Detail Mobil
-                </div>
+                <hr class="my-1 w-full h-1 bg-gray-200 rounded border-0 dark:bg-gray-700" />
+                <div class="absolute left-1/2 px-4 bg-white -translate-x-1/2 dark:bg-gray-900">Detail Mobil</div>
             </div>
             <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2">
                 <div class="-mx-3 md:flex mb-6">
-                    <div class="w-full px-3  ">
+                    <div class="w-full px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-first-name">
-                            Jenis Mobil
-                        </InputLabel>
+                            for="grid-first-name">Jenis Mobil</InputLabel>
                         <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             id="mobil_id" for="grid-first-name" @change="GetMobil($event)">
-                            <option value="">---</option>
-                            <option v-for="mobil in props.mobil" :key="mobil.id" :value="mobil.id">
-                                Unit= {{ mobil.unit }} | Nopol= {{ mobil.nopol }} | Tahun= {{ mobil.tahun }}
-                            </option>
+                            <option value>---</option>
+                            <option v-for="mobil in props.mobil" :key="mobil.id" :value="mobil.id">Unit= {{ mobil.unit
+                            }} | Nopol= {{ mobil.nopol }} | Tahun= {{ mobil.tahun }}</option>
                         </SelectVUe>
                         <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
@@ -271,81 +249,66 @@ function getTanggal(event) {
                 <div class="-mx-3 sm:flex mb-6">
                     <div class="sm:w-1/3 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Jenis Kendaraan
-                        </InputLabel>
+                            for="grid-last-name">Jenis Kendaraan</InputLabel>
                         <TextInput id="grid-last-name" type="text" placeholder="Jenis Kendaraan" readonly required
                             v-model="Form.unit" />
-                        <p v-if="errors.unit" class="text-red text-xs italic text-red-500">Mohon Di Isi
-                        </p>
+                        <p v-if="errors.unit" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
-                    <div class="sm:w-1/3 px-3 ">
+                    <div class="sm:w-1/3 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-first-name">
-                            No. Kendaraan
-                        </InputLabel>
+                            for="grid-first-name">No. Kendaraan</InputLabel>
                         <TextInput id="grid-last-name" class="1/2" type="text" placeholder="No. Kendaraan" readonly
                             required v-model="Form.nopol" />
-                        <p v-if="errors.nopol" class="text-red text-xs italic text-red-500">Mohon Di Isi
-                        </p>
+                        <p v-if="errors.nopol" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="sm:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Tahun
-                        </InputLabel>
+                            for="grid-last-name">Tahun</InputLabel>
 
                         <TextInput id="grid-first-name" type="number" placeholder="0000" readonly required
                             v-model="Form.tahun" />
-                        <p v-if="errors.tahun" class="text-red text-xs italic text-red-500">Mohon Di Isi
-                        </p>
+                        <p v-if="errors.tahun" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                 </div>
                 <div class="-mx-3 sm:flex justify-center w-full">
                     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-first-name">
-                            Nilai Sewa/Hari
-                        </InputLabel>
+                            for="grid-first-name">Nilai Sewa/Hari</InputLabel>
                         <TextInput id="grid-first-name" type="text" placeholder="0000" v-model="Form.nilaisewahari" />
-                        <p v-if="errors.nilaisewahari" class="text-red text-xs italic text-red-500">Please fill out
-                            this field.</p>
+                        <p v-if="errors.nilaisewahari" class="text-red text-xs italic text-red-500">
+                            Please fill out
+                            this field.
+                        </p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Nilai Sewa/Bulan
-                        </InputLabel>
+                            for="grid-last-name">Nilai Sewa/Bulan</InputLabel>
                         <TextInput id="grid-last-name" type="text" placeholder="0000" v-model="Form.nilaisewabulan" />
-                        <p v-if="errors.nilaisewabulan" class="text-red text-xs italic text-red-500">Please fill
+                        <p v-if="errors.nilaisewabulan" class="text-red text-xs italic text-red-500">
+                            Please fill
                             out
-                            this field.</p>
+                            this field.
+                        </p>
                     </div>
                 </div>
-                <hr class="my-2 h-px bg-gray-800 border-0 dark:bg-gray-700">
+                <hr class="my-2 h-px bg-gray-800 border-0 dark:bg-gray-700" />
                 <div class="-mx-3 grid grid-cols-1 sm:grid-cols-3 justify-center mb-6">
                     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-first-name">
-                            Tanggal Sewa
-                        </InputLabel>
+                            for="grid-first-name">Tanggal Sewa</InputLabel>
                         <TextInput id="grid-first-name" type="date" placeholder="+62" v-model="Form.tgl_sewa" />
                         <p v-if="errors.tgl_sewa" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Tanggal Kembali
-                        </InputLabel>
+                            for="grid-last-name">Tanggal Kembali</InputLabel>
                         <TextInput id="grid-last-name" type="date" placeholder="+62" @change="getTanggal($event)"
                             v-model="Form.tgl_kembali" />
                         <p v-if="errors.tgl_kembali" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-full px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Lama Sewa
-                        </InputLabel>
+                            for="grid-last-name">Lama Sewa</InputLabel>
                         <TextInput id="grid-last-name" type="text" placeholder="...." v-model="Form.lama_sewa" />
                         <p v-if="errors.lama_sewa" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
@@ -353,18 +316,14 @@ function getTanggal(event) {
                 <div class="-mx-3 grid grid-cols-1 sm:grid-cols-2 justify-center mb-2">
                     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-first-name">
-                            Tujuan Penyewa
-                        </InputLabel>
-                        <TextInput id="grid-first-name" type="text" placeholder="......................" />
+                            for="grid-first-name">Tujuan Penyewa</InputLabel>
+                        <TextInput id="grid-first-name" type="text" placeholder="......................" v-model="Form.tujuan" />
                         <p v-if="errors.tujuan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">
-                            Jaminan Sewa
-                        </InputLabel>
-                        <TextInput id="grid-last-name" type="text" placeholder="......................" />
+                            for="grid-last-name">Jaminan Sewa</InputLabel>
+                        <TextInput id="grid-last-name" type="text" placeholder="......................" v-model="Form.jaminan" />
                         <p v-if="errors.jaminan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                     </div>
                 </div>
@@ -374,18 +333,14 @@ function getTanggal(event) {
     </AuthenticatedLayoutVue>
 </template>
 <script>
-import AuthenticatedLayoutVue from '../../Layouts/AuthenticatedLayout.vue'
-import axios from 'axios';
+import AuthenticatedLayoutVue from "../../Layouts/AuthenticatedLayout.vue";
+import axios from "axios";
 
 export default {
-    name: 'FormPinjamVue',
+    name: "FormPinjamVue",
     components: {
         AuthenticatedLayoutVue
     },
-    beforeMount: function () {
-    },
-
-
-
-}
+    beforeMount: function () { }
+};
 </script>
