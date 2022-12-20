@@ -208,11 +208,11 @@
             </tr>
             <tr>
                 <td class="text-center h-10 "><span
-                        class="border-b-2 border-black">{{ Auth::user()->name }}</span></td>
+                        class="border-b-2 border-black">(..................................)</span></td>
                 <td class="text-center h-10 "><span
                         class="border-b-2 border-black">(..................................)</span></td>
                 <td class="text-center h-10 "><span
-                        class="border-b-2 border-black">{{ $data->nama }}</span></td>
+                        class="border-b-2 border-black">(..................................)</span></td>
             </tr>
             <tr>
                 <td class="text-center">Yang Menyerahkan Kendaraan</td>
