@@ -19,6 +19,9 @@ class Sewa extends Model
     {
         return $this->hasOne(Pengguna::class, 'nik', 'nik');
     }
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'penanggung_jawab');
+    }
 
     public function scopeFilter($query, array $filters)
     {
