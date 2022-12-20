@@ -21,6 +21,13 @@ class LaporanController extends Controller
         return Inertia::render('Laporan/LaporanSewa');
     }
 
+
+    /**
+     * saveSewaCetak
+     *  Tampilan Laporan Sewa Dengan Copy Link
+     * @param  mixed $request
+     * @return void
+     */
     public function saveSewaCetak(Request $request)
     {
         return Inertia::render('Laporan/CetakSewaSave', [
@@ -36,31 +43,46 @@ class LaporanController extends Controller
         } else {
             $k = substr($sewa, 1, 3);
             $k++;
-            $kode ='S'. sprintf('%03s', $k);
+            $kode = 'S' . sprintf('%03s', $k);
         }
         return $kode;
     }
+    /**
+     * saveSewa
+     *  Menyimpan
+     *  Generate PDF
+     *  Dan Mereturn Data Ke Dalam Route Laporan Dan Cetak
+     * @param  mixed $request
+     * @return void
+     */
     public function saveSewa(Request $request)
     {
 
-        // dd($request->all());
         $req = $request;
-        //buat pengguna
+        // Panggil Fungsi Kode
         $kode = $this->kodeSewa();
         $path =  'SewaPDF/';
         $namaPDF = $path . $kode . '-' . $req->nama . '-' . $req->tgl_sewa . '.pdf';
+        //buat pengguna
         $this->createPengguna($req);
         $this->sewaCreate($req, $kode, $namaPDF);
 
         // Tanggal
         $carbon = $this->today();
-        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon , 'kode'=> $kode]);
-
+        // Melakukan Load Data PDF
+        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode]);
+        // Simpan File PDF Ke Public Storage
         Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
-        // return $pdf->stream('sewa.pdf');
+
         return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF]);
     }
 
+
+    /**
+     * today
+     *  Fungis Membuat Tanggal Bahasa Indonesia
+     * @return void
+     */
     public function today()
     {
         $carbon = Carbon::now()->format('Y-m-d');
@@ -110,32 +132,13 @@ class LaporanController extends Controller
         }
         return $parse[0] . ' ' . $msg . ' ' . $parse[2];
     }
-    public function data()
-    {
-        $data = [
-            'mobil_id' => '1',
-            'nik' => '91010',
-            'nama' => 'wawan',
-            'tempat_lahir' => 'Bulukumba',
-            'tgl_lahir' => '19-10-2000',
-            'alamat' => 'Makassar',
-            'pekerjaan' => 'Mahasiswa',
-            'sosial' => 'FB',
-            'no_hp' => '081920019',
-            'no_hp_lain' => '019020191',
-            'nilaisewahari' => '20000',
-            'nilaisewabulan' => '90000',
-            'tgl_sewa' => '2022-12-01',
-            'tgl_kembali' => '2022-12-10',
-            'lama_sewa' => '10 hari',
-            'tujuan' => 'Bulukumba',
-            'jaminan' => 'KTP',
-            'unit' => 'avanza',
-            'nopol' => 'NK 002 B',
-            'tahun' => '2022',
-        ];
-        return $data;
-    }
+
+    /**
+     * createPengguna
+     * Tambah Data Pengguna
+     * @param  mixed $request
+     * @return void
+     */
     public function createPengguna($request)
     {
         $pengguna = Pengguna::where('nik', $request->nik)->get();
@@ -150,6 +153,18 @@ class LaporanController extends Controller
             ]);
         }
     }
+
+
+    /**
+     * sewaCreate
+     *  Request Memanggil Data Dari POST yang Berada Pada Form Formulir
+     *  Kode Dari Fungsi Kode
+     *  PDF_URL nama PDF dari fungs create
+     * @param  mixed $request
+     * @param  mixed $kode
+     * @param  mixed $pdf_url
+     * @return void
+     */
     public function sewaCreate($request, $kode, $pdf_url)
     {
         $sewa = Sewa::create([
@@ -175,11 +190,8 @@ class LaporanController extends Controller
             'jam_kembali' => "00:00",
             'lama_sewa' => $request->lama_sewa,
         ]);
-        $mobil = Mobil::find($request->mobil_id)->update([
-            'status'=>'1',
+        Mobil::find($request->mobil_id)->update([
+            'status' => '1',
         ]);
-    }
-    public function waktu_sewa()
-    {
     }
 }
