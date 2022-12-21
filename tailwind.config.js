@@ -19,6 +19,7 @@ module.exports = {
                 'default-red': '#CF4647',
                 'default-dark': '#2A363B',
                 'default-white': '#F8F6F6',
+                'default-blue': '#3338ED',
             }
         },
     },

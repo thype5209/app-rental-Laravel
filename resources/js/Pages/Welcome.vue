@@ -4,8 +4,8 @@ import CarouselVue from '@/Components/home/Carousel.vue';
 import { Link, Head } from '@inertiajs/inertia-vue3';
 //
 var scrol = window.scrollY;
-const ActiveNav = "fixed z-10 bg-default-dark  w-[80%] h-20 top-10 text-white rounded-b-md transition-all";
-const NonActiveNav = "fixed z-10 bg-default-dark  w-[80%] h-20 top-0 text-white rounded-b-md transition-all";
+const ActiveNav = "sm:fixed z-10 bg-default-dark w-full  md:w-[80%] md:h-20 top-10 text-white rounded-b-md transition-all";
+const NonActiveNav = "sm:fixed z-10 bg-default-dark w-full md:w-[80%] md:h-20 top-0 text-white rounded-b-md transition-all";
 let NavbarClass = ActiveNav;
 function NavbarScroll() {
 
@@ -31,14 +31,36 @@ window.onscroll = function () { NavbarScroll() };
         <div class="absolute w-96 h-96 top-40" style="background-image: url('img/car-side.png')"></div>
         <div class="w-full h-max flex justify-center ">
             <div id="Navbar" v-bind:class="NavbarClass">
-                <div class="md:hidden py-4 px-8 flex justify-between">
-                    <div class="text-xl">Logo</div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-list" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-                        </svg>
+                <div class="md:hidden py-4 px-8 flex flex-col gap-4 justify-between">
+                    <div class="max-w-md">
+                        <!--Search form-->
+                        <form class="w-full">
+                            <div class="relative">
+                                <!--Search icon-->
+                                <span class="absolute p-2 insert-y-0">
+                                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </span>
+                                <input type="search"
+                                    class="w-full pl-9 py-1 text-gray-700 border border-gray-300 focus:outline-none rounded-md"
+                                    placeholder="Cari Jenis Mobil">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="w-full flex justify-between items-center">
+                        <ul class="flex flex-row gap-5">
+                            <li>Home</li>
+                            <li>About</li>
+                            <li>Mobil</li>
+                        </ul>
+                        <div>
+                            <Link :href="route('login')"
+                                class="focus:outline-none bg-white hover:bg-white focus:ring-4 focus:ring-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-white text-default-dark">
+                            Masuk</Link>
+                        </div>
                     </div>
                 </div>
 
@@ -88,15 +110,16 @@ window.onscroll = function () { NavbarScroll() };
         </div>
 
         <div class="relative w-full h-full flex flex-col justify-center items-center">
-            <div class="carousel w-[26rem] max-w-2xl bg-default-dark px-3 py-5 rounded-md">
-                <h3 class="text-red-500 shadow-inner text-5xl font-extrabold">CV. <span
-                        class="font-bold text-white">Jasa</span><span class="text-red-500 font-bold">|</span><span
-                        class="text-white font-bold text-4xl">Saudagar</span>
+            <div class="carousel w-full md:w-[28rem] max-w-2xl bg-default-dark px-3 py-5 rounded-md">
+                <img :src="`/img/logo.png`" />
+                <h3 class="text-default-blue shadow-inner text-base md:text-5xl font-extrabold whitespace-nowrap">CV. <span
+                        class="font-bold text-white">Jasa</span><span class="text-default-blue font-bold">|</span><span
+                        class="text-white font-bold text-base md:text-4xl uppercase">Saudagar</span>
                 </h3>
 
             </div>
-            <div class=" max-w-xl text-justify font-semibold leading-6">
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veniam culpa dolorum fugiat obcaecati,
+            <div class=" max-w-xl text-justify font-semibold leading-6 drop-shadow-sm" >
+                <p class=" drop-shadow-md shadow-black text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veniam culpa dolorum fugiat obcaecati,
                     maiores cumque repellendus corporis alias maxime aliquid magnam soluta quod, cum dicta qui facere
                     earum voluptas molestias.</p>
             </div>
@@ -105,8 +128,8 @@ window.onscroll = function () { NavbarScroll() };
     <CardMobil></CardMobil>
 
     <div class="w-full flex flex-col">
-        <div class="text-center"><span class="font-extrabold text-5xl text-gray-800">Jenis Mobil</span></div>
-        <div class="container mx-auto py-2 md:py-7">
+        <div class="text-center"><span class="font-extrabold text-2xl md:text-5xl text-gray-800">Jenis Mobil</span></div>
+        <div class="container mx-auto py-2 md:pb-7">
             <CarouselVue></CarouselVue>
         </div>
     </div>
