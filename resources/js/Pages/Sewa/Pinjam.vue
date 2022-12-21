@@ -87,8 +87,14 @@ function diffDate(date1) {
     if (mm < 10) mm = "0" + mm;
 
     const formattedToday = yyyy + "-" + mm + "-" + dd;
+    let day = null;
+    if(date < today){
+         day = "Telat " + Math.round(Math.abs(date - today) / (1000 * 3600 * 24)) + " Hari" ;
+    }
+    if(today < date){
+         day = Math.round(Math.abs(today - date) / (1000 * 3600 * 24)) + " Hari Lagi";
 
-    const day = Math.ceil(Math.abs(date - today) / (1000 * 3600 * 24));
+    }
     return day;
 }
 </script>
@@ -229,25 +235,24 @@ function diffDate(date1) {
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr v-for="(mobil, index) in status.sewa.data" :key="mobil" :index="index"
                                 class="text-gray-700 dark:text-gray-400">
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ index + 1 }}</td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ mobil.kode }}</td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{ index + 1 }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{ mobil.kode }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
                                     <span v-if="mobil.nik != null">{{ mobil.nik }}</span>
                                     <span v-else>---------</span>
                                 </td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border" v-if="mobil.pengguna != null">{{
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border" v-if="mobil.pengguna != null">{{
                                         mobil.pengguna.nama
                                 }}</td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border" v-else>Sopir</td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ mobil.nopol }}</td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ mobil.waktusewa.tgl_sewa }}</td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border" v-else>Sopir</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{ mobil.nopol }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{ mobil.waktusewa.tgl_sewa }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
                                     {{ mobil.waktusewa.tgl_kembali }}
                                     <br />
-                                    <span class="text-xs text-red-500">{{ diffDate(mobil.waktusewa.tgl_kembali) }} Hari
-                                        lagi</span>
+                                    <span class="text-xs text-red-500">{{ diffDate(mobil.waktusewa.tgl_kembali) }}</span>
                                 </td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ mobil.user.name }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{ mobil.user.name }}</td>
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-xs border">
                                     <span @click="isOpen(mobil.id)"
                                         class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">{{
@@ -279,7 +284,7 @@ function diffDate(date1) {
                         </tbody>
                     </table>
                 </div>
-                <PaginationVue :links="status.sewa.data" class="mt-3 text-black"></PaginationVue>
+                <PaginationVue :links="status.sewa.links" class="mt-3 text-black"></PaginationVue>
             </div>
         </div>
     </AuthenticatedLayout>

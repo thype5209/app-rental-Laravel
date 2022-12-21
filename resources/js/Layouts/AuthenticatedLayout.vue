@@ -1,8 +1,10 @@
 
 <script setup>
-import { ref, watch, onUnmounted,onMounted, onBeforeMount } from 'vue';
+import { ref, watch, onUnmounted, onMounted, onBeforeMount } from 'vue';
 
-const ShowNav = ref();
+const navShow = localStorage.getItem('Shownav');
+const ShowNav = ref(false);
+
 
 function withChange() {
     if (window.innerWidth > 768) {
@@ -10,8 +12,16 @@ function withChange() {
     } else {
         ShowNav.value = true;
     }
+
 }
-onMounted(()=>{
+function openNav() {
+    if (ShowNav.value) {
+        ShowNav.value = false;
+    } else {
+        ShowNav.value = true;
+    }
+}
+onMounted(() => {
     withChange()
 })
 </script>
@@ -28,7 +38,7 @@ onMounted(()=>{
                     class="flex items-center justify-start md:justify-center pl-3 w-14 md:w-64 h-14 bg-gray-700 dark:bg-gray-800 border-none">
                     <img class=" hidden md:block w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden"
                         src="https://therminic2018.eu/wp-content/uploads/2018/07/dummy-avatar.jpg" />
-                    <span class=" md:block cursor-pointer " @click="ShowNav = !ShowNav">
+                    <span class=" md:block cursor-pointer " @click="openNav()">
                         <svg v-if="ShowNav" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -60,16 +70,17 @@ onMounted(()=>{
                             <div class="block w-px h-6 mx-3 bg-gray-400 dark:bg-gray-700"></div>
                         </li>
                         <li>
-                            <Link :href="route('logout')" :method="`POST`" type="button" as="button" class="flex items-center mr-4 hover:text-blue-100">
-                                <span class="inline-flex mr-1">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                        </path>
-                                    </svg>
-                                </span>
-                                Logout
+                            <Link :href="route('logout')" :method="`POST`" type="button" as="button"
+                                class="flex items-center mr-4 hover:text-blue-100">
+                            <span class="inline-flex mr-1">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                    </path>
+                                </svg>
+                            </span>
+                            Logout
                             </Link>
                         </li>
                     </ul>
@@ -92,12 +103,12 @@ onMounted(()=>{
 <script>
 import NavLink from '@/Components/NavLink.vue';
 import SidebarVue from '../Components/Sidebar.vue';
-import {Link} from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/inertia-vue3'
 
 
 export default {
     name: "AuthenticatedLayoutVue",
-    components: { NavLink, SidebarVue,Link }
+    components: { NavLink, SidebarVue, Link }
 }
 </script>
 <style>

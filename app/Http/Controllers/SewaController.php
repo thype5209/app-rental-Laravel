@@ -31,18 +31,18 @@ class SewaController extends Controller
     {
 
         return Inertia::render('Sewa/Pinjam', [
-            'sewa' =>  Sewa::orderBy('status','desc')
-            ->with(['pengguna', 'waktusewa', 'user'])
-            ->when(FacadesRequest::input('status'), function($query,$status){
-                if ( $status != 'semua') {
-                    $query->orWhere('status', $status);
-                    $query->orderBy('status','asc');
-                } elseif ($status == 'semua') {
-                    $query->orderBy('status','desc');
-                }
-            })
-            ->filter(FacadesRequest::only('search'))
-            ->paginate(10) ?? null,
+            'sewa' =>  Sewa::orderBy('status', 'desc')
+                ->with(['pengguna', 'waktusewa', 'user'])
+                ->when(FacadesRequest::input('status'), function ($query, $status) {
+                    if ($status != 'semua') {
+                        $query->orWhere('status', $status);
+                        $query->orderBy('status', 'asc');
+                    } elseif ($status == 'semua') {
+                        $query->orderBy('status', 'desc');
+                    }
+                })
+                ->filter(FacadesRequest::only('search'))
+                ->paginate(10) ?? null,
             'Tab' => FacadesRequest::input('status', 'semua'),
         ]);
     }
@@ -65,13 +65,13 @@ class SewaController extends Controller
      */
     public function create()
     {
-        $mobil = Mobil::where('status', '=','2')->get();
+        $mobil = Mobil::where('status', '=', '2')->get();
         $pengguna = Pengguna::all();
         $sopir = Sopir::all();
         return Inertia::render('Sewa/FormSewa', [
             'pengguna' => $pengguna,
             'mobil' => $mobil,
-            'sopir'=> $sopir,
+            'sopir' => $sopir,
         ]);
     }
 
@@ -84,14 +84,14 @@ class SewaController extends Controller
     public function formulir(Request $request)
     {
         $request->validate([
-            'jenis_sewa'=> 'required',
-            'nik' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|numeric',
-            'nama' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|string',
-            'tempat_lahir' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|string',
-            'tgl_lahir' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|date',
-            'pekerjaan' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required|string',
-            'no_hp' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required',
-            'no_hp_lain' =>  $request->jenis_sewa == "Kunci" ? 'nullable': 'required',
+            'jenis_sewa' => 'required',
+            'nik' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required|numeric',
+            'nama' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required|string',
+            'tempat_lahir' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required|string',
+            'tgl_lahir' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required|date',
+            'pekerjaan' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required|string',
+            'no_hp' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required',
+            'no_hp_lain' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required',
             'unit' => 'required|string',
             'nopol' => 'required|string',
             'tahun' => 'required|string',
@@ -103,22 +103,23 @@ class SewaController extends Controller
             'tujuan' => 'required|string',
             'jaminan' => 'string',
         ]);
-        $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function($query){
-            $query->whereIn('status', ['Sewa','Belum Dibayar' ,'Telat']);
+        $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
+            $query->whereIn('status', ['Sewa', 'Belum Dibayar', 'Telat']);
         })->get();
         $mobil = Mobil::where('nopol', '=', $request->nopol)->where('status', '1')->get();
         // dd($pengguna->count(), $mobil->count());
-        if($mobil->count() < 1 || $pengguna->count() < 1){
-            return Redirect::route('Sewa.index')->with('error', 'Maaf Penyewaan Tidak Dapat Dilanjutkan');
-        }else{
+        if ($mobil->count() > 0) {
+            return Redirect::route('Sewa.index')->with('error', 'Maaf Kendaraan Sedang Disewa');
+        } else if ($pengguna->count() > 0) {
+            return Redirect::route('Sewa.index')->with('error', 'Tunggakan Pembayaran Belum Lunas');
+
+        } else {
             $dat = $request->all();
             return Inertia::render('Sewa/Formulir', [
                 'formulir' => $dat,
-                'kode'=> $this->kodeSewa(),
+                'kode' => $this->kodeSewa(),
             ]);
         }
-
-
     }
     public function store(StoreSewaRequest $request)
     {
@@ -143,10 +144,10 @@ class SewaController extends Controller
      * @param  \App\Models\Sewa  $sewa
      * @return \Illuminate\Http\Response
      */
-    public function show(Sewa $sewa,$id)
+    public function show(Sewa $sewa, $id)
     {
         return Inertia::render('Sewa/Show', [
-            'sewa'=> $sewa->with(['pengguna', 'waktusewa'])->find($id)
+            'sewa' => $sewa->with(['pengguna', 'waktusewa'])->find($id)
         ]);
     }
 
@@ -179,7 +180,7 @@ class SewaController extends Controller
      * @param  \App\Models\Sewa  $sewa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sewa $sewa,$id)
+    public function destroy(Sewa $sewa, $id)
     {
         $sewa->find($id)->delete();
     }
@@ -193,10 +194,10 @@ class SewaController extends Controller
     public function CekSewaTelat()
     {
         $carbon = Carbon::now()->format("Y-m-d");
-        Sewa::whereHas('waktusewa', function($query) use($carbon){
+        Sewa::whereHas('waktusewa', function ($query) use ($carbon) {
             $query->whereDate('tgl_kembali', '<', $carbon);
         })->whereNot('status', '=', 'Selesai')->update([
-            'status'=>"Telat",
+            'status' => "Telat",
         ]);
     }
     /**
