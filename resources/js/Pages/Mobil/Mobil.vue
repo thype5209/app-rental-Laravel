@@ -9,7 +9,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 
 const props = defineProps({
-    mobil: Object,
+    mobil: {type:Object, default: ()=>({})},
     TabStatus: Object.toString()
 })
 const form = useForm();
@@ -31,10 +31,10 @@ var StatusForm = useForm({
     mobilid: null,
 })
 function isOpen(dataID) {
-    var data = props.mobil.find(function ({ id }) {
+    console.log(props.mobil);
+    var data = props.mobil.data.find(function ({ id }) {
         return id == dataID
     });
-    console.log(data);
     StatusForm.status = data.status;
     StatusForm.mobilid = data.id;
     ModalShow.value = true;
@@ -114,7 +114,7 @@ function   Status(n) {
                             {{ StatusForm.mobilid }}</h3>
                         <form class="space-y-6" @submit.prevent="submitStatus">
                             <div>
-                                <InputLabelVue for="email">Your email</InputLabelVue>
+                                <InputLabelVue for="email">Pilih Status Unit</InputLabelVue>
                                 <select id="countries" v-model="StatusForm.status"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected>Pilih Status</option>
@@ -124,8 +124,7 @@ function   Status(n) {
                                 </select>
                             </div>
                             <div>
-                                <InputLabelVue>Your password</InputLabelVue>
-                                <TextInputVue type="text" name="mobilid" id="mobilid"
+                                <TextInputVue type="hidden" name="mobilid" id="mobilid"
                                     v-model:model-value="StatusForm.mobilid" />
                             </div>
                             <button type="submit"

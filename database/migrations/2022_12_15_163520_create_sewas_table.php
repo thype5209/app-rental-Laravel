@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('harga_bulan')->comment('bulan/hari');
             $table->string('harga');
             $table->string('nik', 100);
+            $table->foreignId('sopir_id', 100)->nullable();
+
             $table->string('penanggung_jawab', 100);
             $table->string('tujuan', 100);
             $table->string('jaminan', 100)->nullable();

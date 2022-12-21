@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>{{ $kode }}-{{ $data->nik }}/{{ $data->nopol }}</title>
     <link rel="stylesheet" type="text/css" href="{{ public_path('/css/pdfstyle.css') }}">
 </head>
@@ -20,18 +20,21 @@
         padding-left: 4rem;
         padding-right: 4rem;
     }
-    .header{
+
+    .header {
         width: 100%;
         height: max-content;
         display: flex;
         justify-content: center;
         border-bottom: 3px solid #000;
     }
-    .table-header{
+
+    .table-header {
         position: relative;
         left: 7em;
     }
-    span{
+
+    span {
         text-transform: capitalize;
     }
 </style>
@@ -44,7 +47,7 @@
                 <tr>
                     <td class="text-right ">
                         <img src="{{ public_path('img/logo.png') }}" width="100" height="100" class="w-1/2 "
-                    alt="">
+                            alt="">
                     </td>
                     <td class="text-left  max-w-md">
                         <ul class="text-left">
@@ -71,48 +74,58 @@
             </tr>
 
         </table>
-        <table class="table w-max sm:w-1/4 md:w-1/3 mb-5">
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nik }} </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Nama</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nama }} </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Tempat/Tanggal Lahir</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->tempat_lahir }}/{{ $data->tgl_lahir }} </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Pekerjaan</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:{{ $data->pekerjaan }}</td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Alamat</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->alamat }}</td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">No. HP</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->no_hp }} </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">No. HP Kerabat Lain</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->no_hp_lain }}</td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Sosial Media</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->sosial }}</td>
-            </tr>
-        </table>
-        <p class="w-full text-justify font-bold">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
-            kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
+        @if ($data->jenis_sewa == 'Lepas')
+            <table class="table w-max sm:w-1/4 md:w-1/3 mb-5">
+                <tr class=" p-0 m-0">
+                    <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
+                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nik }}
+                    </td>
+                </tr>
+                <tr class=" p-0 m-0">
+                    <td class=" whitespace-nowrap mb-0 p-0">Nama</td>
+                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nama }}
+                    </td>
+                </tr>
+                <tr class=" p-0 m-0">
+                    <td class=" whitespace-nowrap mb-0 p-0">Tempat/Tanggal Lahir</td>
+                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                        {{ $data->tempat_lahir }}/{{ $data->tgl_lahir }} </td>
+                </tr>
+                <tr class=" p-0 m-0">
+                    <td class=" whitespace-nowrap mb-0 p-0">Pekerjaan</td>
+                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:{{ $data->pekerjaan }}
+                    </td>
+                </tr>
+                <tr class=" p-0 m-0">
+                    <td class=" whitespace-nowrap mb-0 p-0">Alamat</td>
+                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->alamat }}
+                    </td>
+                </tr>
+                <tr class=" p-0 m-0">
+                    <td class=" whitespace-nowrap mb-0 p-0">No. HP</td>
+                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->no_hp }}
+                    </td>
+                </tr>
+                <tr class=" p-0 m-0">
+                    <td class=" whitespace-nowrap mb-0 p-0">No. HP Kerabat Lain</td>
+                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                        {{ $data->no_hp_lain }}</td>
+                </tr>
+                <tr class=" p-0 m-0">
+                    <td class=" whitespace-nowrap mb-0 p-0">Sosial Media</td>
+                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->sosial }}
+                    </td>
+                </tr>
+            </table>
+            <p class="w-full text-justify font-bold">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
+                kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
+        @endif
         <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
             <tr class=" p-0 m-0">
                 <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan</td>
                 <td class=" whitespace-nowrap mb-0 p-0">
                     <span>
-                        <span class="font-bold capitalize" >:</span>&nbsp;&nbsp;
+                        <span class="font-bold capitalize">:</span>&nbsp;&nbsp;
                         {{ $data->unit }}
                     </span>
                     <span class=" whitespace-nowrap mb-0 p-0 font-bold">No. Kendaraan</span>
@@ -130,8 +143,10 @@
             <tr class=" p-0 m-0">
                 <td class=" whitespace-nowrap mb-0 p-0 font-bold">Nilai Sewa</td>
                 <td>
-                    <span class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{ $data->nilaisewahari }} /Per Hari</span>
-                    <span class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{ $data->nilaisewabulan }} /Per Bulan</span>
+                    <span class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp.
+                        {{ $data->nilaisewahari }} /Per Hari</span>
+                    <span class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp.
+                        {{ $data->nilaisewabulan }} /Per Bulan</span>
 
                 </td>
             </tr>

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Sewa;
 use Inertia\Inertia;
 use App\Models\Mobil;
 use App\Models\Sopir;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreSewaRequest;
 use App\Http\Requests\UpdateSewaRequest;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class SewaController extends Controller
@@ -64,7 +65,7 @@ class SewaController extends Controller
      */
     public function create()
     {
-        $mobil = Mobil::where('status', '!=','2')->get();
+        $mobil = Mobil::where('status', '=','2')->get();
         $pengguna = Pengguna::all();
         $sopir = Sopir::all();
         return Inertia::render('Sewa/FormSewa', [
@@ -98,18 +99,43 @@ class SewaController extends Controller
             'nilaisewabulan' => 'required|string',
             'tgl_sewa' => 'required|date',
             'tgl_kembali' => 'required|date',
-            'lama_sewa' => 'required|string',
+            // 'lama_sewa' => 'required|string',
             'tujuan' => 'required|string',
             'jaminan' => 'string',
         ]);
-        $dat = $request->all();
-        return Inertia::render('Sewa/Formulir', [
-            'formulir' => $dat,
-        ]);
+        $pengguna = Pengguna::whereHas('sewa', function($query){
+            $query->whereNotIn('status', ['3','4']);
+        })
+        ->where('nik', '=', $request->nik)
+        ->get();
+        $mobil = Mobil::where('nopol', '=', $request->nopol)->where('status', '1')->get();
+        if($mobil->count() > 0){
+            return Redirect::route('Sewa.index')->with('error', 'Maaf Mobil Sudah Di Sewa');
+        }else{
+            $dat = $request->all();
+            return Inertia::render('Sewa/Formulir', [
+                'formulir' => $dat,
+                'kode'=> $this->kodeSewa(),
+            ]);
+        }
+
+
     }
     public function store(StoreSewaRequest $request)
     {
         //
+    }
+    public function kodeSewa()
+    {
+        $sewa = Sewa::max('kode');
+        if ($sewa == null) {
+            $kode = 'S001';
+        } else {
+            $k = substr($sewa, 1, 3);
+            $k++;
+            $kode = 'S' . sprintf('%03s', $k);
+        }
+        return $kode;
     }
 
     /**

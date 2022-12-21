@@ -62,7 +62,7 @@ class LaporanController extends Controller
         // Panggil Fungsi Kode
         $kode = $this->kodeSewa();
         $path =  'SewaPDF/';
-        $namaPDF = $path . $kode . '-' . $req->nama . '-' . $req->tgl_sewa . '.pdf';
+        $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
         //buat pengguna
         $this->createPengguna($req);
         $this->sewaCreate($req, $kode, $namaPDF);

@@ -141,6 +141,18 @@ function diffDate(date1) {
                 </div>
             </div>
         </Modal>
+        <div v-if="$page.props.flash.success"
+            class=" flex flex-row justify-between p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+            role="alert">
+            <span class="font-medium">{{ $page.props.flash.success }}</span>
+
+        </div>
+        <div v-if="$page.props.flash.error"
+            class=" flex flex-row justify-between p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+            role="alert">
+            <span class="font-medium">{{ $page.props.flash.error }}</span>
+
+        </div>
         <!-- EndModal -->
         <div class="container bg-gray-200 rounded-t-md">
             <!-- TAB NAV -->
@@ -219,8 +231,14 @@ function diffDate(date1) {
                                 class="text-gray-700 dark:text-gray-400">
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ index + 1 }}</td>
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ mobil.kode }}</td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ mobil.nik }}</td>
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ mobil.pengguna.nama }}</td>
+                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">
+                                    <span v-if="mobil.nik != null">{{ mobil.nik }}</span>
+                                    <span v-else>---------</span>
+                                </td>
+                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border" v-if="mobil.pengguna != null">{{
+                                        mobil.pengguna.nama
+                                }}</td>
+                                <td class="md:px-4 md:py-3 px-2 py-2 text-sm border" v-else>Sopir</td>
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ mobil.nopol }}</td>
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">{{ mobil.waktusewa.tgl_sewa }}</td>
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-sm border">

@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import SelectVUe from "@/Components/Select.vue";
 import PrimaryButtonVue from "@/Components/PrimaryButton.vue";
 import { defineProps, ref, watch, onBeforeMount, onMounted, h } from "vue";
+import ModalVue from "@/Components/Modal.vue";
 
 const props = defineProps({
     pengguna: {
@@ -25,6 +26,7 @@ const props = defineProps({
     },
     errors: Object
 });
+console.log(props.mobil)
 const dataInputSewa = {
     jenis_sewa: '',
     sopir_id: '',
@@ -79,39 +81,8 @@ var TabNonActive =
     "text-gray-600 bg-blue-500 py-2 md:px-6 block hover:text-blue-500 focus:outline-none";
 Form.jenis_sewa = ref("Lepas");
 
-// Fungsi Cari Pengguna Dengan Nik
-const SearchNIK = ref('')
-let ulNik = ref({});
-const NIKPengguna = ref(null)
-function CariNIK(event) {
-    console.log(event.target.value)
-    axios.get(route('Pengguna.GetID', { id: event.target.value }))
-        .then(response => {
-            Form.nik = response.data.nik;
-            Form.nama = response.data.nama;
-            Form.tempat_lahir = response.data.tempat_lahir;
-            Form.tgl_lahir = response.data.tgl_lahir;
-            Form.no_hp = response.data.no_hp;
-            Form.no_hp_lain = response.data.no_hp_lain;
-            Form.alamat = response.data.alamat;
-            Form.pekerjaan = response.data.pekerjaan;
-        }).catch(error=>console.log(error))
 
-}
-watch(SearchNIK, value => {
-    axios.get(route('Pengguna.CariNIK', { search: value })).then((response) => {
-        var li = "";
-        if(response.data.length > 0){
-            response.data.forEach(element => {
-            // li+= `<option class="text-sm text-gray-500 border-b px-3 cursor-pointer py-2 hover:bg-gray-200" v-bind:on-click="CariNIK(${element.nik},${element.nama},${element.tempat_lahir},${element.tgl_lahir},${element.no_hp},${element.no_hp_lain},${element.alamat},${element.pekerjaan})">${element.nama}</option>`;
-            li += `<option class="text-sm text-gray-500 border-b px-3 cursor-pointer py-2 hover:bg-gray-200" value="${element.id}">${element.nama}</option>`;
-        });
-        ulNik = li;
-        }else{
-            ulNik = `<option class="text-sm text-gray-500 border-b px-3 cursor-pointer py-2 hover:bg-gray-200">Tidak Ada</option>`
-        }
-    })
-})
+
 // Fungsi Cari Mobil Dengan Select ID
 function GetMobil(event) {
     axios
@@ -131,7 +102,7 @@ function GetMobil(event) {
 
 // Kirim Data
 function submit() {
-    Form.get(route("Sewa.formulir"), { preserveState: true });
+    Form.post(route("Sewa.formulir"), { preserveState: true });
 }
 
 
@@ -169,12 +140,103 @@ function getTanggal(event) {
     var diff = diff_date(tgl_pengajuan, tgl_kembali);
     Form.lama_sewa = diff;
 }
+
+function SelectSopir(event) {
+    Form.sopir_id = event.target.value;
+}
+
+// Fungsi Cari Pengguna Dengan Nik
+const SearchNIK = ref('')
+let ulNik = ref({});
+const NIKPengguna = ref(null)
+
+// Modal variabel
+const ModalShow = ref(true);
+// ref untuk tunggakan
+const Tunggakan = ref([])
+function isClose() {
+    ModalShow.value = false;
+}
+
+
+function CariNIK(event) {
+    console.log(event.target.value)
+    axios.get(route('Pengguna.GetID', { id: event.target.value }))
+        .then(response => {
+            Form.nik = response.data.nik;
+            Form.nama = response.data.nama;
+            Form.tempat_lahir = response.data.tempat_lahir;
+            Form.tgl_lahir = response.data.tgl_lahir;
+            Form.no_hp = response.data.no_hp;
+            Form.no_hp_lain = response.data.no_hp_lain;
+            Form.alamat = response.data.alamat;
+            Form.pekerjaan = response.data.pekerjaan;
+
+            Tunggakan = response.data.sewa
+
+        }).catch(error => console.log(error))
+
+}
+watch(SearchNIK, value => {
+    axios.get(route('Pengguna.CariNIK', { search: value })).then((response) => {
+        var li = "";
+        if (response.data.length > 0) {
+            response.data.forEach(element => {
+                // li+= `<option class="text-sm text-gray-500 border-b px-3 cursor-pointer py-2 hover:bg-gray-200" v-bind:on-click="CariNIK(${element.nik},${element.nama},${element.tempat_lahir},${element.tgl_lahir},${element.no_hp},${element.no_hp_lain},${element.alamat},${element.pekerjaan})">${element.nama}</option>`;
+                li += `<option class="text-sm text-gray-500 border-b px-3 cursor-pointer py-2 hover:bg-gray-200" value="${element.id}">${element.nama}</option>`;
+            });
+            ulNik = li;
+        } else {
+            ulNik = `<option class="text-sm text-gray-500 border-b px-3 cursor-pointer py-2 hover:bg-gray-200">Tidak Ada</option>`
+        }
+    })
+})
+// End
 </script>
 
 <template>
     <AuthenticatedLayoutVue>
 
         <Head title="Sewa Form" />
+        <!-- Modal Jika Masih Ada Sewa Belum Dibayar -->
+        <ModalVue :show="ModalShow" :max-width="`2xl`" @close="isClose()">
+            <div class="relative w-full h-full md:h-auto">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <button type="button" @click="ModalShow = false"
+                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                        data-modal-toggle="authentication-modal">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                    <div class="px-6 py-6 lg:px-8 flex flex-col justify-center">
+                        <h1 class="text-base font-semibold  uppercase text-center py-2 overflow-auto">Tunggakan
+                            Penyewaan Belum Di Bayar</h1>
+                        <table class="table w-full">
+                            <tr>
+                                <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Kode</td>
+                                <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Harga Sewa</td>
+                                <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Lama Sewa</td>
+                                <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Tanggal Sewa
+                                </td>
+                                <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Tanggal Kembali
+                                </td>
+                                <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Status</td>
+                                <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Total</td>
+                            </tr>
+                            <tr v-for="(item,index) in sewa" :key="item" :index="index">
+                                <td>{{sewa.kode}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </ModalVue>
         <!-- component -->
         <form class="w-full" @submit.prevent="submit">
             <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2">
@@ -190,14 +252,17 @@ function getTanggal(event) {
                     <PrimaryButtonVue @click="Form.jenis_sewa = 'Kunci'"
                         v-bind:class="Form.jenis_sewa == 'Kunci' ? TabActive : TabNonActive">Kunci</PrimaryButtonVue>
                 </nav>
-                <div class="-mx-3 md:flex mb-6"  v-if="Form.jenis_sewa == 'Lepas'">
+
+                <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Lepas'">
                     <div class="w-full px-3 relative">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-first-name">Pilih Pengguna </InputLabel>
-                        <TextInput id="grid-first-name" type="search" placeholder="Jane" v-model="SearchNIK" />
-                        <div v-if="SearchNIK"
+                        <TextInput id="grid-first-name" type="search" placeholder="Masukkan NIK" class="max-w-md"
+                            v-model="SearchNIK" />
+                        <div v-if="SearchNIK != ''"
                             class="HasilNik bg-white shadow-lg rounded-md py-1 w-64 absolute box-border">
-                            <SelectVUe v-model="NIKPengguna" v-html="ulNik" multiple @change="CariNIK($event)" @mouseleave="SearchNIK = ''">
+                            <SelectVUe v-model="NIKPengguna" v-html="ulNik" multiple @change="CariNIK($event)"
+                                @mouseleave="SearchNIK = ''">
 
                             </SelectVUe>
                         </div>
@@ -270,7 +335,7 @@ function getTanggal(event) {
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-first-name">Nama Supir</InputLabel>
                         <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            id="mobil_id" for="grid-first-name" v-model="Form.sopir_id">
+                            id="mobil_id" for="grid-first-name" @change="SelectSopir($event)" v-model="Form.sopir_id">
                             <option value="">---</option>
                             <option v-for="sopir in props.sopir" :key="sopir.id" :value="sopir.id">
                                 Nama= {{ sopir.nama }} | Nik= {{ sopir.nik }} | No.HP= {{ sopir.no_hp }}

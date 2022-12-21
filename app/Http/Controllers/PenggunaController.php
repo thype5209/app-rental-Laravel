@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class PenggunaController extends Controller
@@ -33,8 +34,11 @@ class PenggunaController extends Controller
     }
     public function GetID($id)
     {
-        $pengguna = Pengguna::find($id);
-        return json_encode($pengguna);
+        $pengguna = Pengguna::with('sewa')->whereHas('sewa', function($query){
+            $query->whereIn('status', ['Sewa','Belum Dibayar' ,'Telat']);
+        })->find($id);
+
+        return json_encode($pengguna->sewa);
     }
 
     /**

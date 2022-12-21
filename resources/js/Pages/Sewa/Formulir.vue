@@ -12,7 +12,8 @@ const data = defineProps({
     data: {
         type: Object,
         default: () => ({})
-    }
+    },
+    kode: Object.toString(),
 
 })
 
@@ -94,7 +95,12 @@ function parseMonth(value) {
 
 function cetakDanSave() {
     FormPDF.post(route('Laporan.saveSewa'), {
-        onSuccess: window.location.href = 'Laporan/CetakSewa'
+        preserveState:false,
+        replace:false,
+        onSuccess: ()=>{
+            window.location.href = '/Laporan/CetakSewa?pdf=SewaPDF/' + data.kode + "-" +  FormPDF.tgl_sewa + '.pdf';
+            FormPDF.reset();
+        },
     });
 }
 </script>
@@ -129,16 +135,26 @@ function cetakDanSave() {
                     </div>
                 </div>
 
-                <table class="table w-full bg-white">
+                <table class="table w-full bg-white mb-5">
                     <tr class=" p-0 m-0">
-                        <td colspan="4" class="text-center flex flex-col ">
+                        <td colspan="4" class="text-center flex flex-col justify-center  ">
                             <span class="text-center font-bold underline">SURAT PERNYATAAN SEWA KENDARAAN</span>
-                            <span class="font-semibold">No:</span>
+                            <span class="font-semibold text-center">No: {{ data.kode }}</span>
                         </td>
                     </tr>
 
+
+                </table>
+
+                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left" v-if="FormPDF.jenis_sewa == 'Kunci' ">
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Sopir</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.sopir_id"
+                                class="border-none text-xs p-0 m-0"></td>
+                    </tr>
                 </table>
                 <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left" v-if="FormPDF.jenis_sewa == 'Lepas' ">
+
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
                         <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.nik"
@@ -292,7 +308,7 @@ function cetakDanSave() {
                     </tr>
                 </table>
             </section>
-            <PrimaryButtonVue class=" w-1/2 text-center flex justify-center">Cetak</PrimaryButtonVue>
+            <PrimaryButtonVue type="submit" class=" w-1/2 text-center flex justify-center">Cetak</PrimaryButtonVue>
         </form>
     </AuthenticatedLayoutVue>
 </template>

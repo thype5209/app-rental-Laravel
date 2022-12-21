@@ -10,11 +10,11 @@
             </div>
             <!-- Flash Message -->
             <div v-if="$page.props.flash.success"
-            class=" flex flex-row justify-between p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
-            role="alert">
-            <span class="font-medium">{{ $page.props.flash.success }}</span>
+                class=" flex flex-row justify-between p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                role="alert">
+                <span class="font-medium">{{ $page.props.flash.success }}</span>
 
-        </div>
+            </div>
             <div class="w-full overflow-x-auto">
                 <table class="w-full whitespace-no-wrap">
                     <thead>
@@ -79,8 +79,7 @@
 
                                 </button>
                                 <button class=" bg-green-600 text-white px-2 py-1 rounded-md ml-2 font-semibold">
-                                    <Link :href="route('Sopir.edit', [{ id: user.id }])"
-                                        :data="{ id: user.unit }">
+                                    <Link :href="route('Sopir.edit', [{ id: user.id }])" :data="{ id: user.unit }">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5 font-semibold">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -135,9 +134,9 @@ export default {
         }
     },
     methods: {
-        destroy(id){
-            if(confirm("Apakah Anda Yakin??")){
-                this.destroyForm.delete(route('Sopir.destroy', {id: id}), {
+        destroy(id) {
+            if (confirm("Apakah Anda Yakin??")) {
+                this.destroyForm.delete(route('Sopir.destroy', { id: id }), {
                     preserveState: true,
                 })
             }

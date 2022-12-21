@@ -69,7 +69,7 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
             Route::get('/detail/{id}', 'show')->name('show');
             Route::put('/Update/{id}', 'update')->name('update');
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
-            Route::get('/Formulir' , 'formulir')->name('formulir');
+            Route::post('/Formulir' , 'formulir')->name('formulir');
             Route::put('/updateStatusModal/{id}' , 'updateStatusModal')->name('updateStatusModal');
         });
     });
