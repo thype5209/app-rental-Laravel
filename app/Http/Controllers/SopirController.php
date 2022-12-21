@@ -18,10 +18,13 @@ class SopirController extends Controller
     {
         $sopir = Sopir::query()->when(Request::input('search'), function($qeury,$search){
             return $qeury->where('nama', 'like', '%'. $search .'%')
-                ->where('nik', 'like',  '%'. $search .'%');
+                ->orWhere('nik', 'like',  '%'. $search .'%')
+                ->orWhere('no_hp', 'like',  '%'. $search .'%')
+                ->orWhere('alamat', 'like',  '%'. $search .'%');
         })->orderBy('id', 'desc')->paginate(10);
         return Inertia::render('Sopir/Sopir',[
             'sopir'=> $sopir,
+            'filter'=> Request::all('search'),
         ]);
     }
 

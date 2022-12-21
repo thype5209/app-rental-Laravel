@@ -68,39 +68,42 @@ watch(search, (value) => {
                     <thead>
                         <tr
                             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  bg-gray-50">
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">No.</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Kode</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">NIK</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Nama Penyewa</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">No. Polisi</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Tanggal Sewa</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Tanggal Kembali</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Status</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap">Detail</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">No.</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Kode</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">NIK</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Nama Penyewa</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">No. Polisi</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Tanggal Sewa</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Tanggal Kembali</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Status</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Detail</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                         <tr v-for="(mobil, index) in status.sewa.data" :key="mobil" :index="index"
                             class="text-gray-700 dark:text-gray-400">
-                            <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
+                            <td class="md:px-4 md:py-3 p-1.5 border text-sm">
                                 {{ index + 1 }}
                             </td>
-                            <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
+                            <td class="md:px-4 md:py-3 p-1.5 border text-sm">
                                 {{ mobil.kode }}
                             </td>
-                            <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
-                                {{ mobil.nik }}
+                            <td class="md:px-4 md:py-3 p-1.5 border text-sm">
+                                <span v-if="mobil.nik !=null">{{ mobil.nik }}</span>
+                                <span v-else>Kunci</span>
                             </td>
-                            <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
-                                {{ mobil.pengguna.nama }}
+                            <td class="md:px-4 md:py-3 p-1.5 border text-sm">
+                                <span v-if="mobil.pengguna != null">{{ mobil.pengguna.nama }}</span>
+                                <span v-else-if="mobil.sopir_id != null">sopir</span>
+                                <span v-else>Data Penyewa Terhapus</span>
                             </td>
-                            <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
+                            <td class="md:px-4 md:py-3 p-1.5 border text-sm">
                                 {{ mobil.nopol }}
                             </td>
-                            <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
+                            <td class="md:px-4 md:py-3 p-1.5 border text-sm">
                                 {{ mobil.waktusewa.tgl_sewa }}
                             </td>
-                            <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
+                            <td class="md:px-4 md:py-3 p-1.5 border text-sm">
                                 {{ mobil.waktusewa.tgl_kembali }}
                             </td>
                             <td class="md:px-4 md:py-3 px-2 py-2 text-xs">
@@ -109,7 +112,7 @@ watch(search, (value) => {
                                     {{ mobil.status }}
                                 </span>
                             </td>
-                            <td class="md:px-4 md:py-3 px-2 py-2 text-sm">
+                            <td class="md:px-4 md:py-3 p-1.5 border text-sm">
                                 <Link :href="route('Sewa.show', { id: mobil.id })">
                                 <button class="  bg-blue-500 text-white px-2 py-1 rounded-md ml-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

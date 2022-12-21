@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as FacadesRequest;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
@@ -22,14 +21,22 @@ class PenggunaController extends Controller
     }
     public function index()
     {
-        $pengguna = Pengguna::all();
         return Inertia::render('Pengguna/Pengguna', [
-            'pengguna' => $pengguna
+            'pengguna' => Pengguna::query()->when(Request::input('search'), function($query,$search){
+                $query->where('nama', 'like', '%'. $search .'%')
+                    ->orWhere('nik', 'like', '%'. $search .'%')
+                    ->orWhere('alamat', 'like', '%'. $search .'%')
+                    ->orWhere('no_hp', 'like', '%'. $search .'%')
+                    ->orWhere('no_hp_lain', 'like', '%'. $search .'%')
+                    ->orWhere('tempat_lahir', 'like', '%'. $search .'%')
+                    ->orWhere('tgl_lahir', 'like', '%'. $search .'%');
+            })->orderBy('id','desc')->paginate(10) ?? null,
+            'filter'=> Request::input('search', ''),
         ]);
     }
     public function cariNIK()
     {
-        $pengguna = Pengguna::where('nik', 'like', '%' .  FacadesRequest::input('search') . '%')->get();
+        $pengguna = Pengguna::where('nik', 'like', '%' .  Request::input('search') . '%')->get();
         return json_encode($pengguna);
     }
     public function GetID($id)
