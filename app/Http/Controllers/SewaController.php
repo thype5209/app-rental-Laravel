@@ -103,14 +103,13 @@ class SewaController extends Controller
             'tujuan' => 'required|string',
             'jaminan' => 'string',
         ]);
-        $pengguna = Pengguna::whereHas('sewa', function($query){
-            $query->whereNotIn('status', ['3','4']);
-        })
-        ->where('nik', '=', $request->nik)
-        ->get();
+        $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function($query){
+            $query->whereIn('status', ['Sewa','Belum Dibayar' ,'Telat']);
+        })->get();
         $mobil = Mobil::where('nopol', '=', $request->nopol)->where('status', '1')->get();
-        if($mobil->count() > 0){
-            return Redirect::route('Sewa.index')->with('error', 'Maaf Mobil Sudah Di Sewa');
+        // dd($pengguna->count(), $mobil->count());
+        if($mobil->count() < 1 || $pengguna->count() < 1){
+            return Redirect::route('Sewa.index')->with('error', 'Maaf Penyewaan Tidak Dapat Dilanjutkan');
         }else{
             $dat = $request->all();
             return Inertia::render('Sewa/Formulir', [

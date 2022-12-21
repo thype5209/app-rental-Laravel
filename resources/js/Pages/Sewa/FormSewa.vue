@@ -52,7 +52,7 @@ const dataInputSewa = {
     jaminan: ""
 };
 
-if (props.data.req == null || props.data.length > 0) {
+if (props.data.req != null && props.data.length > 0) {
     const DataKembali = props.data.req.FormPDF;
     dataInputSewa.nik = DataKembali.nik;
     dataInputSewa.nama = DataKembali.nama;
@@ -69,8 +69,7 @@ if (props.data.req == null || props.data.length > 0) {
     dataInputSewa.tujuan = DataKembali.tujuan;
     dataInputSewa.lama_sewa = DataKembali.lama_sew;
     dataInputSewa.jaminan = DataKembali.jaminan;
-
-    GetMobil(DataKembali.mobil_id);
+    console.log(DataKembali)
 }
 
 
@@ -151,9 +150,9 @@ let ulNik = ref({});
 const NIKPengguna = ref(null)
 
 // Modal variabel
-const ModalShow = ref(true);
+const ModalShow = ref(false);
 // ref untuk tunggakan
-const Tunggakan = ref([])
+const Tunggakan = ref(Object)
 function isClose() {
     ModalShow.value = false;
 }
@@ -163,17 +162,19 @@ function CariNIK(event) {
     console.log(event.target.value)
     axios.get(route('Pengguna.GetID', { id: event.target.value }))
         .then(response => {
-            Form.nik = response.data.nik;
-            Form.nama = response.data.nama;
-            Form.tempat_lahir = response.data.tempat_lahir;
-            Form.tgl_lahir = response.data.tgl_lahir;
-            Form.no_hp = response.data.no_hp;
-            Form.no_hp_lain = response.data.no_hp_lain;
-            Form.alamat = response.data.alamat;
-            Form.pekerjaan = response.data.pekerjaan;
-
-            Tunggakan = response.data.sewa
-
+            Form.nik = response.data.query.nik;
+            Form.nama = response.data.query.nama;
+            Form.tempat_lahir = response.data.query.tempat_lahir;
+            Form.tgl_lahir = response.data.query.tgl_lahir;
+            Form.no_hp = response.data.query.no_hp;
+            Form.no_hp_lain = response.data.query.no_hp_lain;
+            Form.alamat = response.data.query.alamat;
+            Form.pekerjaan = response.data.query.pekerjaan;
+            Tunggakan.value = response.data.query.sewa
+            if(response.data.status){
+                ModalShow.value = true;
+            }
+            console.log(response.data.query)
         }).catch(error => console.log(error))
 
 }
@@ -192,6 +193,14 @@ watch(SearchNIK, value => {
     })
 })
 // End
+
+function reduceArray(array, lamasewa) {
+    var sisa = array.split(',');
+    var harga = sisa.reduce((el, b) => el + b);
+
+    return Number(parseInt(harga) * lamasewa).toLocaleString();
+}
+console.log(reduceArray('120,000', 10));
 </script>
 
 <template>
@@ -229,8 +238,14 @@ watch(SearchNIK, value => {
                                 <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Status</td>
                                 <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Total</td>
                             </tr>
-                            <tr v-for="(item,index) in sewa" :key="item" :index="index">
-                                <td>{{sewa.kode}}</td>
+                            <tr v-for="(item, index) in Tunggakan" :key="item" :index="index">
+                                <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.kode }}</td>
+                                <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.harga }}</td>
+                                <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.waktusewa.lama_sewa }}</td>
+                                <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.waktusewa.tgl_sewa }}</td>
+                                <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.waktusewa.tgl_kembali }}</td>
+                                <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.status }}</td>
+                                <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ reduceArray(item.harga, item.waktusewa.lama_sewa) }} </td>
                             </tr>
                         </table>
                     </div>
@@ -392,7 +407,7 @@ watch(SearchNIK, value => {
                     <div class="md:w-1/2 px-3 mb-4 md:mb-0">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-first-name">Nilai Sewa/Hari</InputLabel>
-                        <TextInput id="grid-first-name" type="text" placeholder="0000" v-model="Form.nilaisewahari" />
+                        <TextInput id="grid-first-name" type="text" readonly placeholder="0000" v-model="Form.nilaisewahari" />
                         <p v-if="errors.nilaisewahari" class="text-red text-xs italic text-red-500">
                             Please fill out
                             this field.
@@ -401,7 +416,7 @@ watch(SearchNIK, value => {
                     <div class="md:w-1/2 px-3">
                         <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-last-name">Nilai Sewa/Bulan</InputLabel>
-                        <TextInput id="grid-last-name" type="text" placeholder="0000" v-model="Form.nilaisewabulan" />
+                        <TextInput id="grid-last-name" type="text" readonly placeholder="0000" v-model="Form.nilaisewabulan" />
                         <p v-if="errors.nilaisewabulan" class="text-red text-xs italic text-red-500">
                             Please fill
                             out
@@ -455,7 +470,6 @@ watch(SearchNIK, value => {
 <script>
 import AuthenticatedLayoutVue from "../../Layouts/AuthenticatedLayout.vue";
 import axios from "axios";
-import route from '../../../../vendor/tightenco/ziggy/src/js';
 
 export default {
     name: "FormPinjamVue",

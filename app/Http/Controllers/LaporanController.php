@@ -58,23 +58,30 @@ class LaporanController extends Controller
     public function saveSewa(Request $request)
     {
 
-        $req = $request;
-        // Panggil Fungsi Kode
-        $kode = $this->kodeSewa();
-        $path =  'SewaPDF/';
-        $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
-        //buat pengguna
-        $this->createPengguna($req);
-        $this->sewaCreate($req, $kode, $namaPDF);
+        // CekMobil
+        $mobil = Sewa::where('nopol', $request->nopol)->whereIn('status', ['Sewa'])->get();
+        if($mobil->count()> 0){
+            return Redirect::route('Sewa.index')->with('error', 'Mobil Dalam Penyewaan');
+        }else{
+            $req = $request;
+            // Panggil Fungsi Kode
+            $kode = $this->kodeSewa();
+            $path =  'SewaPDF/';
+            $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
+            //buat pengguna
+            $this->createPengguna($req);
+            $this->sewaCreate($req, $kode, $namaPDF);
 
-        // Tanggal
-        $carbon = $this->today();
-        // Melakukan Load Data PDF
-        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode]);
-        // Simpan File PDF Ke Public Storage
-        Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
+            // Tanggal
+            $carbon = $this->today();
+            // Melakukan Load Data PDF
+            $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode]);
+            // Simpan File PDF Ke Public Storage
+            Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
 
-        return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF]);
+            return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF]);
+        }
+
     }
 
 
@@ -170,6 +177,7 @@ class LaporanController extends Controller
     public function sewaCreate($request, $kode, $pdf_url)
     {
         $sewa = Sewa::create([
+            'jenis_sewa'=> $request->jenis_sewa,
             'kode' => $kode,
             'nopol' => $request->nopol,
             'unit' => $request->unit,

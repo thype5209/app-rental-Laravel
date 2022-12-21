@@ -23,22 +23,34 @@ class PenggunaController extends Controller
     public function index()
     {
         $pengguna = Pengguna::all();
-        return Inertia::render('Pengguna/Pengguna',[
-            'pengguna'=> $pengguna
+        return Inertia::render('Pengguna/Pengguna', [
+            'pengguna' => $pengguna
         ]);
     }
     public function cariNIK()
     {
-        $pengguna = Pengguna::where('nik', 'like', '%'.  FacadesRequest::input('search') .'%')->get();
+        $pengguna = Pengguna::where('nik', 'like', '%' .  FacadesRequest::input('search') . '%')->get();
         return json_encode($pengguna);
     }
     public function GetID($id)
     {
-        $pengguna = Pengguna::with('sewa')->whereHas('sewa', function($query){
-            $query->whereIn('status', ['Sewa','Belum Dibayar' ,'Telat']);
-        })->find($id);
-
-        return json_encode($pengguna->sewa);
+        $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
+            $query->whereIn('status', ['Sewa', 'Belum Dibayar', 'Telat']);
+        })->get();
+        if ($pengguna->count() > 0) {
+            $resp = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
+                $query->whereIn('status', ['Sewa', 'Belum Dibayar', 'Telat']);
+            })->find($id);
+            $code = true;
+        } else {
+            $resp = Pengguna::with('sewa', 'sewa.waktusewa')->find($id);
+            $code = false;
+        }
+        $data = [
+            'query' => $resp,
+            'status' => $code,
+        ];
+        return json_encode($data);
     }
 
     /**
