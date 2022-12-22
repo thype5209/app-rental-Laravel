@@ -8,7 +8,8 @@
                 <tr class="border-b border-gray-200 dark:border-gray-700">
                     <th scope="row" colspan="2"
                         class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                        <PrimaryButtonVue @click="back" class="bg-default-red hover:bg-red-500">Kembali</PrimaryButtonVue>
+                        <PrimaryButtonVue @click="back" class="bg-default-red hover:bg-red-500">Kembali
+                        </PrimaryButtonVue>
 
                     </th>
                 </tr>
@@ -35,7 +36,7 @@
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
                         {{ sewa.unit }}/{{ sewa.nopol }}/{{
-                        sewa.tahun
+                                sewa.tahun
                         }} </td>
                 </tr>
                 <tr>
@@ -101,6 +102,38 @@
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
                         {{ sewa.waktusewa.lama_sewa }} Hari</td>
                 </tr>
+                <tr>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap">
+                        Jumlah Telat Per Jam </td>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
+                        {{ sewa.waktusewa.telat }} JAM</td>
+                </tr>
+                <tr>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap">
+                        Jumlah Bayar</td>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
+                        Rp. {{ reduceArray(sewa.harga) }} </td>
+                </tr>
+                <tr>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap">
+                        Denda</td>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
+                        Rp. {{ reduceArray(sewa.denda) }} </td>
+                </tr>
+                <tr>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap">
+                        Total Bayar</td>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
+                        Rp. {{ reduceArray(sewa.harga , sewa.waktusewa.lama_sewa, sewa.denda) }} </td>
+                </tr>
 
             </table>
         </div>
@@ -119,18 +152,30 @@ export default {
         Link,
         PrimaryButtonVue
     },
+    setup(){
+        function reduceArray(array = [], lamasewa = 1, denda = 0) {
+            var sisa = array.split(',');
+            var harga = sisa.reduce((el, b) => el + b);
+            var total = (parseInt(harga) * lamasewa) + parseInt(denda);
+            return Number(total).toLocaleString();
+        }
+        return {reduceArray}
+    },
     props: {
         sewa: {
             type: Object,
             default: () => ({})
         },
     },
-    methods:{
+    mounted(){
+
+    },
+    methods: {
         back() {
-      window.history.back();
+            window.history.back();
+        },
     },
 
-    }
 
 }
 </script>

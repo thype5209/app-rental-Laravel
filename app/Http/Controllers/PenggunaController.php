@@ -43,7 +43,9 @@ class PenggunaController extends Controller
     {
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
             $query->whereIn('status', ['Sewa', 'Belum Dibayar', 'Telat']);
-        })->get();
+        })
+        ->where('id', $id)
+        ->get();
         if ($pengguna->count() > 0) {
             $resp = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
                 $query->whereIn('status', ['Sewa', 'Belum Dibayar', 'Telat']);

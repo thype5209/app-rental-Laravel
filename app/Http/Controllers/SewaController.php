@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreSewaRequest;
 use App\Http\Requests\UpdateSewaRequest;
+use App\Models\WaktuSewa;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
@@ -66,6 +67,9 @@ class SewaController extends Controller
     public function create()
     {
         $mobil = Mobil::where('status', '=', '2')->get();
+        if($mobil->count() < 1){
+            return Redirect::back()->with('error', 'Maaf Kendaraan Yang Tersedia Kosong atau Dalam Perbaikan');
+        }
         $pengguna = Pengguna::all();
         $sopir = Sopir::all();
         return Inertia::render('Sewa/FormSewa', [
@@ -105,21 +109,22 @@ class SewaController extends Controller
         ]);
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
             $query->whereIn('status', ['Sewa', 'Belum Dibayar', 'Telat']);
-        })->get();
+        })
+        ->where('nik', $request->nik)
+        ->get();
         $mobil = Mobil::where('nopol', '=', $request->nopol)->where('status', '1')->get();
         // dd($pengguna->count(), $mobil->count());
         if ($mobil->count() > 0) {
             return Redirect::route('Sewa.index')->with('error', 'Maaf Kendaraan Sedang Disewa');
-        } else if ($pengguna->count() > 0) {
-            return Redirect::route('Sewa.index')->with('error', 'Tunggakan Pembayaran Belum Lunas');
-
-        } else {
-            $dat = $request->all();
-            return Inertia::render('Sewa/Formulir', [
-                'formulir' => $dat,
-                'kode' => $this->kodeSewa(),
-            ]);
         }
+        if ($pengguna->count() > 0) {
+            return Redirect::route('Sewa.index')->with('error', 'Tunggakan Pembayaran Belum Lunas');
+        }
+        $dat = $request->all();
+        return Inertia::render('Sewa/Formulir', [
+            'formulir' => $dat,
+            'kode' => $this->kodeSewa(),
+        ]);
     }
     public function store(StoreSewaRequest $request)
     {
@@ -190,15 +195,35 @@ class SewaController extends Controller
             'status' => $request->status,
         ]);
     }
-
+    private function reduceArray($array)
+    {
+        $exp = explode(',', $array);
+        $hasil = null;
+        for ($i = 0; $i < count($exp); $i++) {
+            $hasil .= $exp[$i];
+        }
+        return $hasil;
+    }
     public function CekSewaTelat()
     {
         $carbon = Carbon::now()->format("Y-m-d");
-        Sewa::whereHas('waktusewa', function ($query) use ($carbon) {
-            $query->whereDate('tgl_kembali', '<', $carbon);
-        })->whereNot('status', '=', 'Selesai')->update([
-            'status' => "Telat",
-        ]);
+        $jam_carbon = Carbon::now()->format('H:i:s');
+        $sewa = Sewa::with('waktusewa')->whereHas('waktusewa', function ($query) use ($carbon) {
+            $query->where('tgl_kembali', '<', $carbon)
+                ->where('status', 'Telat');
+        })->whereNotIn('status',  ['Selesai'])->get();
+        $denda = 0.10;
+        foreach ($sewa as $item) {
+            $total_denda = abs($this->reduceArray($item->harga) * $denda);
+            $jam_sewa = $item->waktusewa->jam_sewa;
+            $waktu_kembali = Carbon::parse($item->waktusewa->tgl_kembali);
+            $waktu_sekarang = Carbon::now();
+            $diff = $waktu_sekarang->diffInHours($waktu_kembali);
+            $nilai_denda = $total_denda * $diff;
+
+            $item->update(['denda' => $nilai_denda, 'status' => "Telat"]);
+            WaktuSewa::where('sewa_id',  $item->id)->update(['telat' => $diff]);
+        }
     }
     /**
      * updateStatusModal
@@ -216,6 +241,16 @@ class SewaController extends Controller
         Mobil::where('nopol', '=', $sewa->nopol)->update([
             'status' => $request->status == 'Selesai' ? '2' : '1',
         ]);
+        // Synchronously
+    }
+    public function updateTanggal($id, Request $request)
+    {
+        $sewa = Sewa::find($id);
+        $waktusewa = WaktuSewa::where('sewa_id', $sewa->id)->update([
+            'tgl_kembali' => $request->tgl_kembali,
+            'lama_sewa' => $request->lama_sewa,
+        ]);
+
         // Synchronously
     }
 }

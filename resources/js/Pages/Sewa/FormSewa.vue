@@ -26,7 +26,6 @@ const props = defineProps({
     },
     errors: Object
 });
-console.log(props.mobil)
 const dataInputSewa = {
     jenis_sewa: '',
     sopir_id: '',
@@ -69,7 +68,6 @@ if (props.data.req != null && props.data.length > 0) {
     dataInputSewa.tujuan = DataKembali.tujuan;
     dataInputSewa.lama_sewa = DataKembali.lama_sew;
     dataInputSewa.jaminan = DataKembali.jaminan;
-    console.log(DataKembali)
 }
 
 
@@ -87,7 +85,6 @@ function GetMobil(event) {
     axios
         .get("/Mobil/GetIDMobil/" + event.target.value)
         .then(function (response) {
-            console.log(response.data);
             const mobil = response.data;
             Form.unit = mobil.unit;
             Form.nopol = mobil.nopol;
@@ -129,7 +126,6 @@ function diff_date(date1, date2) {
         r[key] = Math.floor(d / s[key]);
         d -= r[key] * s[key];
     });
-    console.log(Difference_In_Days);
     return Difference_In_Days;
 }
 // Cetak Tanggal
@@ -159,7 +155,6 @@ function isClose() {
 
 
 function CariNIK(event) {
-    console.log(event.target.value)
     axios.get(route('Pengguna.GetID', { id: event.target.value }))
         .then(response => {
             Form.nik = response.data.query.nik;
@@ -172,9 +167,10 @@ function CariNIK(event) {
             Form.pekerjaan = response.data.query.pekerjaan;
             Tunggakan.value = response.data.query.sewa
             if(response.data.status){
-                ModalShow.value = true;
+                ModalShow.value = response.data.status;
+            }else{
+                ModalShow.value = response.data.status;
             }
-            console.log(response.data.query)
         }).catch(error => console.log(error))
 
 }
@@ -200,7 +196,6 @@ function reduceArray(array, lamasewa) {
 
     return Number(parseInt(harga) * lamasewa).toLocaleString();
 }
-console.log(reduceArray('120,000', 10));
 </script>
 
 <template>
@@ -420,7 +415,8 @@ console.log(reduceArray('120,000', 10));
                             <!-- <p v-if="errors.jaminan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p> -->
                         </div>
                     </div>
-                    <PrimaryButtonVue type="submit" class="block w-full mb-3 text-center">Lanjutkan</PrimaryButtonVue>
+                    <PrimaryButtonVue type="submit" class="block w-full mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" v-if="ModalShow == false">Lanjutkan</PrimaryButtonVue>
+                    <PrimaryButtonVue type="submit" class="block w-full mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" disabled v-else>Error Akses Ditolak</PrimaryButtonVue>
                 </div>
             </form>
             <ModalVue :show="ModalShow" :max-width="`2xl`" @close="isClose()">

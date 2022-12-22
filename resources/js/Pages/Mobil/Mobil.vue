@@ -31,7 +31,6 @@ var StatusForm = useForm({
     mobilid: null,
 })
 function isOpen(dataID) {
-    console.log(props.mobil);
     var data = props.mobil.data.find(function ({ id }) {
         return id == dataID
     });
