@@ -3,7 +3,7 @@
 import { ref, watch, onUnmounted, onMounted, onBeforeMount } from 'vue';
 
 const navShow = localStorage.getItem('Shownav');
-const ShowNav = ref(false);
+const ShowNav = ref();
 
 
 function withChange() {
