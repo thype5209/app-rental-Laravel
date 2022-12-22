@@ -60,9 +60,9 @@ class LaporanController extends Controller
 
         // CekMobil
         $mobil = Sewa::where('nopol', $request->nopol)->whereIn('status', ['Sewa'])->get();
-        if($mobil->count()> 0){
+        if ($mobil->count() > 0) {
             return Redirect::route('Sewa.index')->with('error', 'Mobil Dalam Penyewaan');
-        }else{
+        } else {
             $req = $request;
             // Panggil Fungsi Kode
             $kode = $this->kodeSewa();
@@ -75,13 +75,14 @@ class LaporanController extends Controller
             // Tanggal
             $carbon = $this->today();
             // Melakukan Load Data PDF
-            $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode]);
+            $mobil = Mobil::where('nopol', $req->nopol)->first();
+
+            $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
             // Simpan File PDF Ke Public Storage
             Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
 
             return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF]);
         }
-
     }
 
 
@@ -137,9 +138,47 @@ class LaporanController extends Controller
                 $msg = 'Error';
                 break;
         }
-        return $parse[0] . ' ' . $msg . ' ' . $parse[2];
+        return $parse[2] . ' ' . $msg . ' ' . $parse[0];
     }
+    public function TESTdata()
+    {
+        $data = [
+            'jenis_sewa' => 'Kunci',
+            'mobil_id' => '1',
+            'nik' => '91010',
+            'nama' => 'wawan',
+            'tempat_lahir' => 'Bulukumba',
+            'tgl_lahir' => '19-10-2000',
+            'alamat' => 'Makassar',
+            'pekerjaan' => 'Mahasiswa',
+            'sosial' => 'FB',
+            'no_hp' => '081920019',
+            'no_hp_lain' => '019020191',
+            'nilaisewahari' => '20000',
+            'nilaisewabulan' => '90000',
+            'tgl_sewa' => '2022-12-01',
+            'tgl_kembali' => '2022-12-10',
+            'lama_sewa' => '10 hari',
+            'tujuan' => 'Bulukumba',
+            'jaminan' => 'KTP',
+            'unit' => 'avanza',
+            'nopol' => 'NK 0012',
+            'tahun' => '2022',
+        ];
+        $req = (object) $data;
+        // Panggil Fungsi Kode
+        $kode = $this->kodeSewa();
+        $path =  'SewaPDF/';
+        $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
+        //buat pengguna
 
+        // Tanggal
+        $carbon = $this->today();
+        $mobil = Mobil::where('nopol', $req->nopol)->first();
+        // Melakukan Load Data PDF
+        $pdf = Pdf::loadView('pdf-sewa-test', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
+        return $pdf->stream();
+    }
     /**
      * createPengguna
      * Tambah Data Pengguna
@@ -177,7 +216,7 @@ class LaporanController extends Controller
     public function sewaCreate($request, $kode, $pdf_url)
     {
         $sewa = Sewa::create([
-            'jenis_sewa'=> $request->jenis_sewa,
+            'jenis_sewa' => $request->jenis_sewa,
             'kode' => $kode,
             'nopol' => $request->nopol,
             'unit' => $request->unit,

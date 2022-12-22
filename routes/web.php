@@ -81,6 +81,7 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/CetakSewa', 'saveSewaCetak')->name('saveSewaDanCetak');
             Route::post('/saveSewa', 'saveSewa')->name('saveSewa');
+            Route::get('/TESTdata', 'TESTdata')->name('TESTdata');
         });
     });
     // Controller Pengguna

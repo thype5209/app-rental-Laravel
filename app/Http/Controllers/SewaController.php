@@ -43,6 +43,7 @@ class SewaController extends Controller
                     }
                 })
                 ->filter(FacadesRequest::only('search'))
+                ->where('status', '!=', 'Selesai')
                 ->paginate(10) ?? null,
             'Tab' => FacadesRequest::input('status', 'semua'),
         ]);
