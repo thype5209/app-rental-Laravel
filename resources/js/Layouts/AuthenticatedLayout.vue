@@ -61,7 +61,7 @@ onMounted(() => {
                                 <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </button>
-                        <input type="search" name="" id="" placeholder="Search"
+                        <input type="search" name="" id="" placeholder="Search" :value="$page.props.auth.user.name"
                             class="w-full pl-3 text-sm text-black outline-none focus:outline-none bg-transparent" />
                     </div>
                     <ul class="flex items-center">

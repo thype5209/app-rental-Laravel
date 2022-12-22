@@ -11,6 +11,10 @@ const props = defineProps({
         default: () => ({})
     },
     filter: Object.toString(),
+    can:{
+        type:Object,
+        default: ()=>({})
+    }
 })
 const dataUser = ref({});
 const count = ref(1);
@@ -37,7 +41,7 @@ watch(search, function(value){
         <div class="w-full overflow-hidden rounded-lg shadow-lg">
             <div class="flex flex-1 justify-between flex-row-reverse">
                 <div class="p-3 w-32">
-                    <Link :href="route('Sopir.create')" preserve-state
+                    <Link :href="route('Sopir.create')" preserve-state  v-if="can.create"
                         class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                     Tambah</Link>
                 </div>
@@ -75,6 +79,7 @@ watch(search, function(value){
                             <th class="px-4 py-3">Nama</th>
                             <th class="px-4 py-3">No. HP</th>
                             <th class="px-4 py-3">Alamat</th>
+                            <th class="px-4 py-3"  v-if="can.edit || can.delete">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -100,9 +105,9 @@ watch(search, function(value){
                             <td class="px-4 py-3 text-xs">
                                 {{ user.alamat }}
                             </td>
-                            <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-xs">
+                            <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-xs" v-if="can.edit || can.delete">
 
-                                <button @click="destroy(user.id)"
+                                <button @click="destroy(user.id)" v-if="can.delete"
                                     class="bg-default-red text-white px-2 py-1 rounded-md ml-2 font-semibold">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5 font-semibold">
@@ -111,7 +116,7 @@ watch(search, function(value){
                                     </svg>
 
                                 </button>
-                                <button class=" bg-green-600 text-white px-2 py-1 rounded-md ml-2 font-semibold">
+                                <button class=" bg-green-600 text-white px-2 py-1 rounded-md ml-2 font-semibold" v-if="can.edit">
                                     <Link :href="route('Sopir.edit', [{ id: user.id }])" :data="{ id: user.unit }">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5 font-semibold">

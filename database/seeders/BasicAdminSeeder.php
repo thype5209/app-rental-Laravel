@@ -73,7 +73,6 @@ class BasicAdminSeeder extends Seeder
         $role2->givePermissionTo('sewa list');
         $role2->givePermissionTo('sewa create');
         $role2->givePermissionTo('sewa edit');
-        $role2->givePermissionTo('sewa delete');
         $role2->givePermissionTo('sopir list');
         $role3 = Role::create(['name' => 'super-admin']);
         // gets all permissions via Gate::before rule; see AuthServiceProvider

@@ -13,6 +13,10 @@ const status = defineProps({
         type: Object,
         default: () => ({})
     },
+    can: {
+        type: Object,
+        default: () => ({})
+    },
     Tab: Object.toString()
 });
 
@@ -300,7 +304,7 @@ function lamaSewa(date1, date2) {
                                     </button>
                                     </Link>
                                     <button class="bg-default-red text-white px-2 py-1 rounded-md ml-2"
-                                        @click="destroy(mobil.id)">
+                                        @click="destroy(mobil.id)" v-if="can.delete">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -350,9 +354,10 @@ function lamaSewa(date1, date2) {
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="Sewa">Disewa</option>
                                         <option value="Telat">Telat</option>
-                                        <option value="Selesai">Selesai</option>
+                                        <option value="Selesai" v-if="can.updateselesai">Selesai</option>
                                     </select>
-                                    <p class="text-xs text-gray-500 text-justify">Keterangan: Pemilihan Status Selesai
+                                    <p class="text-xs text-gray-500 text-justify">Keterangan: Pemilihan Status Penyewaan Selesai <br>
+                                        Hanya Dapat Dilakukan Oleh Admin Kantor <br>
                                         Ketika Kendaraan/Unit Yang Disewakan Telah Kembali </p>
                                 </div>
                                 <div>

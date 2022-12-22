@@ -45,6 +45,13 @@ class SewaController extends Controller
                 ->filter(FacadesRequest::only('search'))
                 ->where('status', '!=', 'Selesai')
                 ->paginate(10) ?? null,
+                'can'=> [
+                    'create'=> Auth::user()->can('sewa create'),
+                    'edit'=> Auth::user()->can('sewa edit'),
+                    'delete'=> Auth::user()->can('sewa delete'),
+                    'update'=> Auth::user()->can('sewa update'),
+                    'updateselesai'=> Auth::user()->can('sewa updateselesai'),
+                ],
             'Tab' => FacadesRequest::input('status', 'semua'),
         ]);
     }

@@ -20,7 +20,8 @@ class Sewa extends Model
     {
         return $this->hasOne(Pengguna::class, 'nik', 'nik');
     }
-    public function user(){
+    public function user()
+    {
         return $this->hasOne(User::class, 'id', 'penanggung_jawab');
     }
 
@@ -49,17 +50,17 @@ class Sewa extends Model
                         ->orWhere('no_hp', 'like', '%' . $search . '%');
                 });
         })->when($filters['status'] ?? null, function ($query, $status) {
-            if ( $status != 'semua') {
+            if ($status != 'semua') {
                 $query->orWhere('status', $status);
             } elseif ($status == 'semua') {
-                $query->orderBy('status','desc');
+                $query->orderBy('status', 'desc');
             }
-        })->whereHas('user', function($query){
-            if(Auth::user()->role != 1){
-                $query->where('id', Auth::user()->id);
-            }else{
-                $query->orderBy('role','asc');
-            }
+        })->when(function ($query) {
+            // foreach (Auth::user()->role as $role) {
+                if (Auth::user()->role == 'writer') {
+                    $query->where('penanggung_jawab', '=', Auth::user()->id);
+                }
+            // }
         });
     }
 }

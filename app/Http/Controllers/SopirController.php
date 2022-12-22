@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Sopir;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
@@ -25,6 +26,12 @@ class SopirController extends Controller
         return Inertia::render('Sopir/Sopir',[
             'sopir'=> $sopir,
             'filter'=> Request::all('search'),
+            'can'=> [
+                'create'=> Auth::user()->can('mobil create'),
+                'edit'=> Auth::user()->can('mobil edit'),
+                'show'=> Auth::user()->can('mobil show'),
+                'delete'=> Auth::user()->can('mobil delete'),
+            ]
         ]);
     }
 

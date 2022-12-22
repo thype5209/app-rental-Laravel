@@ -222,8 +222,12 @@ function   Status(n) {
                                     {{ mobils.harga }}
                                 </td>
                                 <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-xs ">
-                                    <button type="button" @click="isOpen(mobils.id)"
+                                    <button type="button" @click="isOpen(mobils.id)" v-if="can.edit"
                                         class="px-2 py-1 font-semibold cursor-pointer capitalize leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                        {{ Status(mobils.status) }}
+                                    </button>
+                                    <button type="button"  v-else
+                                        class="px-2 py-1 font-semibold cursor-not-allowed capitalize leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
                                         {{ Status(mobils.status) }}
                                     </button>
 
