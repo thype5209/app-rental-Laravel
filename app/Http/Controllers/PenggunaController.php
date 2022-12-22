@@ -30,7 +30,7 @@ class PenggunaController extends Controller
                     ->orWhere('no_hp_lain', 'like', '%'. $search .'%')
                     ->orWhere('tempat_lahir', 'like', '%'. $search .'%')
                     ->orWhere('tgl_lahir', 'like', '%'. $search .'%');
-            })->orderBy('id','desc')->paginate(10) ?? null,
+            })->orderBy('nama','asc')->paginate(10) ?? null,
             'filter'=> Request::input('search', ''),
         ]);
     }
