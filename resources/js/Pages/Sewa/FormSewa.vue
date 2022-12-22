@@ -315,8 +315,8 @@ function reduceArray(array, lamasewa) {
                 </div>
 
                 <div class="inline-flex justify-center items-center w-full">
-                    <hr class="my-1 w-full h-1 bg-gray-200 rounded border-0 dark:bg-gray-700" />
-                    <div class="absolute left-1/2 px-4 bg-white -translate-x-1/2 dark:bg-gray-900">Detail Mobil</div>
+                    <hr class="my-1 w-full h-1 bg-gray-200 rounded border-0 " />
+                    <div class="absolute left-1/2 px-4 bg-white -translate-x-1/2 ">Detail Mobil</div>
                 </div>
                 <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2">
                     <div class="-mx-3 md:flex mb-6">
@@ -377,7 +377,7 @@ function reduceArray(array, lamasewa) {
                             </p>
                         </div>
                     </div>
-                    <hr class="my-2 h-px bg-gray-800 border-0 dark:bg-gray-700" />
+                    <hr class="my-2 h-px bg-gray-800 border-0 " />
                     <div class="-mx-3 grid grid-cols-1 sm:grid-cols-3 justify-center mb-6">
                         <div class="md:w-full px-3 mb-4 md:mb-0">
                             <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
@@ -422,9 +422,9 @@ function reduceArray(array, lamasewa) {
             <ModalVue :show="ModalShow" :max-width="`2xl`" @close="isClose()">
                 <div class="relative w-full h-full md:h-auto">
                     <!-- Modal content -->
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div class="relative bg-white rounded-lg shadow ">
                         <button type="button" @click="ModalShow = false"
-                            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center  "
                             data-modal-toggle="authentication-modal">
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg">
