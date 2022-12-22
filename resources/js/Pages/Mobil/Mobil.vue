@@ -135,6 +135,18 @@ function   Status(n) {
             </div>
         </Modal>
         <div class="bg-gray-200 w-full">
+            <div v-if="$page.props.flash.success"
+            class=" flex flex-row justify-between p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+            role="alert">
+            <span class="font-medium">{{ $page.props.flash.success }}</span>
+
+        </div>
+        <div v-if="$page.props.flash.error"
+            class=" flex flex-row justify-between p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+            role="alert">
+            <span class="font-medium">{{ $page.props.flash.error }}</span>
+
+        </div>
             <div
                 class="w-full rounded-lg bg-gray-200 flex flex-wrap justify-between flex-col-reverse md:flex-row overflow-auto">
                 <nav class="flex flex-row">

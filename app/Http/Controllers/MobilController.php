@@ -80,7 +80,7 @@ class MobilController extends Controller
             'status' => '2'
         ]);
 
-        return Redirect::route('Mobil.index');
+        return Redirect::route('Mobil.index')->with('success', 'Berhasil Di Tambah');
     }
 
     /**

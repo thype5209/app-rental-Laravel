@@ -14,6 +14,11 @@
                     </th>
                 </tr>
                 <tr>
+                    <td colspan="2"
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
+                        <a :href="`/storage/${sewa.pdf_url}`" class="text-blue-500 after:text-red-500" target="_blank">Link PDF</a></td>
+                </tr>
+                <tr>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap">
                         Kode Sewa</td>

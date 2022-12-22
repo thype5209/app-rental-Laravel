@@ -106,7 +106,7 @@ class SewaController extends Controller
             'tgl_kembali' => 'required|date',
             // 'lama_sewa' => 'required|string',
             'tujuan' => 'required|string',
-            'jaminan' => 'string',
+            'jaminan' => 'string|nullable',
         ]);
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
             $query->whereIn('status', ['Sewa', 'Belum Dibayar', 'Telat']);

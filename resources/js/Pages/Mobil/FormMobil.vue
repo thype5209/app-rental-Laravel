@@ -67,7 +67,7 @@ const Error = form.errors;
                     </div>
                     <div class="mb-2">
                         <label for="harga" class=" block text-sm font-medium text-black">
-                            Harga
+                            Harga Sewa
                         </label>
                         <input type="number" name="harga" id="harga" v-model="form.harga" placeholder=".............."
                             class="w-full rounded-md border border-[#e0e0e0] bg-white text-sm font-medium text-black outline-none focus:border-default-dark focus:shadow-md" />
