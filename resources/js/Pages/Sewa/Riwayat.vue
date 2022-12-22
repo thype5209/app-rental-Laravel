@@ -2,12 +2,8 @@
 <script setup>
 import { ref, defineProps, watch } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-import Modal from '@/Components/Modal.vue';
-import InputLabelVue from '@/Components/InputLabel.vue';
-import TextInputVue from '@/Components/TextInput.vue';
 import PaginationVue from '@/Components/Pagination.vue';
 
-const num = ref(0);
 const status = defineProps({
     sewa: {
         type: Object,
@@ -27,7 +23,7 @@ function destroy(id) {
 const search = ref('');
 const FormSearch = useForm();
 watch(search, (value) => {
-    FormSearch.get(route('Sewa.index', { search: value }), {
+    FormSearch.get(route('Sewa.riwayat', { search: value }), {
         preserveState: true,
     })
 });
@@ -38,7 +34,7 @@ watch(search, (value) => {
 <template>
     <AuthenticatedLayout>
 
-        <Head title="Sewa Form" />
+        <Head title="Sewa Riwayat" />
         <!-- Modal -->
 
         <!-- Search -->

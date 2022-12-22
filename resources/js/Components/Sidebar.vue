@@ -37,8 +37,8 @@ import ResponsiveNavLinkVue from './ResponsiveNavLink.vue';
                             </svg>
                         </span>
                         <span class="ml-2 text-sm tracking-wide truncate">Data Mobil</span>
-                        <span
-                            class="hidden md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-blue-500 bg-indigo-50 rounded-full">New</span>
+                        <!-- <span
+                            class="hidden md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-blue-500 bg-indigo-50 rounded-full">New</span> -->
                     </ResponsiveNavLinkVue>
                 </li>
 
@@ -68,8 +68,8 @@ import ResponsiveNavLinkVue from './ResponsiveNavLink.vue';
                             </svg>
                         </span>
                         <span class="ml-2 text-sm tracking-wide truncate">Riwayat Penyewaan </span>
-                        <span
-                            class="hidden md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">1.2k</span>
+                        <!-- <span
+                            class="hidden md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">1.2k</span> -->
                     </Link>
                 </li>
                 <li class="px-5 hidden md:block">
