@@ -69,13 +69,13 @@ function cariMobil(event) {
 function   Status(n) {
             var msg = '';
             switch (n) {
-                case 1:
+                case 1 || '1':
                     msg = 'Disewa'
                     break;
-                case 2:
+                case 2 || '2':
                     msg = 'Siap'
                     break;
-                case 3:
+                case 3 || '3':
                     msg = 'perbaikan'
                     break;
 
