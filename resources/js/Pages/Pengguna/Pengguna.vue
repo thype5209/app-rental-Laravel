@@ -27,6 +27,7 @@
                             <th class="px-4 py-3">Nama</th>
                             <th class="px-4 py-3">No. HP</th>
                             <th class="px-4 py-3">Alamat</th>
+                            <th class="px-4 py-3">Tunggakan</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -52,6 +53,17 @@
                             <td class="px-4 py-3 text-xs">
                                 {{ user.alamat }}
                             </td>
+                            <td class="px-4 py-3 text-xs">
+                                <ul class="space-y-1 max-w-md list-none list-inside text-gray-500 dark:text-gray-400">
+                                    <li v-for=" item in user.sewa " :key="item">
+                                        <span v-if="item != null" class="font-semibold text-gray-900 dark:text-white">Rp. {{ reduceArray(item.harga, item.waktusewa.lama_sewa, item.denda) }}</span>
+                                        <span v-else class="font-semibold text-gray-900 dark:text-white">Rp. ------</span>
+                                    </li>
+                                </ul>
+                                <span>
+
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -73,6 +85,15 @@ export default {
     components: {
         AuthenticatedLayout,
         PaginationVue
+    },
+    setup(){
+        function reduceArray(array = [], lamasewa = 1, denda = 0) {
+            var sisa = array.split(',');
+            var harga = sisa.reduce((el, b) => el + b);
+            var total = (parseInt(harga) * lamasewa) + parseInt(denda);
+            return Number(total).toLocaleString();
+        }
+        return {reduceArray}
     },
     data() {
         return {

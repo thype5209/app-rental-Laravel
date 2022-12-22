@@ -22,7 +22,7 @@ class PenggunaController extends Controller
     public function index()
     {
         return Inertia::render('Pengguna/Pengguna', [
-            'pengguna' => Pengguna::query()->when(Request::input('search'), function($query,$search){
+            'pengguna' => Pengguna::query()->with(['sewa', 'sewa.waktusewa'])->when(Request::input('search'), function($query,$search){
                 $query->where('nama', 'like', '%'. $search .'%')
                     ->orWhere('nik', 'like', '%'. $search .'%')
                     ->orWhere('alamat', 'like', '%'. $search .'%')
