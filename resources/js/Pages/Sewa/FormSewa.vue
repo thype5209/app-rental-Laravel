@@ -210,10 +210,10 @@ function reduceArray(array, lamasewa) {
                 <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2">
                     <div class="flex flex-row justify-left">
                         <Link :href="route('Sewa.index')">
-                        <PrimaryButtonVue type="button" class="bg-red-500">Kembali</PrimaryButtonVue>
+                        <PrimaryButtonVue type="button" class="bg-default-dark">Kembali</PrimaryButtonVue>
                         </Link>
                     </div>
-                    <nav class="flex justify-center gap-4 pb-5">
+                    <nav class="flex justify-center gap-4 pb-5 py-5">
                         <PrimaryButtonVue @click="Form.jenis_sewa = 'Lepas'"
                             v-bind:class="Form.jenis_sewa == 'Lepas' ? TabActive : TabNonActive">Lepas Kunci
                         </PrimaryButtonVue>
@@ -223,7 +223,7 @@ function reduceArray(array, lamasewa) {
 
                     <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Lepas'">
                         <div class="w-full px-3 relative">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Pilih Pengguna </InputLabel>
                             <TextInput id="grid-first-name" type="search" placeholder="Masukkan NIK" class="max-w-md"
                                 v-model="SearchNIK" />
@@ -240,13 +240,13 @@ function reduceArray(array, lamasewa) {
                     <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Lepas'">
 
                         <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">NIK</InputLabel>
                             <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.nik" />
                             <p v-if="errors.nik" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-1/2 px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Nama</InputLabel>
                             <TextInput id="grid-last-name" type="text" placeholder="Nama Lengkap" v-model="Form.nama" />
                             <p v-if="errors.nama" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
@@ -254,7 +254,7 @@ function reduceArray(array, lamasewa) {
                     </div>
                     <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Lepas'">
                         <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Tempat/Tanggal Lahir</InputLabel>
                             <div class="flex">
                                 <TextInput id="grid-last-name" class="1/2" type="text" placeholder="Tempat Lahir"
@@ -265,14 +265,14 @@ function reduceArray(array, lamasewa) {
                             <p v-if="errors.tempat_lahir" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-1/2 px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Alamat</InputLabel>
 
                             <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.alamat" />
                             <p v-if="errors.tgl_lahir" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-1/2 px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Pekerjaan</InputLabel>
 
                             <TextInput id="grid-first-name" type="text" placeholder="Jane" v-model="Form.pekerjaan" />
@@ -281,26 +281,26 @@ function reduceArray(array, lamasewa) {
                     </div>
                     <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Lepas'">
                         <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Nomor HP</InputLabel>
                             <TextInput id="grid-first-name" type="tel" placeholder="+62" v-model="Form.no_hp" />
                             <p v-if="errors.no_hp" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-1/2 px-3 mb-4">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Nomor HP Kerabat lain</InputLabel>
                             <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.no_hp_lain" />
                             <p v-if="errors.no_hp_lain" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-1/2 px-3 mb-4">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Sosial</InputLabel>
                             <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sosial" />
                         </div>
                     </div>
                     <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Kunci'">
                         <div class="w-full px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Nama Supir</InputLabel>
                             <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 id="mobil_id" for="grid-first-name" @change="SelectSopir($event)" v-model="Form.sopir_id">
@@ -321,7 +321,7 @@ function reduceArray(array, lamasewa) {
                 <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2">
                     <div class="-mx-3 md:flex mb-6">
                         <div class="w-full px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Jenis Mobil</InputLabel>
                             <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 id="mobil_id" for="grid-first-name" @change="GetMobil($event)">
@@ -334,21 +334,21 @@ function reduceArray(array, lamasewa) {
                     </div>
                     <div class="-mx-3 sm:flex mb-6">
                         <div class="sm:w-1/3 px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Jenis Kendaraan</InputLabel>
                             <TextInput id="grid-last-name" type="text" placeholder="Jenis Kendaraan" readonly required
                                 v-model="Form.unit" />
                             <p v-if="errors.unit" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="sm:w-1/3 px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">No. Kendaraan</InputLabel>
                             <TextInput id="grid-last-name" class="1/2" type="text" placeholder="No. Kendaraan" readonly
                                 required v-model="Form.nopol" />
                             <p v-if="errors.nopol" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="sm:w-1/2 px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Tahun</InputLabel>
 
                             <TextInput id="grid-first-name" type="number" placeholder="0000" readonly required
@@ -358,7 +358,7 @@ function reduceArray(array, lamasewa) {
                     </div>
                     <div class="-mx-3 sm:flex justify-center w-full">
                         <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Nilai Sewa/Hari</InputLabel>
                             <TextInput id="grid-first-name" type="text" readonly placeholder="0000" v-model="Form.nilaisewahari" />
                             <p v-if="errors.nilaisewahari" class="text-red text-xs italic text-red-500">
@@ -367,7 +367,7 @@ function reduceArray(array, lamasewa) {
                             </p>
                         </div>
                         <div class="md:w-1/2 px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Nilai Sewa/Bulan</InputLabel>
                             <TextInput id="grid-last-name" type="text" readonly placeholder="0000" v-model="Form.nilaisewabulan" />
                             <p v-if="errors.nilaisewabulan" class="text-red text-xs italic text-red-500">
@@ -380,20 +380,20 @@ function reduceArray(array, lamasewa) {
                     <hr class="my-2 h-px bg-gray-800 border-0 " />
                     <div class="-mx-3 grid grid-cols-1 sm:grid-cols-3 justify-center mb-6">
                         <div class="md:w-full px-3 mb-4 md:mb-0">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Tanggal Sewa</InputLabel>
                             <TextInput id="grid-first-name" type="date" placeholder="+62" v-model="Form.tgl_sewa" />
                             <p v-if="errors.tgl_sewa" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-full px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Tanggal Kembali</InputLabel>
                             <TextInput id="grid-last-name" type="date" placeholder="+62" @change="getTanggal($event)"
                                 v-model="Form.tgl_kembali" />
                             <p v-if="errors.tgl_kembali" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-full px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Lama Sewa</InputLabel>
                             <TextInput id="grid-last-name" type="text" placeholder="...." v-model="Form.lama_sewa" />
                             <p v-if="errors.lama_sewa" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
@@ -401,14 +401,14 @@ function reduceArray(array, lamasewa) {
                     </div>
                     <div class="-mx-3 grid grid-cols-1 sm:grid-cols-2 justify-center mb-2">
                         <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Tujuan Penyewa</InputLabel>
                             <TextInput id="grid-first-name" type="text" placeholder="......................"
                                 v-model="Form.tujuan" />
                             <p v-if="errors.tujuan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-1/2 px-3">
-                            <InputLabel class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            <InputLabel class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Jaminan Sewa</InputLabel>
                             <TextInput id="grid-last-name" type="text" placeholder="......................"
                                 v-model="Form.jaminan" />
