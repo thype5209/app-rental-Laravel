@@ -370,7 +370,7 @@
         @for ($i = 0; $i < 4; $i++)
             <tr>
                 <td class="border-bottom-none" rowspan="6" style="width: 300px;">
-                    <img src="{{ public_path('fotoMobil/' . $namaF[$i]) }}" width="180" alt="">
+                    <img src="{{ public_path('fotoMobil/' . $namaF[$i]) }}" width="140" alt="">
                 </td>
                 <td class="border"></td>
             </tr>
