@@ -19,7 +19,7 @@ console.log(data.mobil)
                     class="w-full max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:bg-default-dark dark:border-gray-700">
                     <div class="space-y-6">
                         <h6 class="text-xs md:text-xl font-medium text-gray-900 ">{{ slide.unit }}/{{ slide.spesifikasi }}</h6>
-                        <label for="email" class="block mb-2 text-xs md:text-sm font-medium text-gray-900 dark:text-white text-center">Rp. Harga</label>
+                        <label for="email" class="block mb-2 text-xs md:text-sm font-medium text-gray-900 dark:text-white text-center">Rp. {{ slide.harga }}/Hari</label>
                         <div class="flex justify-center overflow-hidden">
                         <img :src="'/fotoMobil/'+slide.foto1" alt="" class="h-max bg-cover w-[50%]">
                         </div>
