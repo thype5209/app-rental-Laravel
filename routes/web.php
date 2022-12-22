@@ -71,6 +71,8 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::post('/Formulir' , 'formulir')->name('formulir');
             Route::put('/updateTanggal/{id}' , 'updateTanggal')->name('updateTanggal');
+            Route::put('/updateStatusModal/{id}' , 'updateStatusModal')->name('updateStatusModal');
+            Route::put('/updateTanggal/{id}' , 'updateTanggal')->name('updateTanggal');
 
         });
     });
