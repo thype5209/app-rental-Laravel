@@ -10,7 +10,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 const props = defineProps({
     mobil: {type:Object, default: ()=>({})},
-    TabStatus: Object.toString()
+    TabStatus: Object.toString(),
+    can: {
+        type: Object,
+        default: ()=>({})
+    }
 })
 const form = useForm();
 function destroy(id) {
@@ -163,7 +167,7 @@ function   Status(n) {
                         Perbaikan
                     </button>
                 </nav>
-                <div class="p-3 w-32">
+                <div class="p-3 w-32" v-if="can.create">
                     <Link :href="route('Mobil.create')"
                         class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
                     Tambah</Link>
@@ -202,7 +206,7 @@ function   Status(n) {
                                 </th>
                                 <th class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap">Status
                                 </th>
-                                <th class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap">Detail
+                                <th class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap" >Aksi
                                 </th>
                             </tr>
                         </thead>
@@ -224,7 +228,7 @@ function   Status(n) {
                                     </button>
 
                                 </td>
-                                <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-sm">
+                                <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-sm" >
                                     <button class="bg-blue-700 text-white px-2 py-1 rounded-md ml-2 font-semibold">
                                         <Link :href="route('Mobil.show', [{ id: mobils.id }])"
                                             :data="{ data: mobils.unit + mobils.nopol }">
@@ -238,7 +242,7 @@ function   Status(n) {
                                         </svg>
                                         </Link>
                                     </button>
-                                    <button @click="destroy(mobils.id)"
+                                    <button @click="destroy(mobils.id)" v-if="can.edit || can.delete "
                                         class="bg-default-red text-white px-2 py-1 rounded-md ml-2 font-semibold">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5 font-semibold">
@@ -247,7 +251,7 @@ function   Status(n) {
                                         </svg>
 
                                     </button>
-                                    <button class=" bg-green-600 text-white px-2 py-1 rounded-md ml-2 font-semibold">
+                                    <button class=" bg-green-600 text-white px-2 py-1 rounded-md ml-2 font-semibold" v-if="can.edit || can.delete ">
                                         <Link :href="route('Mobil.edit', [{ id: mobils.id }])"
                                             :data="{ mobil: mobils.unit }">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

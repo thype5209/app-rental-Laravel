@@ -6,12 +6,21 @@ use Inertia\Inertia;
 use App\Models\Mobil;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class MobilController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:mobil list', ['only' => ['index', 'show']]);
+        $this->middleware('can:mobil create', ['only' => ['create', 'store']]);
+        $this->middleware('can:mobil edit', ['only' => ['edit', 'update']]);
+        $this->middleware('can:mobil delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -31,6 +40,12 @@ class MobilController extends Controller
                         ->orWhere('spesifikasi', 'like', '%' . $search . '%');
                 })
                 ->paginate(10),
+            'can'=> [
+                'list'=> Auth::user()->can('mobil list'),
+                'create'=> Auth::user()->can('mobil create'),
+                'edit'=> Auth::user()->can('mobil edit'),
+                'delete'=> Auth::user()->can('mobil delete'),
+            ]
 
         ]);
     }

@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('sopirs', function (Blueprint $table) {
             $table->id();
             $table->string('nik',30)->unique();
-            $table->string('nama',30);
-            $table->string('alamat',30);
+            $table->string('nama',100);
+            $table->string('alamat',100);
             $table->string('no_hp',30);
             $table->softDeletes();
             $table->timestamps();
