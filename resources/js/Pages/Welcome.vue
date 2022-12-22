@@ -2,6 +2,7 @@
 import CardMobil from '@/Components/home/CardMobil.vue'
 import CarouselVue from '@/Components/home/Carousel.vue';
 import { Link, Head } from '@inertiajs/inertia-vue3';
+import { defineProps } from 'vue';
 //
 var scrol = window.scrollY;
 const ActiveNav = "sm:fixed z-10 bg-default-dark w-full  md:w-[80%] md:h-20 top-10 text-white rounded-b-md transition-all";
@@ -21,6 +22,9 @@ function NavbarScroll() {
 }
 window.onscroll = function () { NavbarScroll() };
 
+const data = defineProps({
+    mobil: Object
+})
 </script>
 
 <template>
@@ -28,7 +32,7 @@ window.onscroll = function () { NavbarScroll() };
     <!-- component -->
     <div
         class="h-screen relative flex flex-col box-border bg-gradient-to-t from-yellow-500 to-yellow-200 overflow-hidden">
-        <div class="absolute w-96 h-96 top-40" style="background-image: url('img/car-side.png')"></div>
+        <div class="absolute w-96 h-96 top-40" style="background-image: url('img/car-side.png');"></div>
         <div class="w-full h-max flex justify-center ">
             <div id="Navbar" v-bind:class="NavbarClass">
                 <div class="md:hidden py-4 px-8 flex flex-col gap-4 justify-between">
@@ -130,7 +134,7 @@ window.onscroll = function () { NavbarScroll() };
     <div class="w-full flex flex-col">
         <div class="text-center"><span class="font-extrabold text-2xl md:text-5xl text-gray-800">Jenis Mobil</span></div>
         <div class="container mx-auto py-2 md:pb-7">
-            <CarouselVue></CarouselVue>
+            <CarouselVue :mobil="data.mobil"></CarouselVue>
         </div>
     </div>
 

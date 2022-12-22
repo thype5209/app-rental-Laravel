@@ -1,6 +1,7 @@
 <?php
 
 use Inertia\Inertia;
+use App\Models\Mobil;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\SewaController;
@@ -27,6 +28,9 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'mobil'=> Mobil::query()
+        ->orderBy("unit",'asc')
+        ->get()
     ]);
 });
 
