@@ -28,7 +28,7 @@ console.log(props.user)
                             {{ $page.props.flash.error }}
                         </div>
                         <div class="flex space-x-2 items-center" v-if="can.create">
-                            <Link :href="route('User.create')"  class="px-4 py-2 cursor-pointer bg-green-500 uppercase text-white rounded focus:outline-none flex items-center"><span class="iconify mr-1" data-icon="gridicons:create" data-inline="false"></span> Tambah Pengguna</Link>
+                            <Link :href="route('User.create')"  class="px-4 py-2 cursor-pointer bg-default-blue uppercase text-white rounded focus:outline-none flex items-center"><span class="iconify mr-1" data-icon="gridicons:create" data-inline="false"></span> Tambah Pengguna</Link>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@ console.log(props.user)
                                 >
                                     <div type="justify-start lg:justify-end" no-wrap>
                                         <Link :href="route('User.edit', {id: users.id})">
-                                            <PrimaryButton class="ml-4 bg-green-500 px-2 py-1 rounded text-white cursor-pointer" v-if="can.edit">
+                                            <PrimaryButton class="ml-4 bg-default-blue px-2 py-1 rounded text-white cursor-pointer" v-if="can.edit">
                                                 Edit
                                             </PrimaryButton>
                                         </Link>
