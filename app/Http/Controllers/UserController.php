@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
@@ -17,6 +22,30 @@ class UserController extends Controller
         $user = User::all();
         return $user;
     }
+    public function index()
+    {
+        return Inertia::render('User/Index', [
+            'user' => User::with(['roles'])
+                ->where('id', "!=",'1')
+                ->paginate(10),
+            'can' => [
+                'create' => Auth::user()->can('user create'),
+                'edit' => Auth::user()->can('user edit'),
+                'delete' => Auth::user()->can('user delete'),
+            ]
+        ]);
+    }
+    public function create()
+    {
+        return Inertia::render('User/Form', [
+            'can' => [
+                'create' => Auth::user()->can('user create'),
+                'edit' => Auth::user()->can('user edit'),
+                'delete' => Auth::user()->can('user delete'),
+            ],
+            'role'=> Role::query()->orderBy('name', 'asc')->get(),
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -24,9 +53,22 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        Request::validate([
+            'nama' => 'required|string',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
+            'role'=> 'required'
+        ]);
+        $user = User::create([
+            'name' => Request::input('nama'),
+            'email' => Request::input('email'),
+            'password' => bcrypt(Request::input('password')),
+        ]);
+        $user->assignRole(['name'=>Request::input('role')]);
+
+        return Redirect::route('User.index')->with('success', ' Berhasil Di Tambah!!!!');
     }
 
     /**
@@ -39,6 +81,18 @@ class UserController extends Controller
     {
         //
     }
+    public function edit(User $user, $id)
+    {
+        return Inertia::render('User/Form', [
+            'user'=> $user->with(['roles'])->find($id),
+            'can' => [
+                'create' => Auth::user()->can('user create'),
+                'edit' => Auth::user()->can('user edit'),
+                'delete' => Auth::user()->can('user delete'),
+            ],
+            'role'=> Role::query()->orderBy('name', 'asc')->get(),
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -47,9 +101,26 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(User $user, $id)
     {
-        //
+        Request::validate([
+            'nama' => 'required|string',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'nullable',
+            'role'=> 'required'
+        ]);
+        DB::table('model_has_roles')->where('model_id',$id)->delete();
+        // DB::table('model_has_roles')->create([
+        //     'model_id'=> $id,
+        // ]);
+        $user->find($id)->update([
+            'name' => Request::input('nama'),
+            'email' => Request::input('email'),
+            'password' => bcrypt(Request::input('password')) ?? null,
+        ]);
+        $user->find($id)->assignRole(['name'=>Request::input('role')]);
+
+        return Redirect::route('User.index')->with('success', ' Berhasil Di Edit!!!!');
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -64,6 +65,16 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix'=> 'Permission', 'as'=> 'Permission.'],function(){
         Route::controller(PermissionController::class)->group(function(){
             Route::get('/', 'index')->name('index');
+        });
+    });
+    Route::group(['prefix'=> 'User', 'as'=> 'User.'],function(){
+        Route::controller(UserController::class)->group(function(){
+            Route::get('/', 'index')->name('index');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/create', 'create')->name('create');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
         });
     });
 });
