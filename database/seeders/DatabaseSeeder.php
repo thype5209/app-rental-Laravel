@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call([
             BasicAdminSeeder::class,
-            PenggunaSeeder::class,
+            // PenggunaSeeder::class,
+            MobilSeeder::class,
         ]);
     }
 }

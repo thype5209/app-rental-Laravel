@@ -1,7 +1,7 @@
 
 <script setup>
 import { ref, defineProps, watch } from "vue";
-import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { Head, Link, useForm, useRemember } from "@inertiajs/inertia-vue3";
 import Modal from "@/Components/Modal.vue";
 import InputLabelVue from "@/Components/InputLabel.vue";
 import TextInputVue from "@/Components/TextInput.vue";
@@ -17,7 +17,12 @@ const status = defineProps({
         type: Object,
         default: () => ({})
     },
-    Tab: Object.toString()
+    Tab: Object.toString(),
+    search: {
+        type:Object.toString(),
+        default: '',
+    },
+    page: Object.toString(),
 });
 
 const deleteForm = useForm();
@@ -33,7 +38,11 @@ const TabNonActive =
     "text-gray-600 py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none";
 const form = useForm();
 function TabClick(num) {
-    form.get(route("Sewa.index", { status: num }));
+    form.get(route("Sewa.index", { status: num, search: status.search, page: status.page }), {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+    });
 }
 // END TAB NAV
 
@@ -42,9 +51,9 @@ function TabClick(num) {
 const search = ref("");
 const FormSearch = useForm();
 watch(search, value => {
-    FormSearch.get(route("Sewa.index", { search: value }), {
+    FormSearch.get(route("Sewa.index", { search: value ,status: status.Tab}), {
         preserveState: true,
-        replace: false
+        replace: true,
     });
 });
 
@@ -249,38 +258,38 @@ function lamaSewa(date1, date2) {
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr v-for="(mobil, index) in status.sewa.data" :key="mobil" :index="index"
                                 class="text-gray-700 dark:text-gray-400">
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{ index
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{ index
                                         + 1
                                 }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{
                                         mobil.kode
                                 }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     <span v-if="mobil.nik != null">{{ mobil.nik }}</span>
                                     <span v-else>---------</span>
                                 </td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border"
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
                                     v-if="mobil.pengguna != null">{{
                                             mobil.pengguna.nama
                                     }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border" v-else>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap" v-else>
                                     Sopir</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{
                                         mobil.nopol
                                 }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{
                                         mobil.waktusewa.tgl_sewa
                                 }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     {{ mobil.waktusewa.tgl_kembali }}
                                     <br />
                                     <span class="text-xs text-red-500">{{ diffDate(mobil.waktusewa.tgl_kembali)
                                     }}</span>
                                 </td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{
                                         mobil.user.name
                                 }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border"
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
                                     v-if="Tab == 'Telat'">Rp. {{
                                             Number(mobil.denda).toLocaleString()
                                     }}</td>
@@ -356,7 +365,8 @@ function lamaSewa(date1, date2) {
                                         <option value="Telat">Telat</option>
                                         <option value="Selesai" v-if="can.updateselesai">Selesai</option>
                                     </select>
-                                    <p class="text-xs text-gray-500 text-justify">Keterangan: Pemilihan Status Penyewaan Selesai <br>
+                                    <p class="text-xs text-gray-500 text-justify">Keterangan: Pemilihan Status Penyewaan
+                                        Selesai <br>
                                         Hanya Dapat Dilakukan Oleh Admin Kantor <br>
                                         Ketika Kendaraan/Unit Yang Disewakan Telah Kembali </p>
                                 </div>

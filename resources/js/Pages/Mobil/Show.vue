@@ -4,7 +4,7 @@ import { defineProps } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
 
-const fotoPath = '/fotoMobil/';
+const fotoPath = '/storage/';
 const props = defineProps({
     mobil: {
         type: Object,

@@ -6,7 +6,7 @@
                     class="mb-1 mr-1 px-4 py-3 text-gray-400 text-sm leading-4 border rounded" v-html="link.label" />
                 <Link v-else :key="`link-${key}`"
                     class="mb-1 mr-1 px-4 py-3 focus:text-indigo-500 text-sm leading-4 hover:bg-white border focus:border-indigo-500 rounded"
-                    :class="{ 'bg-white': link.active }" preserve-state preserve-scroll :href="link.url" v-html="link.label" />
+                    :class="{ 'bg-white': link.active }" preserve-state preserve-scroll  :href="link.url" v-html="link.label" />
             </template>
         </div>
     </div>

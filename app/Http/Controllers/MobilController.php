@@ -40,11 +40,11 @@ class MobilController extends Controller
                         ->orWhere('spesifikasi', 'like', '%' . $search . '%');
                 })
                 ->paginate(10),
-            'can'=> [
-                'list'=> Auth::user()->can('mobil list'),
-                'create'=> Auth::user()->can('mobil create'),
-                'edit'=> Auth::user()->can('mobil edit'),
-                'delete'=> Auth::user()->can('mobil delete'),
+            'can' => [
+                'list' => Auth::user()->can('mobil list'),
+                'create' => Auth::user()->can('mobil create'),
+                'edit' => Auth::user()->can('mobil edit'),
+                'delete' => Auth::user()->can('mobil delete'),
             ]
 
         ]);
@@ -73,15 +73,15 @@ class MobilController extends Controller
             'harga' => ['required', 'numeric'],
             'nopol' => ['required', 'string'],
         ]);
-        $nama1 = $request->unit . '-' . $request->foto1->getClientOriginalName();
-        $nama2 = $request->unit . '-' . $request->foto2->getClientOriginalName();
-        $nama3 = $request->unit . '-' . $request->foto3->getClientOriginalName();
-        $nama4 = $request->unit . '-' . $request->foto4->getClientOriginalName();
+        $nama1 = "fotoMobil/" . $request->unit . '-' . $request->foto1->getClientOriginalName();
+        $nama2 = "fotoMobil/" . $request->unit . '-' . $request->foto2->getClientOriginalName();
+        $nama3 = "fotoMobil/" . $request->unit . '-' . $request->foto3->getClientOriginalName();
+        $nama4 = "fotoMobil/" . $request->unit . '-' . $request->foto4->getClientOriginalName();
 
-        $request->foto1->move('fotoMobil/', $nama1);
-        $request->foto2->move('fotoMobil/', $nama2);
-        $request->foto3->move('fotoMobil/', $nama3);
-        $request->foto4->move('fotoMobil/', $nama4);
+        $request->foto1->storeAs('public', $nama1);
+        $request->foto2->storeAs('public', $nama2);
+        $request->foto3->storeAs('public', $nama3);
+        $request->foto4->storeAs('public', $nama4);
         Mobil::create([
             'unit' => $request->unit,
             'harga' => $request->harga,
@@ -181,6 +181,16 @@ class MobilController extends Controller
      */
     public function destroy(Mobil $mobil, $id)
     {
+
+        $mobil = $mobil->find($id);
+        $nama = array($mobil->foto1, $mobil->foto2, $mobil->foto3, $mobil->foto4);
+        for ($i = 0; $i < count($nama); $i++) {
+            if ($nama[$i] != null) {
+                if (Storage::disk('public')->exists($nama[$i])) {
+                    Storage::disk('public')->delete($nama[$i]);
+                }
+            }
+        }
         $mobil->find($id)->delete();
     }
     public function StatusUpdate(Mobil $mobil, $id, Request $request)

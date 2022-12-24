@@ -19,7 +19,12 @@ const props = defineProps({
 const form = useForm();
 function destroy(id) {
     if (confirm("Are you sure you want to Delete")) {
-        form.delete(route('Mobil.destroy', id));
+        form.delete(route('Mobil.destroy', id), {
+            onError: (error)=> {console.log(error)},
+            onSuccess: ()=>{
+                alert('Barhasil')
+            }
+        });
     }
 }
 var TabActive = ' py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500'
@@ -87,7 +92,6 @@ function   Status(n) {
                     msg = 'semua'
                     break;
             }
-            console.log(n)
             return msg;
         }
 </script>

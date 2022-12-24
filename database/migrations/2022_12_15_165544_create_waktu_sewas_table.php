@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('tgl_kembali');
             $table->time('jam_kembali');
             $table->string('lama_sewa', 100);
+            $table->integer('telat')->nullable();
             $table->timestamps();
         });
     }

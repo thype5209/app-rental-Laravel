@@ -52,7 +52,9 @@ class SewaController extends Controller
                     'update'=> Auth::user()->can('sewa update'),
                     'updateselesai'=> Auth::user()->can('sewa updateselesai'),
                 ],
-            'Tab' => FacadesRequest::input('status', 'semua'),
+            'Tab' => FacadesRequest::input('status'),
+            'search'=>FacadesRequest::input('search'),
+            'page'=>FacadesRequest::input('page'),
         ]);
     }
     public function riwayat()
@@ -217,8 +219,7 @@ class SewaController extends Controller
         $carbon = Carbon::now()->format("Y-m-d");
         $jam_carbon = Carbon::now()->format('H:i:s');
         $sewa = Sewa::with('waktusewa')->whereHas('waktusewa', function ($query) use ($carbon) {
-            $query->where('tgl_kembali', '<', $carbon)
-                ->where('status', 'Telat');
+            $query->where('tgl_kembali', '<', $carbon);
         })->whereNotIn('status',  ['Selesai'])->get();
         $denda = 0.10;
         foreach ($sewa as $item) {
