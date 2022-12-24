@@ -35,7 +35,7 @@ Route::get('/', function () {
 });
 
 
-Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
+Route::middleware(['auth', 'cors'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->middleware(['auth', 'verified'])->name('dashboard');
