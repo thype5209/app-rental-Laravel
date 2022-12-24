@@ -2,23 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mobil;
-use Inertia\Inertia;
-use App\Models\Pengguna;
+use Carbon\Carbon;
 use App\Models\Sewa;
+use Inertia\Inertia;
+use App\Models\Mobil;
+use App\Models\Pengguna;
 use App\Models\WaktuSewa;
+use App\Exports\SewaExport;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request as FacadeRequest;
 
 class LaporanController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Laporan/LaporanSewa');
+        return Inertia::render('Laporan/LaporanSewa', [
+            'sewa' => Sewa::query()->with(['waktusewa', 'pengguna', 'user'])->where('status', '=', 'Selesai')
+                ->dateFilter(FacadeRequest::only(['min', 'max']))->get(),
+        ]);
     }
 
 
@@ -244,5 +251,38 @@ class LaporanController extends Controller
         Mobil::find($request->mobil_id)->update([
             'status' => '1',
         ]);
+    }
+
+    public function CetakPDF()
+    {
+        $data =  Sewa::query()->with(['waktusewa', 'pengguna', 'user'])->where('status', '=', 'Selesai')
+            ->dateFilter(FacadeRequest::only(['min', 'max']))->get();
+        $pdf = Pdf::loadView('cetak-pdf', ['data' => $data]);
+        // Simpan File PDF Ke Public Storage
+        $path =  'PdfFILE/';
+        $namaPDF = $path . 'PDFExport.pdf';
+
+        $filePATH = public_path() . '/storage/' . $namaPDF;
+        if (Storage::disk('public')->exists('PdfFile/PDFExport.pdf')) {
+            Storage::disk('public')->delete('PdfFile/PDFExport.pdf');
+        }
+
+        $pdf = PDF::loadView('cetak-pdf', ['data' => $data]);
+        Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
+        return response()->download($filePATH);
+    }
+    public function CetakEXCEL()
+    {
+        $file_name = '';
+        $path =  'PdfFILE/';
+        $namaPDF = $path . 'excelExport.xlsx';
+        $filePATH = public_path(). '/storage/' . $namaPDF;
+
+        try {
+            // to download directly need to return file
+            return Excel::download((new SewaExport(FacadeRequest::input('min'), FacadeRequest::input('max'))), 'excelExport.xlsx', null, [\Maatwebsite\Excel\Excel::XLSX]);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

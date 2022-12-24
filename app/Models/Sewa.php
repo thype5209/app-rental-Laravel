@@ -57,10 +57,18 @@ class Sewa extends Model
             }
         })->when(function ($query) {
             // foreach (Auth::user()->role as $role) {
-                if (Auth::user()->role == 'writer') {
-                    $query->where('penanggung_jawab', '=', Auth::user()->id);
-                }
+            if (Auth::user()->role == 'writer') {
+                $query->where('penanggung_jawab', '=', Auth::user()->id);
+            }
             // }
+        });
+    }
+    public function scopeDateFilter($query, array $date)
+    {
+        $query->when($date ?? null, function($query) use ($date){
+            $query->whereHas('waktusewa', function ($query) use ($date) {
+                $query->whereBetween('created_at', [$date['min'], $date['max']]);
+            });
         });
     }
 }

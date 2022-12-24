@@ -8,6 +8,10 @@ const data = defineProps({
     }
 })
 console.log(data.mobil)
+function sendWA(){
+    const wa = "https://api.whatsapp.com/send?phone=6281524269051&text=Saya%20tertarik%20untuk%20membeli%20produk%20ini%20segera";
+    window.location.href = wa;
+}
 </script>
 
 
@@ -23,7 +27,7 @@ console.log(data.mobil)
                         <div class="flex justify-center overflow-hidden">
                         <img :src="'/fotoMobil/'+slide.foto1" alt="" class="h-max bg-cover w-[50%]">
                         </div>
-                        <button type="submit"
+                        <button type="button" @click="sendWA()"
                             class="w-full text-white bg-default-yellow hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm p-1.5 md:px-5 md:py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-default-yellow dark:focus:ring-yellow-600 transition-colors">Sewa Mobil</button>
                         <div class="text-xs md:text-sm font-medium text-gray-500 dark:text-gray-300">
                             Status Sewa? <a href="#" class="text-default-yellow hover:underline">Harga Sewa</a>

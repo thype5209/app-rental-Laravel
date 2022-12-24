@@ -88,6 +88,9 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
             Route::get('/CetakSewa', 'saveSewaCetak')->name('saveSewaDanCetak');
             Route::post('/saveSewa', 'saveSewa')->name('saveSewa');
             Route::get('/TESTdata', 'TESTdata')->name('TESTdata');
+            Route::get('/CetakPDF', 'CetakPDF')->name('CetakPDF');
+            Route::get('/CetakEXCEL', 'CetakEXCEL')->name('CetakEXCEL');
+
         });
     });
     // Controller Pengguna
@@ -114,3 +117,10 @@ Route::middleware(['auth', 'cors','role:2,1'])->group(function () {
 require __DIR__.'/auth.php';
 
 
+Route::group(['prefix'=> 'Laporan', 'as'=> 'Laporan.'],function(){
+    Route::controller(LaporanController::class)->group(function(){
+        Route::get('/CetakPDF', 'CetakPDF')->name('CetakPDF');
+        Route::get('/CetakEXCEL', 'CetakEXCEL')->name('CetakEXCEL');
+
+    });
+});
