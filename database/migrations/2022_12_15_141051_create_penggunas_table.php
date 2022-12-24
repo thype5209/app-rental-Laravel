@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nik',30)->unique();
             $table->string('nama',100);
             $table->string('alamat',100);
-            $table->string('pekerjaan',30);
+            $table->string('pekerjaan',100);
             $table->string('no_hp',30);
             $table->string('no_hp_lain',30);
             $table->string('tempat_lahir',50);
