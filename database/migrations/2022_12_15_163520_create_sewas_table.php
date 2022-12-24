@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('denda', 100);
             $table->string('pdf_url', 100);
             $table->string('status',20);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

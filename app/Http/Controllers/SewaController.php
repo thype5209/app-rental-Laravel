@@ -22,6 +22,7 @@ class SewaController extends Controller
     public function __construct()
     {
         $this->CekSewaTelat();
+        $this->generateKodeASC();
     }
     /**
      * Display a listing of the resource.
@@ -261,5 +262,12 @@ class SewaController extends Controller
         ]);
 
         // Synchronously
+    }
+    public function generateKodeASC(){
+        $sewa = Sewa::select('kode')->get();
+        foreach($sewa as $key => $item){
+
+        }
+        dd($sewa);
     }
 }
