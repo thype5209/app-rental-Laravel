@@ -50,12 +50,13 @@ class Sewa extends Model
                         ->orWhere('alamat', 'like', '%' . $search . '%')
                         ->orWhere('pekerjaan', 'like', '%' . $search . '%')
                         ->orWhere('no_hp', 'like', '%' . $search . '%');
-                });
+                })
+                ->orderBy('kode', 'desc');
         })->when($filters['status'] ?? null, function ($query, $status) {
             if ($status != 'semua') {
                 $query->orWhere('status', $status);
             } elseif ($status == 'semua') {
-                $query->orderBy('status', 'desc');
+                $query->orderBy('kode', 'desc');
             }
         })->when(function ($query) {
             // foreach (Auth::user()->role as $role) {

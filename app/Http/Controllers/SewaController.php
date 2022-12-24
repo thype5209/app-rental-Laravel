@@ -22,7 +22,6 @@ class SewaController extends Controller
     public function __construct()
     {
         $this->CekSewaTelat();
-        $this->generateKodeASC();
     }
     /**
      * Display a listing of the resource.
@@ -33,29 +32,28 @@ class SewaController extends Controller
     {
 
         return Inertia::render('Sewa/Pinjam', [
-            'sewa' =>  Sewa::orderBy('status', 'desc')
-                ->with(['pengguna', 'waktusewa', 'user'])
-                ->when(FacadesRequest::input('status'), function ($query, $status) {
+            'sewa' =>  Sewa::with(['pengguna', 'waktusewa', 'user'])
+                ->when(FacadesRequest::input('status') ?? null, function ($query, $status) {
                     if ($status != 'semua') {
                         $query->orWhere('status', $status);
-                        $query->orderBy('status', 'asc');
-                    } elseif ($status == 'semua') {
                         $query->orderBy('status', 'desc');
+                    } elseif ($status == 'semua') {
+                        $query->orderBy('kode', 'desc');
                     }
                 })
                 ->filter(FacadesRequest::only('search'))
                 ->where('status', '!=', 'Selesai')
                 ->paginate(10) ?? null,
-                'can'=> [
-                    'create'=> Auth::user()->can('sewa create'),
-                    'edit'=> Auth::user()->can('sewa edit'),
-                    'delete'=> Auth::user()->can('sewa delete'),
-                    'update'=> Auth::user()->can('sewa update'),
-                    'updateselesai'=> Auth::user()->can('sewa updateselesai'),
-                ],
+            'can' => [
+                'create' => Auth::user()->can('sewa create'),
+                'edit' => Auth::user()->can('sewa edit'),
+                'delete' => Auth::user()->can('sewa delete'),
+                'update' => Auth::user()->can('sewa update'),
+                'updateselesai' => Auth::user()->can('sewa updateselesai'),
+            ],
             'Tab' => FacadesRequest::input('status'),
-            'search'=>FacadesRequest::input('search'),
-            'page'=>FacadesRequest::input('page'),
+            'search' => FacadesRequest::input('search'),
+            'page' => FacadesRequest::input('page'),
         ]);
     }
     public function riwayat()
@@ -78,7 +76,7 @@ class SewaController extends Controller
     public function create()
     {
         $mobil = Mobil::where('status', '=', '2')->get();
-        if($mobil->count() < 1){
+        if ($mobil->count() < 1) {
             return Redirect::back()->with('error', 'Maaf Kendaraan Yang Tersedia Kosong atau Dalam Perbaikan');
         }
         $pengguna = Pengguna::all();
@@ -121,8 +119,8 @@ class SewaController extends Controller
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
             $query->whereIn('status', ['Sewa', 'Belum Dibayar', 'Telat']);
         })
-        ->where('nik', $request->nik)
-        ->get();
+            ->where('nik', $request->nik)
+            ->get();
         $mobil = Mobil::where('nopol', '=', $request->nopol)->where('status', '1')->get();
         // dd($pengguna->count(), $mobil->count());
         if ($mobil->count() > 0) {
@@ -140,18 +138,6 @@ class SewaController extends Controller
     public function store(StoreSewaRequest $request)
     {
         //
-    }
-    public function kodeSewa()
-    {
-        $sewa = Sewa::max('kode');
-        if ($sewa == null) {
-            $kode = 'S001';
-        } else {
-            $k = substr($sewa, 1, 3);
-            $k++;
-            $kode = 'S' . sprintf('%03s', $k);
-        }
-        return $kode;
     }
 
     /**
@@ -263,11 +249,37 @@ class SewaController extends Controller
 
         // Synchronously
     }
-    public function generateKodeASC(){
-        $sewa = Sewa::select('kode')->get();
-        foreach($sewa as $key => $item){
-
+    public function kodeSewa()
+    {
+        $max_id = Sewa::max('id');
+        $sewa = Sewa::all();
+        if ($max_id == null) {
+            $kode = 'S001';
+        } else {
+            $k = (int) substr($max_id, 0);
+            $k++;
+            $kode = 'S' . sprintf('%03s', $k);
         }
-        dd($sewa);
+        return $kode;
+    }
+
+    public function generateKodeASC()
+    {
+        $max_id = Sewa::max('id');
+        $sewa = Sewa::all();
+        if ($max_id == null) {
+            $kode = 'S001';
+        } else {
+            $k = (int) substr($max_id, 0);
+            // $k++;
+            $kode = 'S' . sprintf('%03s', $k);
+        }
+        foreach ($sewa as $key => $item) {
+            // Sewa::find($item->id)->update(['kode' => $kode]);
+            $k = (int) substr($key, 0);
+            $k++;
+            $kode = 'S' . sprintf('%03s', $k);
+            $item->update(['kode' => $kode]);
+        }
     }
 }
