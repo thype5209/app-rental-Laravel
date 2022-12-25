@@ -24,7 +24,7 @@ const status = defineProps({
     },
     page: Object.toString(),
 });
-
+console.log(status.sewa)
 const deleteForm = useForm();
 function destroy(id) {
     if (confirm("Are you sure you want to Delete")) {
@@ -258,9 +258,8 @@ function lamaSewa(date1, date2) {
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr v-for="(mobil, index) in status.sewa.data" :key="mobil" :index="index"
                                 class="text-gray-700 dark:text-gray-400">
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{ index
-                                        + 1
-                                }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                    {{ (status.sewa.current_page -1) * status.sewa.per_page + index+1 }}</td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{
                                         mobil.kode
                                 }}</td>

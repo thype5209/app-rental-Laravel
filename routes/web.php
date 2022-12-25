@@ -78,6 +78,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::put('/updateTanggal/{id}' , 'updateTanggal')->name('updateTanggal');
             Route::put('/updateStatusModal/{id}' , 'updateStatusModal')->name('updateStatusModal');
             Route::put('/updateTanggal/{id}' , 'updateTanggal')->name('updateTanggal');
+            Route::get('/cekDowloadFile' , 'cekDowloadFile')->name('cekDowloadFile');
 
         });
     });

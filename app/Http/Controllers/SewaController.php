@@ -8,13 +8,15 @@ use Inertia\Inertia;
 use App\Models\Mobil;
 use App\Models\Sopir;
 use App\Models\Pengguna;
+use App\Models\WaktuSewa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreSewaRequest;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdateSewaRequest;
-use App\Models\WaktuSewa;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use ZipArchive;
 
 class SewaController extends Controller
 {
@@ -23,7 +25,6 @@ class SewaController extends Controller
     {
         $this->CekSewaTelat();
         $this->CekTotal();
-
     }
     /**
      * Display a listing of the resource.
@@ -67,6 +68,12 @@ class SewaController extends Controller
                 ->where('status', 'Selesai')
                 ->filter(FacadesRequest::only('search'))
                 ->paginate(10),
+            'can' => [
+                'create' => Auth::user()->can('permission create'),
+                'edit' => Auth::user()->can('permission edit'),
+                'delete' => Auth::user()->can('permission delete'),
+                'update' => Auth::user()->can('permission update'),
+            ],
         ]);
     }
 
@@ -220,7 +227,7 @@ class SewaController extends Controller
             $nilai_denda = $total_denda * $diff;
             $sub_total = (intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)) + $item->denda;
 
-            $item->update(['denda' => $nilai_denda, 'status' => "Telat", 'total'=>$sub_total]);
+            $item->update(['denda' => $nilai_denda, 'status' => "Telat", 'total' => $sub_total]);
             WaktuSewa::where('sewa_id',  $item->id)->update(['telat' => $diff]);
         }
     }
@@ -230,7 +237,7 @@ class SewaController extends Controller
         foreach ($sewa as $item) {
             $sub_total = (intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)) + $item->denda;
 
-            $item->update(['total'=>$sub_total]);
+            $item->update(['total' => $sub_total]);
         }
     }
     /**
@@ -289,9 +296,32 @@ class SewaController extends Controller
         foreach ($sewa as $key => $item) {
             // Sewa::find($item->id)->update(['kode' => $kode]);
             $k = (int) substr($key, 0);
-            $k++;
             $kode = 'S' . sprintf('%03s', $k);
             $item->update(['kode' => $kode]);
         }
+    }
+
+
+    public function cekDowloadFile()
+    {
+        $foto = ['fotoMobil/M-0153.png', 'fotoMobil/M-0517.png', 'fotoMobil/M-0915.png', 'fotoMobil/M-0961.png'];
+        $this->downloadFile($foto);
+    }
+    public function downloadFile(array $arr)
+    {
+        $zip = new ZipArchive;
+        $file_name = 'arsip.zip';
+        $collect = collect($arr);
+        if(Storage::disk('public')->exists('ZipFile/arsip.zip')){
+            Storage::disk('public')->delete('ZipFile/arsip.zip');
+        }
+        $zip->open(public_path() . '/storage/ZipFile/arsip.zip', ZipArchive::CREATE);
+        foreach ($collect as $key => $item) {
+            $zip->addFile(public_path() . '/storage/' . $item, $key . '.png');
+        }
+        $zip->close();
+
+        // We return the file immediately after download
+        return response()->download(public_path().'/storage/ZipFile/arsip.zip');
     }
 }

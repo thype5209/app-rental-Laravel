@@ -23,7 +23,7 @@ class SewaFactory extends Factory
         $pengguna = Pengguna::factory()->create();
         return [
             'jenis_sewa' => "lepas",
-            'kode' => fake()->numerify('S###-#'),
+            'kode' => fake()->numerify('S###-###'),
             'nopol' => function (array $attributes) {
                 return Mobil::find($attributes['nopol'])->nopol;
             },
@@ -43,6 +43,7 @@ class SewaFactory extends Factory
             'denda' => '0',
             'pdf_url' => fake()->imageUrl(),
             'status' => fake()->randomElement(['Telat', 'Selesai','Sewa']),
+            'total'=> '0'
         ];
     }
 }

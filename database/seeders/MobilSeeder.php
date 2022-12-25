@@ -17,8 +17,8 @@ class MobilSeeder extends Seeder
      */
     public function run()
     {
-        Mobil::factory(17)->has(Sewa::factory()
-            ->count(3)
+        Mobil::factory(50)->has(Sewa::factory()
+            ->count(10)
             ->state(function (array $attributes, Mobil $mobil) {
                 return [
                     'nopol' => $mobil->nopol,

@@ -56,7 +56,7 @@
                             <td class="px-4 py-3 text-xs">
                                 <ul class="space-y-1 max-w-md list-none list-inside text-gray-500 dark:text-gray-400">
                                     <li v-for=" item in user.sewa " :key="item">
-                                        <span v-if="item != null" class="font-semibold text-gray-900 dark:text-white">Rp. {{ reduceArray(item.harga, item.waktusewa.lama_sewa, item.denda) }}</span>
+                                        <span v-if="item.status == 'Telat'" class="font-semibold text-gray-900 dark:text-white">Rp. {{ reduceArray(item.harga, item.waktusewa.lama_sewa, item.denda) }}</span>
                                         <span v-else class="font-semibold text-gray-900 dark:text-white">Rp. ------</span>
                                     </li>
                                 </ul>

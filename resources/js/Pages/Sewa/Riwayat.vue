@@ -9,6 +9,7 @@ const status = defineProps({
         type: Object,
         default: () => ({})
     },
+    can: Object,
 })
 
 const deleteForm = useForm();
@@ -120,7 +121,7 @@ watch(search, (value) => {
                                     </svg>
                                 </button>
                                 </Link>
-                                <button class="bg-default-red text-white md:px-2 md:py-1 p-1 rounded-md ml-2"
+                                <button class="bg-default-red text-white md:px-2 md:py-1 p-1 rounded-md ml-2" v-if="can.delete"
                                     @click="destroy(mobil.id)">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="sm:w-6 sm:h-6 h-4 w-4">
