@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BasicAdminSeeder::class,
             // PenggunaSeeder::class,
-            MobilSeeder::class,
+            // MobilSeeder::class,
         ]);
     }
 }
