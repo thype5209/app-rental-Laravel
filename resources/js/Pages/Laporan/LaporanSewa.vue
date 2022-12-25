@@ -46,7 +46,7 @@
             <div class="ml-5">
 
                 <div class="inline-flex rounded-md shadow-sm" role="group">
-                    <button type="button" @click="centangFile"
+                    <!-- <button type="button" @click="centangFile"
                         class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
                         <svg aria-hidden="true" class="mr-2 w-4 h-4 fill-current" fill="currentColor"
                             viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -55,7 +55,17 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                         Centang File
-                    </button>
+                    </button> -->
+                    <button type="button" @click="DeleteAll('Hapus Semua')"
+                    class="inline-flex bg-red-500 text-white items-center py-2 px-4 text-sm font-medium  rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                        </path>
+                    </svg>
+                    Hapus Semua
+                </button>
 
                 </div>
 
@@ -107,16 +117,7 @@
                         </svg>
                         Downloads File PDF dan Hapus
                     </button>
-                    <button type="button" @click="DeleteAll('Hapus Semua')"
-                        class="inline-flex bg-red-500 text-white items-center py-2 px-4 text-sm font-medium  rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                            </path>
-                        </svg>
-                        Hapus Semua
-                    </button>
+
                 </div>
 
             </div>
@@ -217,6 +218,7 @@ import { defineProps, ref, watch } from 'vue';
 import InputLabelVue from '@/Components/InputLabel.vue';
 import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
 import axios from 'axios';
+import PaginationVue from '@/Components/Pagination.vue';
 const data = defineProps({
     sewa: {
         type: Object,
@@ -244,16 +246,16 @@ let config = {
     responseType: 'blob',
     onDownloadProgress: function (progressEvent) {
         uploadPercentage.value = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-        console.log(uploadPercentage.value) // this works fine but how do I update the initial value from here?
+        // console.log(uploadPercentage.value) // this works fine but how do I update the initial value from here?
     }
 }
 function cetakEXCEL(e) {
-    console.log(uploadPercentage.value)
+    // console.log(uploadPercentage.value)
 
     axios
         .get(route('Laporan.CetakEXCEL', { min: formDate.min, max: formDate.max }), config)
         .then(response => {
-            console.log(response)
+            // console.log(response)
             const url = window.URL.createObjectURL(new Blob([response.data], {
                 type: 'application/vnd.ms-excel'
             }));
@@ -272,7 +274,7 @@ function cetakPDF() {
     axios
         .get(route('Laporan.CetakPDF', { min: formDate.min, max: formDate.max }), config)
         .then(response => {
-            console.log(response)
+            // console.log(response)
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
@@ -299,7 +301,7 @@ function centangFileAll() {
             valueCheck.value = [];
         }
     })
-    console.log(valueCheck.value)
+    // console.log(valueCheck.value)
 }
 watch(valueCheck, (value) => {
     console.log(value)
@@ -335,7 +337,7 @@ function DeleteAllDanSave(txt) {
             if (result.isConfirmed) {
                 axios.get(route('Laporan.cekDowloadFile', { data: valueCheck.value, Delete: value }), config)
                     .then(response => {
-                        console.log(response)
+                        // console.log(response)
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');
                         link.href = url;

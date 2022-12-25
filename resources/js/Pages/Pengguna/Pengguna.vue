@@ -35,7 +35,7 @@
                             class="text-gray-700 dark:text-gray-400">
 
                             <td class="px-4 py-3 text-xs">
-                                {{ count + index }}
+                                {{ (pengguna.current_page -1)* pengguna.per_page + index + 1}}
                             </td>
                             <td class="px-4 py-3 text-xs">
                                 {{ user.nik }}

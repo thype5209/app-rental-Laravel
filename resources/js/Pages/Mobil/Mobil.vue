@@ -201,6 +201,7 @@ function   Status(n) {
                         <thead>
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                                <th class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap">No.</th>
                                 <th class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap">Unit
                                     Kendaraan</th>
                                 <th class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap">No.
@@ -215,7 +216,10 @@ function   Status(n) {
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                            <tr v-for="mobils in props.mobil.data" :key="mobils" itemid="1" class="text-gray-700 dark:text-gray-400">
+                            <tr v-for="(mobils,index) in props.mobil.data" :key="mobils" :index="index" itemid="1" class="text-gray-700 dark:text-gray-400">
+                                <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-sm">
+                                    {{ (props.mobil.current_page - 1)* props.mobil.per_page + index+1}}
+                                </td>
                                 <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-sm">
                                     {{ mobils.unit }}
                                 </td>
@@ -283,7 +287,7 @@ function   Status(n) {
                             </tr>
                         </tbody>
                     </table>
-                    <Pagination class="mt-6" :links="props.mobil.links" />
+                    <Pagination :links="props.mobil.links" />
 
                 </div>
             </div>

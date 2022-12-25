@@ -80,7 +80,8 @@ watch(search, (value) => {
                         <tr v-for="(mobil, index) in status.sewa.data" :key="mobil" :index="index"
                             class="text-gray-700 dark:text-gray-400">
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
-                                {{ index + 1 }}
+                                {{ (status.sewa.current_page - 1)* status.sewa.per_page + index+1}}
+
                             </td>
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
                                 {{ mobil.kode }}

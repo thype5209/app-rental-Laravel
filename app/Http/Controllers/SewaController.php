@@ -25,6 +25,7 @@ class SewaController extends Controller
     {
         $this->CekSewaTelat();
         $this->CekTotal();
+        // $this->generateKodeASC();
     }
     /**
      * Display a listing of the resource.
@@ -46,7 +47,7 @@ class SewaController extends Controller
                 })
                 ->filter(FacadesRequest::only('search'))
                 ->where('status', '!=', 'Selesai')
-                ->paginate(10) ?? null,
+                ->paginate(20) ?? null,
             'can' => [
                 'create' => Auth::user()->can('sewa create'),
                 'edit' => Auth::user()->can('sewa edit'),
@@ -195,12 +196,22 @@ class SewaController extends Controller
     {
         $sewa->find($id)->delete();
     }
+    /**
+     * StatusUpdate
+     * Update Status Sewa
+     * @param  mixed $Sewa
+     * @param  mixed $id
+     * @param  mixed $request
+     * @return void
+     */
     public function StatusUpdate(Sewa $Sewa, $id, Request $request)
     {
         $Sewa->find($id)->update([
             'status' => $request->status,
         ]);
     }
+
+
     private function reduceArray($array)
     {
         $exp = explode(',', $array);
@@ -210,6 +221,12 @@ class SewaController extends Controller
         }
         return $hasil;
     }
+
+    /**
+     * CekSewaTelat
+     * Mencari Dan Update Data Sewa Yang Telat
+     * @return void
+     */
     public function CekSewaTelat()
     {
         $carbon = Carbon::now()->format("Y-m-d");
@@ -226,11 +243,18 @@ class SewaController extends Controller
             $diff = $waktu_sekarang->diffInHours($waktu_kembali);
             $nilai_denda = $total_denda * $diff;
             $sub_total = (intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)) + $item->denda;
-
+            // dd($nilai_denda);
             $item->update(['denda' => $nilai_denda, 'status' => "Telat", 'total' => $sub_total]);
             WaktuSewa::where('sewa_id',  $item->id)->update(['telat' => $diff]);
         }
     }
+
+
+    /**
+     * CekTotal
+     * fungsi Hitung Nilai Total
+     * @return void
+     */
     public function CekTotal()
     {
         $sewa = Sewa::with('waktusewa')->get();
@@ -258,6 +282,14 @@ class SewaController extends Controller
         ]);
         // Synchronously
     }
+
+    /**
+     * updateTanggal
+     * Update Tanggal Sewa
+     * @param  mixed $id
+     * @param  mixed $request
+     * @return void
+     */
     public function updateTanggal($id, Request $request)
     {
         $sewa = Sewa::find($id);
@@ -265,6 +297,8 @@ class SewaController extends Controller
             'tgl_kembali' => $request->tgl_kembali,
             'lama_sewa' => $request->lama_sewa,
         ]);
+
+        return Redirect::back()->with('success', "Perpanjang Sewa ". $sewa->kode ." Berhasil Diganti ");
 
         // Synchronously
     }

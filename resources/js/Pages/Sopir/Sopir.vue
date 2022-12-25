@@ -87,7 +87,8 @@ watch(search, function(value){
                             class="text-gray-700 dark:text-gray-400">
 
                             <td class="px-4 py-3 text-xs">
-                                {{ count + index }}
+                                {{ (props.sopir.current_page - 1)* props.sopir.per_page + index+1}}
+
                             </td>
                             <td class="px-4 py-3 text-xs">
                                 {{ user.nik }}
@@ -131,10 +132,7 @@ watch(search, function(value){
                     </tbody>
                 </table>
             </div>
-            <div
-                class=" px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-                <PaginationVue :links="sopir.links"></PaginationVue>
-            </div>
+            <PaginationVue :links="sopir.links"></PaginationVue>
         </div>
     </AuthenticatedLayout>
 </template>

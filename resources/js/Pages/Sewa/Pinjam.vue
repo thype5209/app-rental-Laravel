@@ -19,8 +19,8 @@ const status = defineProps({
     },
     Tab: Object.toString(),
     search: {
-        type:Object.toString(),
-        default: '',
+        type: String,
+        default: ()=>({}),
     },
     page: Object.toString(),
 });
@@ -51,7 +51,7 @@ function TabClick(num) {
 const search = ref("");
 const FormSearch = useForm();
 watch(search, value => {
-    FormSearch.get(route("Sewa.index", { search: value ,status: status.Tab}), {
+    FormSearch.get(route("Sewa.index", { search: value, status: status.Tab }), {
         preserveState: true,
         replace: true,
     });
@@ -160,7 +160,12 @@ function lamaSewa(date1, date2) {
     return day;
 }
 // EndModal
-
+function reduceArray(array = [], lamasewa = 1, denda = 0) {
+    var sisa = array.split(',');
+    var harga = sisa.reduce((el, b) => el + b);
+    var total = (parseInt(harga) * lamasewa) + parseInt(denda);
+    return Number(total).toLocaleString();
+}
 </script>
 
 
@@ -222,19 +227,6 @@ function lamaSewa(date1, date2) {
 
             <!-- Endsearch -->
 
-            <!-- Flash Message -->
-            <div v-if="falshMessage"
-                class="flex flex-row justify-between p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
-                role="alert">
-                <span class="font-medium">Berhasil Diganti!</span>
-                <span @click="CloseFlash()" class="cursor-pointer" @mouseover="CloseFlash">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </span>
-            </div>
-
             <!-- TABLE -->
             <div class="w-full overflow-hidden rounded-lg shadow-lg flex flex-col">
                 <div class="w-full overflow-x-auto">
@@ -258,12 +250,16 @@ function lamaSewa(date1, date2) {
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr v-for="(mobil, index) in status.sewa.data" :key="mobil" :index="index"
                                 class="text-gray-700 dark:text-gray-400">
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
-                                    {{ (status.sewa.current_page -1) * status.sewa.per_page + index+1 }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{
-                                        mobil.kode
-                                }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                <td
+                                    class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                    {{ (status.sewa.current_page - 1) * status.sewa.per_page + index + 1 }}</td>
+                                <td
+                                    class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                    {{
+                                            mobil.kode
+                                    }}</td>
+                                <td
+                                    class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     <span v-if="mobil.nik != null">{{ mobil.nik }}</span>
                                     <span v-else>---------</span>
                                 </td>
@@ -271,26 +267,34 @@ function lamaSewa(date1, date2) {
                                     v-if="mobil.pengguna != null">{{
                                             mobil.pengguna.nama
                                     }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap" v-else>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
+                                    v-else>
                                     Sopir</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{
-                                        mobil.nopol
-                                }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{
-                                        mobil.waktusewa.tgl_sewa
-                                }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                <td
+                                    class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                    {{
+                                            mobil.nopol
+                                    }}</td>
+                                <td
+                                    class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                    {{
+                                            mobil.waktusewa.tgl_sewa
+                                    }}</td>
+                                <td
+                                    class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     {{ mobil.waktusewa.tgl_kembali }}
                                     <br />
                                     <span class="text-xs text-red-500">{{ diffDate(mobil.waktusewa.tgl_kembali)
                                     }}</span>
                                 </td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">{{
-                                        mobil.user.name
-                                }}</td>
+                                <td
+                                    class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                    {{
+                                            mobil.user.name
+                                    }}</td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
                                     v-if="Tab == 'Telat'">Rp. {{
-                                            Number(mobil.denda).toLocaleString()
+                                            reduceArray(mobil.denda)
                                     }}</td>
 
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-xs border">
@@ -332,7 +336,7 @@ function lamaSewa(date1, date2) {
                         </tbody>
                     </table>
                 </div>
-                <PaginationVue :links="status.sewa.links" class="mt-3 text-black"></PaginationVue>
+                <PaginationVue :links="status.sewa.links" class="bg-white py-1"></PaginationVue>
             </div>
             <!-- Modal Status -->
             <Modal v-bind:show="ModalShow" @close="isClose()" :max-width="`md`">
