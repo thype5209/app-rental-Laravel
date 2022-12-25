@@ -57,6 +57,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::put('/Update/{id}', 'update')->name('update');
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::get('/GetIDMobil/{id}', 'GetIDMobil')->name('GetIDMobil');
+            Route::get('/riwayat/{id}', 'riwayat')->name('riwayat');
         });
     });
 

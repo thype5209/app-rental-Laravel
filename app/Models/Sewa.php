@@ -26,6 +26,10 @@ class Sewa extends Model
     {
         return $this->hasOne(User::class, 'id', 'penanggung_jawab');
     }
+    public function mobil()
+    {
+        return $this->hasOne(Mobil::class, 'nopol', 'nopol');
+    }
 
     public function scopeFilter($query, array $filters)
     {

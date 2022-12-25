@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Mobil;
+use App\Models\Sewa;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -109,6 +110,27 @@ class MobilController extends Controller
 
         return Inertia::render('Mobil/Show', [
             'mobil' => $mobil->find($id),
+            'id' => $id,
+        ]);
+    }
+
+
+    /**
+     * riwayat
+     *  Tampilan riwayat Mobil
+     * @param  mixed $mobil
+     * @param  mixed $id
+     * @return void
+     */
+    public function riwayat(Mobil $mobil, $id)
+    {
+        return Inertia::render('Mobil/RiwayatMobil', [
+            'riwayat' => Sewa::whereHas('mobil',function($query)use($id){
+                $query->where('id', $id);
+            })
+            ->with(['waktusewa', 'mobil','user','pengguna'])
+            ->where('status', '=', 'Selesai')
+            ->paginate(10),
             'id' => $id,
         ]);
     }
