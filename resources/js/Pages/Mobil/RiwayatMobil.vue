@@ -100,7 +100,7 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
                                     }}</span>
                             </td>
                             <td class=" whitespace-nowrap md:px-4 md:py-3 px-2 py-2 text-xs border">
-                                Rp. {{ reduceArray(mobil.harga, mobil.waktusewa.lama_sewa, mobil.denda) }}
+                                Rp. {{ reduceArray(mobil.total) }}
                             </td>
                             <td class=" whitespace-nowrap md:px-4 md:py-3 px-2 py-2 text-sm flex">
                                 <Link :href="route('Sewa.show', { id: mobil.id })">

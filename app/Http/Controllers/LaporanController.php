@@ -239,6 +239,7 @@ class LaporanController extends Controller
             'pdf_url' => $pdf_url,
             'denda' => '0',
             'status' => 'Sewa',
+            'total' => $request->nilaisewahari * $request->lama_sewa,
         ]);
         WaktuSewa::create([
             'sewa_id' => $sewa->id,

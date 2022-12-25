@@ -22,6 +22,8 @@ class SewaController extends Controller
     public function __construct()
     {
         $this->CekSewaTelat();
+        $this->CekTotal();
+
     }
     /**
      * Display a listing of the resource.
@@ -216,9 +218,19 @@ class SewaController extends Controller
             $waktu_sekarang = Carbon::now();
             $diff = $waktu_sekarang->diffInHours($waktu_kembali);
             $nilai_denda = $total_denda * $diff;
+            $sub_total = (intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)) + $item->denda;
 
-            $item->update(['denda' => $nilai_denda, 'status' => "Telat"]);
+            $item->update(['denda' => $nilai_denda, 'status' => "Telat", 'total'=>$sub_total]);
             WaktuSewa::where('sewa_id',  $item->id)->update(['telat' => $diff]);
+        }
+    }
+    public function CekTotal()
+    {
+        $sewa = Sewa::with('waktusewa')->get();
+        foreach ($sewa as $item) {
+            $sub_total = (intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)) + $item->denda;
+
+            $item->update(['total'=>$sub_total]);
         }
     }
     /**

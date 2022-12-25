@@ -45,7 +45,7 @@
             </form>
             <div class="ml-2 py-3" v-if="cetak">
                 <div class="inline-flex rounded-md shadow-sm" role="group">
-                    <button type="button" @click="cetakPDF"
+                    <!-- <button type="button" @click="cetakPDF"
                         class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24"
                             viewBox="0 0 24 24">
@@ -54,7 +54,7 @@
                             </path>
                         </svg>
                         PDF
-                    </button>
+                    </button> -->
                     <button type="button" @click="cetakEXCEL"
                         class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" class='w-5 h-5' viewBox="0 0 48 48">
