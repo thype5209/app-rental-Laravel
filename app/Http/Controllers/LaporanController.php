@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use ZipArchive;
 use Carbon\Carbon;
 use App\Models\Sewa;
 use Inertia\Inertia;
@@ -11,7 +13,6 @@ use App\Models\WaktuSewa;
 use App\Exports\SewaExport;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
@@ -277,7 +278,7 @@ class LaporanController extends Controller
         $file_name = '';
         $path =  'PdfFILE/';
         $namaPDF = $path . 'excelExport.xlsx';
-        $filePATH = public_path(). '/storage/' . $namaPDF;
+        $filePATH = public_path() . '/storage/' . $namaPDF;
 
         try {
             // to download directly need to return file
@@ -285,5 +286,48 @@ class LaporanController extends Controller
         } catch (Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    public function cekDowloadFile()
+    {
+        $data = FacadeRequest::input('data');
+        $sewa = Sewa::whereIn('id', $data)->get();
+
+
+        if(FacadeRequest::input('Delete')){
+            $sewa->delete();
+        }
+        return response()->download(public_path() . '/storage/ZipFile/arsip.zip');
+    }
+    /**
+     * downloadFile
+     *  cari dan dowload semua file
+     * @param  mixed $arr
+     * @return void
+     */
+    public function downloadFile($sewa)
+    {
+
+
+        $zip = new ZipArchive;
+        if (Storage::disk('public')->exists('ZipFile/arsip.zip')) {
+            Storage::disk('public')->delete('ZipFile/arsip.zip');
+        }
+        $zip->open(public_path() . '/storage/ZipFile/arsip.zip', ZipArchive::CREATE);
+        $zip->addFile(public_path() . '/storage/fotoMobil/M-0153.png', "mobil.png");
+        foreach ($sewa as $key => $item) {
+            if(Storage::disk('public')->exists($item->pdf_url)){
+                $zip->addFile(public_path() . '/storage/' . $item->pdf_url, $item->pdf_url);
+            }
+        }
+        $zip->close();
+        // We return the file immediately after download
+    }
+
+    public function destroyAll(){
+        $data = FacadeRequest::input('data');
+        $sewa = Sewa::whereIn('id', $data)->delete();
+
+        return response()->json('Berhasil');
     }
 }

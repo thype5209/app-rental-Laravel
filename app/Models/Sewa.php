@@ -74,7 +74,7 @@ class Sewa extends Model
     {
         $query->when($date ?? null, function($query) use ($date){
             $query->whereHas('waktusewa', function ($query) use ($date) {
-                $query->whereBetween('created_at', [$date['min'], $date['max']]);
+                $query->whereBetween('tgl_sewa', [$date['min'], $date['max']]);
             });
         });
     }

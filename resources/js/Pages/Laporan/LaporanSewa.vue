@@ -6,8 +6,8 @@
 
             <!-- Date -->
 
-            <form @submit.prevent="submit">
-                <div class="flex items-center max-w-max gap-5 w-full py-3 ml-3">
+            <div>
+                <form @submit.prevent="submit" class="flex items-center max-w-max gap-5 w-full py-3 ml-3">
                     <div class=" flex justify-center items-center gap-5">
                         <InputLabelVue for="simple-search" class=" whitespace-nowrap">Tanggal Awal </InputLabelVue>
                         <div class="relative w-full">
@@ -41,9 +41,26 @@
                         </div>
                     </div>
                     <PrimaryButtonVue>Cari</PrimaryButtonVue>
+                </form>
+            </div>
+            <div class="ml-5">
+
+                <div class="inline-flex rounded-md shadow-sm" role="group">
+                    <button type="button" @click="centangFile"
+                        class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                        <svg aria-hidden="true" class="mr-2 w-4 h-4 fill-current" fill="currentColor"
+                            viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        Centang File
+                    </button>
+
                 </div>
-            </form>
-            <div class="ml-2 py-3" v-if="cetak">
+
+            </div>
+            <div class="ml-5 py-3" v-if="cetak">
                 <div class="inline-flex rounded-md shadow-sm" role="group">
                     <!-- <button type="button" @click="cetakPDF"
                         class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
@@ -56,7 +73,7 @@
                         PDF
                     </button> -->
                     <button type="button" @click="cetakEXCEL"
-                        class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                        class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" class='w-5 h-5' viewBox="0 0 48 48">
                             <path fill="#4CAF50" d="M41,10H25v28h16c0.553,0,1-0.447,1-1V11C42,10.447,41.553,10,41,10z">
                             </path>
@@ -69,6 +86,36 @@
                             </path>
                         </svg>
                         EXCEL
+                    </button>
+                    <button type="button" @click="parseCetak(false)"
+                        class="border inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-default-blue border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                        <svg aria-hidden="true" class="mr-2 w-4 h-4 fill-current" fill="currentColor"
+                            viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        PDF
+                    </button>
+                    <button type="button" @click="DeleteAllDanSave('Hapus Dan Download File')"
+                        class="border inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-green-500 border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                        <svg aria-hidden="true" class="mr-2 w-4 h-4 fill-current" fill="currentColor"
+                            viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        Downloads File PDF dan Hapus
+                    </button>
+                    <button type="button" @click="DeleteAll('Hapus Semua')"
+                        class="inline-flex bg-red-500 text-white items-center py-2 px-4 text-sm font-medium  rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
+                        Hapus Semua
                     </button>
                 </div>
 
@@ -84,6 +131,13 @@
                         <thead>
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
+                                <th scope="col" class="p-4" @click="centangFileAll">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-all-search" type="checkbox"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                    </div>
+                                </th>
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">No.</th>
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">Kode</th>
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">NIK</th>
@@ -99,9 +153,19 @@
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr v-for="(mobil, index) in data.sewa" :key="mobil" :index="index"
                                 class="text-gray-700 dark:text-gray-400">
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{ index
+                                <td class="p-4 w-4">
+                                    <div class="flex items-center">
+                                        <input id="checkbox-table-search-1" name="mycheckboxes" type="checkbox"
+                                            v-model="valueCheck" :value="mobil.id"
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                    </div>
+                                </td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
+                                        index
                                         + 1
                                 }}</td>
+
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
                                         mobil.kode
                                 }}</td>
@@ -164,7 +228,9 @@ const formDate = useForm({
     min: '',
     max: ''
 });
-const cetak = ref(true)
+const cetak = ref(false)
+const checkbox = ref(false);
+
 function submit() {
     formDate.get(route('Laporan.index', { min: formDate.min, max: formDate.max }), {
         preserveState: true,
@@ -174,15 +240,16 @@ function submit() {
 }
 
 const uploadPercentage = ref(0);
+let config = {
+    responseType: 'blob',
+    onDownloadProgress: function (progressEvent) {
+        uploadPercentage.value = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+        console.log(uploadPercentage.value) // this works fine but how do I update the initial value from here?
+    }
+}
 function cetakEXCEL(e) {
     console.log(uploadPercentage.value)
-    let config = {
-        responseType: 'blob',
-        onDownloadProgress: function (progressEvent) {
-            uploadPercentage.value = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            console.log(uploadPercentage.value) // this works fine but how do I update the initial value from here?
-        }
-    }
+
     axios
         .get(route('Laporan.CetakEXCEL', { min: formDate.min, max: formDate.max }), config)
         .then(response => {
@@ -201,13 +268,7 @@ function cetakEXCEL(e) {
 function cetakPDF() {
 
     console.log(uploadPercentage.value)
-    let config = {
-        responseType: 'blob',
-        onDownloadProgress: function (progressEvent) {
-            uploadPercentage.value = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            console.log(uploadPercentage.value) // this works fine but how do I update the initial value from here?
-        }
-    }
+
     axios
         .get(route('Laporan.CetakPDF', { min: formDate.min, max: formDate.max }), config)
         .then(response => {
@@ -220,5 +281,102 @@ function cetakPDF() {
             link.click();
             // Mostly the same, I was just experimenting with different approaches, tried link.click, iframe and other solutions
         }).catch(error => console.log(error))
+}
+
+// Fungsi Centang File
+const valueCheck = ref([])
+function centangFile() {
+    checkbox.value = !checkbox.value;
+}
+function centangFileAll() {
+    centangFile()
+    var ch = document.getElementsByName('mycheckboxes');
+    ch.forEach((elem) => {
+        elem.checked = checkbox.value;
+        if (elem.checked) {
+            valueCheck.value.push(elem.value)
+        } else {
+            valueCheck.value = [];
+        }
+    })
+    console.log(valueCheck.value)
+}
+watch(valueCheck, (value) => {
+    console.log(value)
+})
+function parseCetak(value) {
+    axios.get(route('Laporan.cekDowloadFile', { data: valueCheck.value, Delete: value }), config)
+        .then(response => {
+            console.log(response)
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'file.zip');
+            document.body.appendChild(link);
+            link.click();
+            // Mostly the same, I was just experimenting with different approaches, tried link.click, iframe and other solutions
+        }).catch(error => console.log(error))
+}
+
+function DeleteAllDanSave(txt) {
+    Swal.fire({
+        title: txt,
+        text: "Apakah Anda Yakin?",
+        icon: "warning",
+        showDenyButton: true,
+        confirmButtonColor: "#3338ED",
+        denyButtonColor: "#CF4647",
+        confirmButtonText: 'Simpan',
+        denyButtonText: 'Batal',
+
+    })
+        .then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                axios.get(route('Laporan.cekDowloadFile', { data: valueCheck.value, Delete: value }), config)
+                    .then(response => {
+                        console.log(response)
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'file.zip');
+                        document.body.appendChild(link);
+                        link.click();
+                        // Mostly the same, I was just experimenting with different approaches, tried link.click, iframe and other solutions
+                    }).catch(error => console.log(error))
+            } else if (result.isDenied) {
+                Swal.fire('Dibatalkan', '', 'info')
+            }
+        })
+}
+function DeleteAll(txt) {
+    Swal.fire({
+        title: txt,
+        text: "Apakah Anda Yakin?",
+        icon: "warning",
+        showDenyButton: true,
+        confirmButtonColor: "#3338ED",
+        denyButtonColor: "#CF4647",
+        confirmButtonText: 'Simpan',
+        denyButtonText: 'Batal',
+
+    })
+        .then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                axios.get(route('Laporan.destroyAll', { data: valueCheck.value }))
+                    .then((response) => {
+                        Swal.fire(
+                            response.data,
+                            'You clicked the button!',
+                            'success'
+                        )
+                        window.location.reload
+                        // Mostly the same, I was just experimenting with different approaches, tried link.click, iframe and other solutions
+                    }).catch(error => console.log(error))
+            } else if (result.isDenied) {
+                Swal.fire('Dibatalkan', '', 'info')
+            }
+        })
 }
 </script>

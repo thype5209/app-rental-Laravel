@@ -302,26 +302,5 @@ class SewaController extends Controller
     }
 
 
-    public function cekDowloadFile()
-    {
-        $foto = ['fotoMobil/M-0153.png', 'fotoMobil/M-0517.png', 'fotoMobil/M-0915.png', 'fotoMobil/M-0961.png'];
-        $this->downloadFile($foto);
-    }
-    public function downloadFile(array $arr)
-    {
-        $zip = new ZipArchive;
-        $file_name = 'arsip.zip';
-        $collect = collect($arr);
-        if(Storage::disk('public')->exists('ZipFile/arsip.zip')){
-            Storage::disk('public')->delete('ZipFile/arsip.zip');
-        }
-        $zip->open(public_path() . '/storage/ZipFile/arsip.zip', ZipArchive::CREATE);
-        foreach ($collect as $key => $item) {
-            $zip->addFile(public_path() . '/storage/' . $item, $key . '.png');
-        }
-        $zip->close();
 
-        // We return the file immediately after download
-        return response()->download(public_path().'/storage/ZipFile/arsip.zip');
-    }
 }

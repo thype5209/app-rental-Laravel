@@ -78,7 +78,6 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::put('/updateTanggal/{id}' , 'updateTanggal')->name('updateTanggal');
             Route::put('/updateStatusModal/{id}' , 'updateStatusModal')->name('updateStatusModal');
             Route::put('/updateTanggal/{id}' , 'updateTanggal')->name('updateTanggal');
-            Route::get('/cekDowloadFile' , 'cekDowloadFile')->name('cekDowloadFile');
 
         });
     });
@@ -90,8 +89,6 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::get('/CetakSewa', 'saveSewaCetak')->name('saveSewaDanCetak');
             Route::post('/saveSewa', 'saveSewa')->name('saveSewa');
             Route::get('/TESTdata', 'TESTdata')->name('TESTdata');
-            Route::get('/CetakPDF', 'CetakPDF')->name('CetakPDF');
-            Route::get('/CetakEXCEL', 'CetakEXCEL')->name('CetakEXCEL');
 
         });
     });
@@ -123,6 +120,8 @@ Route::group(['prefix'=> 'Laporan', 'as'=> 'Laporan.'],function(){
     Route::controller(LaporanController::class)->group(function(){
         Route::get('/CetakPDF', 'CetakPDF')->name('CetakPDF');
         Route::get('/CetakEXCEL', 'CetakEXCEL')->name('CetakEXCEL');
+        Route::get('/cekDowloadFile' , 'cekDowloadFile')->name('cekDowloadFile');
+        Route::get('/destroyAll' , 'destroyAll')->name('destroyAll');
 
     });
 });

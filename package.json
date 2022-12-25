@@ -28,6 +28,7 @@
         "vue-html2pdf": "^1.8.0",
         "vue-pdf": "^4.3.0",
         "vue-slick-carousel": "^1.0.6",
+        "vue-sweetalert2": "^5.0.5",
         "vue3-carousel": "^0.2.9",
         "vue3-html2pdf": "^1.1.2"
     }

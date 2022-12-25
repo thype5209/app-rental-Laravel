@@ -3,7 +3,7 @@
 import { ref, defineProps, watch } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 import PaginationVue from '@/Components/Pagination.vue';
-
+import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
 const status = defineProps({
     sewa: {
         type: Object,
