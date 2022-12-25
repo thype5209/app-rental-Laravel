@@ -57,15 +57,15 @@
                         Centang File
                     </button> -->
                     <button type="button" @click="DeleteAll('Hapus Semua')"
-                    class="inline-flex bg-red-500 text-white items-center py-2 px-4 text-sm font-medium  rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                        </path>
-                    </svg>
-                    Hapus Semua
-                </button>
+                        class="inline-flex bg-red-500 text-white items-center py-2 px-4 text-sm font-medium  rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
+                        Hapus Semua
+                    </button>
 
                 </div>
 
@@ -230,7 +230,7 @@ const formDate = useForm({
     min: '',
     max: ''
 });
-const cetak = ref(false)
+const cetak = ref(true)
 const checkbox = ref(false);
 
 function submit() {
@@ -307,13 +307,13 @@ watch(valueCheck, (value) => {
     console.log(value)
 })
 function parseCetak(value) {
-    axios.get(route('Laporan.cekDowloadFile', { data: valueCheck.value, Delete: value }), config)
+    axios.get(route('Laporan.cekDowloadFile', { min: formDate.min, max: formDate.max }))
         .then(response => {
             console.log(response)
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/zip' }));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'file.zip');
+            link.setAttribute('download', 'arsip.zip');
             document.body.appendChild(link);
             link.click();
             // Mostly the same, I was just experimenting with different approaches, tried link.click, iframe and other solutions

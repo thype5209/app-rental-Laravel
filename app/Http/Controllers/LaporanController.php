@@ -240,7 +240,7 @@ class LaporanController extends Controller
             'pdf_url' => $pdf_url,
             'denda' => '0',
             'status' => 'Sewa',
-            'total' => $request->nilaisewahari * $request->lama_sewa,
+            'total' => intval($request->nilaisewahari) * intval($request->lama_sewa),
         ]);
         WaktuSewa::create([
             'sewa_id' => $sewa->id,
@@ -257,8 +257,10 @@ class LaporanController extends Controller
 
     public function CetakPDF()
     {
-        $data =  Sewa::query()->with(['waktusewa', 'pengguna', 'user'])->where('status', '=', 'Selesai')
-            ->dateFilter(FacadeRequest::only(['min', 'max']))->get();
+        $data =  Sewa::query()->with(['waktusewa', 'pengguna', 'user'])
+            ->where('status', '=', 'Selesai')
+            ->dateFilter(FacadeRequest::only(['min', 'max']))
+            ->get();
         $pdf = Pdf::loadView('cetak-pdf', ['data' => $data]);
         // Simpan File PDF Ke Public Storage
         $path =  'PdfFILE/';
@@ -290,13 +292,19 @@ class LaporanController extends Controller
 
     public function cekDowloadFile()
     {
-        $data = FacadeRequest::input('data');
-        $sewa = Sewa::whereIn('id', $data)->get();
+        $sewa = Sewa::query()->with(['waktusewa', 'pengguna', 'user'])
+        ->where('status', '=', 'Selesai')
+        ->dateFilter(FacadeRequest::only(['min', 'max']))
+        ->get();
 
-
-        if(FacadeRequest::input('Delete')){
+        if (Storage::disk('public')->exists('ZipFile/arsip.zip')) {
+            Storage::disk('public')->delete('ZipFile/arsip.zip');
+        }
+        $this->downloadFile($sewa);
+        if (FacadeRequest::input('Delete')) {
             $sewa->delete();
         }
+        // return FacadeRequest::only(['min', 'max']);
         return response()->download(public_path() . '/storage/ZipFile/arsip.zip');
     }
     /**
@@ -307,24 +315,22 @@ class LaporanController extends Controller
      */
     public function downloadFile($sewa)
     {
-
-
         $zip = new ZipArchive;
-        if (Storage::disk('public')->exists('ZipFile/arsip.zip')) {
-            Storage::disk('public')->delete('ZipFile/arsip.zip');
-        }
+
         $zip->open(public_path() . '/storage/ZipFile/arsip.zip', ZipArchive::CREATE);
-        $zip->addFile(public_path() . '/storage/fotoMobil/M-0153.png', "mobil.png");
         foreach ($sewa as $key => $item) {
-            if(Storage::disk('public')->exists($item->pdf_url)){
+            if (Storage::disk('public')->exists($item->pdf_url)) {
                 $zip->addFile(public_path() . '/storage/' . $item->pdf_url, $item->pdf_url);
+                // dd($item->pdf_url);
             }
         }
         $zip->close();
+
         // We return the file immediately after download
     }
 
-    public function destroyAll(){
+    public function destroyAll()
+    {
         $data = FacadeRequest::input('data');
         $sewa = Sewa::whereIn('id', $data)->delete();
 
