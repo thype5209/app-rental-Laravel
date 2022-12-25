@@ -9,8 +9,6 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { VueCarousel } from 'vue-carousel';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
-import swal from 'sweetalert2';
-window.Swal = swal;
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Jasaudagar';
 createInertiaApp({
