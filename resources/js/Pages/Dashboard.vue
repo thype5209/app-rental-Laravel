@@ -1,9 +1,19 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
+import { defineProps, ref, watch } from 'vue';
+
+const data = defineProps({
+    penyewa: String,
+    totalPendapatan: String,
+    mobilSewa: String,
+    SewaTelat: String,
+})
+
 </script>
 
 <template>
+
     <Head title="Dashboard" />
     <AuthenticatedLayout>
 
@@ -21,7 +31,7 @@ import { Head } from '@inertiajs/inertia-vue3';
                     </svg>
                 </div>
                 <div class="text-right">
-                    <p class="text-2xl">1,257</p>
+                    <p class="text-2xl">{{ data.penyewa }}</p>
                     <p class="text-sm">Jumlah Penyewa Bulan Ini</p>
                 </div>
             </div>
@@ -36,7 +46,7 @@ import { Head } from '@inertiajs/inertia-vue3';
                     </svg>
                 </div>
                 <div class="text-right">
-                    <p class="text-2xl">1,257</p>
+                    <p class="text-2xl">{{ data.mobilSewa }}</p>
                     <p class="text-sm">Mobil Dalam Penyewaan</p>
                 </div>
             </div>
@@ -51,7 +61,7 @@ import { Head } from '@inertiajs/inertia-vue3';
                     </svg>
                 </div>
                 <div class="text-right">
-                    <p class="text-2xl">$11,257</p>
+                    <p class="text-lg">Rp. {{Number( data.totalPendapatan).toLocaleString() }}</p>
                     <p>Jumlah Pendapatan</p>
                 </div>
             </div>
@@ -59,13 +69,15 @@ import { Head } from '@inertiajs/inertia-vue3';
                 class="bg-default-dark dark:bg-gray-800 shadow-lg rounded-md flex items-center justify-between p-3 border-b-4 border-blue-600 dark:border-gray-600 text-white font-medium group">
                 <div
                     class="flex justify-center items-center w-14 h-14 bg-white rounded-full transition-all duration-300 transform group-hover:rotate-12">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-default-dark">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6 text-default-dark">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
 
                 </div>
                 <div class="text-right">
-                    <p class="text-2xl">10</p>
+                    <p class="text-2xl">{{data.SewaTelat.length}}</p>
                     <p class="text-sm">Terlewat Masa Penyewaan</p>
                 </div>
             </div>
@@ -223,7 +235,8 @@ import { Head } from '@inertiajs/inertia-vue3';
                 <div class="rounded-t mb-0 px-0 border-0">
                     <div class="flex flex-wrap items-center px-4 py-2">
                         <div class="relative w-full max-w-full flex-grow flex-1">
-                            <h3 class="font-semibold text-base text-gray-900 dark:text-gray-50">Penyewaan Mobil Terbaru</h3>
+                            <h3 class="font-semibold text-base text-gray-900 dark:text-gray-50">Penyewaan Mobil Terbaru
+                            </h3>
                         </div>
                         <div class="relative w-full max-w-full flex-grow flex-1 text-right">
                             <button

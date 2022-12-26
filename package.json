@@ -21,6 +21,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "file-saver": "^2.0.5",
         "jspdf": "^2.5.1",
         "pdfmake": "^0.2.7",
         "pspdfkit": "^2022.5.2",

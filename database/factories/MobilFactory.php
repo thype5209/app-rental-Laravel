@@ -36,7 +36,7 @@ class MobilFactory extends Factory
             'foto2' => $nama2,
             'foto3' => $nama3,
             'foto4' => $nama4,
-            'status' => '2',
+            'status' => fake()->randomElement(['1','2']),
         ];
     }
 

@@ -219,6 +219,7 @@ import InputLabelVue from '@/Components/InputLabel.vue';
 import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
 import axios from 'axios';
 import PaginationVue from '@/Components/Pagination.vue';
+import {SaveAs} from 'file-saver';
 const data = defineProps({
     sewa: {
         type: Object,
@@ -307,15 +308,17 @@ watch(valueCheck, (value) => {
     console.log(value)
 })
 function parseCetak(value) {
-    axios.get(route('Laporan.cekDowloadFile', { min: formDate.min, max: formDate.max }))
+    axios.get(route('Laporan.cekDowloadFile', { min: formDate.min, max: formDate.max }), config)
         .then(response => {
             console.log(response)
-            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/zip' }));
+            // SaveAs(response.data,'file.zip')
+            const url = URL.createObjectURL(new Blob([response.data], { type: 'application/zip' }));
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'arsip.zip');
             document.body.appendChild(link);
             link.click();
+            URL.revokeObjectURL(link.href)
             // Mostly the same, I was just experimenting with different approaches, tried link.click, iframe and other solutions
         }).catch(error => console.log(error))
 }

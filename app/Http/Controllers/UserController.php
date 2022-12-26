@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mobil;
+use Carbon\Carbon;
 use App\Models\Role;
+use App\Models\Sewa;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +24,17 @@ class UserController extends Controller
     {
         $user = User::all();
         return $user;
+    }
+
+    public function Dashboard(){
+        $carbon = Carbon::now()->format('m');
+        $sewa = Sewa::whereMonth('created_at', $carbon)->get();
+        return Inertia::render('Dashboard',[
+            'penyewa'=> $sewa->count(),
+            'totalPendapatan'=> Sewa::where('status','=','Selesai')->sum('total'),
+            'mobilSewa'=> Mobil::where('status', '=', '1')->count(),
+            'SewaTelat'=> Sewa::where('status', '=', 'Telat')->get(),
+        ]);
     }
     public function index()
     {
