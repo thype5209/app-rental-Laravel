@@ -1,15 +1,55 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head,Link } from '@inertiajs/inertia-vue3';
 import { defineProps, ref, watch } from 'vue';
 
 const data = defineProps({
-    penyewa: String,
-    totalPendapatan: String,
-    mobilSewa: String,
-    SewaTelat: String,
+    penyewa: Number,
+    totalPendapatan: Number,
+    mobilSewa: Number,
+    SewaTelat: Object,
+    mobil: {
+        type: Object,
+        default: () => ({})
+    },
+    sewaTerbaru: Object,
 })
+function mapArray() {
+    let nilaiMap = data.mobil.data;
+    var hasil = nilaiMap.reduce((unit, obj) => {
+        if (!unit[obj.unit]) {
+            unit[obj.unit] = []
+        }
+        unit[obj.unit].push(obj);
+        return unit;
+    }, {})
+    return hasil;
+}
+const MapMobil = mapArray();
+function parseDate(date) {
+    var t = new Date(date)
+    return t.getDate();
+}
+function parseDateNow() {
+    const sewa = data.sewaTerbaru.data;
+    const dateToday = new Date();
+    const dateYesterday = new Date().setDate(dateToday.getDate() - 1);
+    var arrToday = [];
+    for (let i = 0; i < sewa.length; i++) {
+        arrToday.push(sewa[i]);
+    }
+    let filterDate = arrToday.filter(obj => parseDate(obj.created_at) === dateToday.getDate())
+    let filterDateYesterday = arrToday.filter(obj => parseDate(obj.created_at) === dateYesterday)
+    const SewaToday = {
+        'today': filterDate,
+        'yesterday': filterDateYesterday,
+    };
 
+    return SewaToday;
+}
+var yesterday =
+console.log(parseDateNow())
+let forDate = parseDateNow();
 </script>
 
 <template>
@@ -61,7 +101,7 @@ const data = defineProps({
                     </svg>
                 </div>
                 <div class="text-right">
-                    <p class="text-lg">Rp. {{Number( data.totalPendapatan).toLocaleString() }}</p>
+                    <p class="text-lg">Rp. {{ Number(data.totalPendapatan).toLocaleString() }}</p>
                     <p>Jumlah Pendapatan</p>
                 </div>
             </div>
@@ -77,7 +117,7 @@ const data = defineProps({
 
                 </div>
                 <div class="text-right">
-                    <p class="text-2xl">{{data.SewaTelat.length}}</p>
+                    <p class="text-2xl">{{ data.SewaTelat.length }}</p>
                     <p class="text-sm">Terlewat Masa Penyewaan</p>
                 </div>
             </div>
@@ -96,9 +136,9 @@ const data = defineProps({
                             </h3>
                         </div>
                         <div class="relative w-full max-w-full flex-grow flex-1 text-right">
-                            <button
+                            <Link :href="route('Mobil.index')"
                                 class="bg-default-dark dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                type="button">See all</button>
+                                type="button">Lihat Semua</Link>
                         </div>
                     </div>
                     <div class="block w-full overflow-x-auto">
@@ -116,110 +156,14 @@ const data = defineProps({
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr class="text-gray-700 dark:text-gray-100">
+                            <tbody v-for="(mobil, index) in MapMobil" :key="mobil" :index="index">
+                                <tr v-for="item in mobil" :key="item" class="text-gray-700 dark:text-gray-100">
                                     <th
                                         class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        Facebook</th>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        5,480</td>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        <div class="flex items-center">
-                                            <span class="mr-2">70%</span>
-                                            <div class="relative w-full">
-                                                <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                    <div style="width: 70%"
-                                                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="text-gray-700 dark:text-gray-100">
-                                    <th
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        Twitter</th>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        3,380</td>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        <div class="flex items-center">
-                                            <span class="mr-2">40%</span>
-                                            <div class="relative w-full">
-                                                <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                    <div style="width: 40%"
-                                                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-default-dark">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="text-gray-700 dark:text-gray-100">
-                                    <th
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        Instagram</th>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        4,105</td>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        <div class="flex items-center">
-                                            <span class="mr-2">45%</span>
-                                            <div class="relative w-full">
-                                                <div class="overflow-hidden h-2 text-xs flex rounded bg-pink-200">
-                                                    <div style="width: 45%"
-                                                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-pink-500">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="text-gray-700 dark:text-gray-100">
-                                    <th
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        Google</th>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        4,985</td>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        <div class="flex items-center">
-                                            <span class="mr-2">60%</span>
-                                            <div class="relative w-full">
-                                                <div class="overflow-hidden h-2 text-xs flex rounded bg-red-200">
-                                                    <div style="width: 60%"
-                                                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="text-gray-700 dark:text-gray-100">
-                                    <th
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
-                                        Linkedin</th>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        2,250</td>
-                                    <td
-                                        class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        <div class="flex items-center">
-                                            <span class="mr-2">30%</span>
-                                            <div class="relative w-full">
-                                                <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                                                    <div style="width: 30%"
-                                                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-700">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {{ item.unit }}
+                                    </th>
+                                    <td>
+                                        {{ mobil.length }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -239,9 +183,8 @@ const data = defineProps({
                             </h3>
                         </div>
                         <div class="relative w-full max-w-full flex-grow flex-1 text-right">
-                            <button
-                                class="bg-default-dark dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                type="button">See all</button>
+                            <Link :href="route('Sewa.index')"
+                                class="bg-default-dark dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Lihat Semua</Link>
                         </div>
                     </div>
                     <div class="block w-full">
@@ -250,7 +193,7 @@ const data = defineProps({
                             Today
                         </div>
                         <ul class="my-1">
-                            <li class="flex px-4">
+                            <li v-for="dateNow in forDate.today" :key="dateNow" class="flex px-4">
                                 <div class="w-9 h-9 rounded-full flex-shrink-0 bg-indigo-500 my-2 mr-3">
                                     <svg class="w-9 h-9 fill-current text-indigo-50" viewBox="0 0 36 36">
                                         <path
@@ -263,13 +206,13 @@ const data = defineProps({
                                     <div class="flex-grow flex justify-between items-center">
                                         <div class="self-center">
                                             <a class="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
-                                                href="#0" style="outline: none;">Nick Mark</a> mentioned <a
+                                                href="#0" style="outline: none;">{{dateNow.kode}}</a> ,Penyewa <a
                                                 class="font-medium text-gray-800 dark:text-gray-50 dark:hover:text-gray-100"
-                                                href="#0" style="outline: none;">Sara Smith</a> in a new post
+                                                href="#0" style="outline: none;">{{dateNow.pengguna.nama}}</a>
                                         </div>
                                         <div class="flex-shrink-0 ml-2">
-                                            <a class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
-                                                href="#0" style="outline: none;">
+                                            <Link class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
+                                                :href="route('Sewa.show', {id:dateNow.id})" style="outline: none;">
                                                 View<span><svg width="20" height="20" viewBox="0 0 20 20"
                                                         fill="currentColor"
                                                         class="transform transition-transform duration-500 ease-in-out">
@@ -277,39 +220,7 @@ const data = defineProps({
                                                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                                                             clip-rule="evenodd"></path>
                                                     </svg></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="flex px-4">
-                                <div class="w-9 h-9 rounded-full flex-shrink-0 bg-red-500 my-2 mr-3">
-                                    <svg class="w-9 h-9 fill-current text-red-50" viewBox="0 0 36 36">
-                                        <path d="M25 24H11a1 1 0 01-1-1v-5h2v4h12v-4h2v5a1 1 0 01-1 1zM14 13h8v2h-8z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div
-                                    class="flex-grow flex items-center border-gray-100 text-sm text-gray-600 dark:text-gray-50 py-2">
-                                    <div class="flex-grow flex justify-between items-center">
-                                        <div class="self-center">
-                                            The post <a
-                                                class="font-medium text-gray-800 dark:text-gray-50 dark:hover:text-gray-100"
-                                                href="#0" style="outline: none;">Post Name</a> was removed by <a
-                                                class="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
-                                                href="#0" style="outline: none;">Nick Mark</a>
-                                        </div>
-                                        <div class="flex-shrink-0 ml-2">
-                                            <a class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
-                                                href="#0" style="outline: none;">
-                                                View<span><svg width="20" height="20" viewBox="0 0 20 20"
-                                                        fill="currentColor"
-                                                        class="transform transition-transform duration-500 ease-in-out">
-                                                        <path fill-rule="evenodd"
-                                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                            clip-rule="evenodd"></path>
-                                                    </svg></span>
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -320,7 +231,7 @@ const data = defineProps({
                             Yesterday
                         </div>
                         <ul class="my-1">
-                            <li class="flex px-4">
+                            <li v-for="sewadate in forDate.yesterday" :key="sewadate" class="flex px-4">
                                 <div class="w-9 h-9 rounded-full flex-shrink-0 bg-green-500 my-2 mr-3">
                                     <svg class="w-9 h-9 fill-current text-light-blue-50" viewBox="0 0 36 36">
                                         <path
@@ -333,10 +244,10 @@ const data = defineProps({
                                     <div class="flex-grow flex justify-between items-center">
                                         <div class="self-center">
                                             <a class="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
-                                                href="#0" style="outline: none;">240+</a> users have subscribed
+                                                href="#0" style="outline: none;">{{sewadate.kode}}</a> ,Penyewa
                                             to <a
                                                 class="font-medium text-gray-800 dark:text-gray-50 dark:hover:text-gray-100"
-                                                href="#0" style="outline: none;">Newsletter #1</a>
+                                                href="#0" style="outline: none;">{{ sewadate.pengguna.nama }}</a>
                                         </div>
                                         <div class="flex-shrink-0 ml-2">
                                             <a class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"

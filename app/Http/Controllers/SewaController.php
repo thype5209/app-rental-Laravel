@@ -25,7 +25,7 @@ class SewaController extends Controller
     {
         $this->CekSewaTelat();
         $this->CekTotal();
-        // $this->generateKodeASC();
+        $this->generateKodeASC();
     }
     /**
      * Display a listing of the resource.

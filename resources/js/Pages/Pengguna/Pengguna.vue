@@ -67,9 +67,9 @@
                         </tr>
                     </tbody>
                 </table>
+                <PaginationVue :links="pengguna.links"></PaginationVue>
                 <div
                 class="bg-white flex justify-center">
-                <PaginationVue :links="pengguna.links"></PaginationVue>
             </div>
         </div>
         </div>
