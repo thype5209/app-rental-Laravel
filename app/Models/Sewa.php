@@ -12,7 +12,7 @@ class Sewa extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'sewas';
-    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'harga_bulan', 'pdf_url','total'];
+    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'harga_bulan', 'pdf_url', 'total'];
 
     public function waktusewa()
     {
@@ -72,10 +72,15 @@ class Sewa extends Model
     }
     public function scopeDateFilter($query, array $date)
     {
-        $query->when($date ?? null, function($query) use ($date){
-            $query->whereHas('waktusewa', function ($query) use ($date) {
-                $query->whereBetween('tgl_sewa', [$date['min'], $date['max']]);
-            });
+        $query->when($date ?? null, function ($query) use ($date) {
+            if ($date['min'] == null || $date['max'] == null) {
+                $query->orderBy('id', 'asc')
+                ->where('status','=','selesai');
+            } else {
+                $query->whereHas('waktusewa', function ($query) use ($date) {
+                    $query->whereBetween('tgl_sewa', [$date['min'], $date['max']]);
+                });
+            }
         });
     }
 }

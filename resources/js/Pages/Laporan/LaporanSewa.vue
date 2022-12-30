@@ -21,7 +21,7 @@
                             </div>
                             <input type="date" id="simple-search" v-model="formDate.min"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Search" required />
+                                placeholder="Search" />
                         </div>
                     </div>
                     <div class=" flex justify-center items-center gap-5">
@@ -37,7 +37,7 @@
                             </div>
                             <input type="date" id="simple-search" v-model="formDate.max"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Search" required />
+                                placeholder="Search" />
                         </div>
                     </div>
                     <PrimaryButtonVue>Cari</PrimaryButtonVue>
@@ -162,46 +162,31 @@
                                         <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                                     </div>
                                 </td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
-                                        index
-                                        + 1
-                                }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{ (index + 1)}}</td>
 
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
-                                        mobil.kode
-                                }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{mobil.kode}}</td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
                                     <span v-if="mobil.nik != null">{{ mobil.nik }}</span>
                                     <span v-else>---------</span>
                                 </td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border"
-                                    v-if="mobil.pengguna != null">{{
-                                            mobil.pengguna.nama
-                                    }}</td>
+                                    v-if="mobil.pengguna != null">{{mobil.pengguna.nama}}</td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border" v-else>
                                     Sopir</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
-                                        mobil.nopol
-                                }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
-                                        mobil.waktusewa.tgl_sewa
-                                }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{mobil.nopol}}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{mobil.waktusewa.tgl_sewa}}</td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
                                     {{ mobil.waktusewa.tgl_kembali }}
                                     <br />
                                 </td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{
-                                        mobil.user.name
-                                }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">Rp. {{
-                                        Number(mobil.denda).toLocaleString()
-                                }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
+                                    {{ mobil.user.name }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">Rp.
+                                    {{ Number(mobil.denda).toLocaleString() }}</td>
 
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-xs border">
                                     <span
-                                        class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">{{
-        mobil.status
-                                        }}</span>
+                                        class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">{{mobil.status}}</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -219,7 +204,8 @@ import InputLabelVue from '@/Components/InputLabel.vue';
 import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
 import axios from 'axios';
 import PaginationVue from '@/Components/Pagination.vue';
-import {SaveAs} from 'file-saver';
+import { SaveAs } from 'file-saver';
+import Swal from 'sweetalert2';
 const data = defineProps({
     sewa: {
         type: Object,
@@ -338,7 +324,7 @@ function DeleteAllDanSave(txt) {
         .then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                axios.get(route('Laporan.cekDowloadFile', { data: valueCheck.value, Delete: value }), config)
+                axios.get(route('Laporan.cekDowloadFile', { data: valueCheck.value, clear: true }), config)
                     .then(response => {
                         // console.log(response)
                         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -347,6 +333,7 @@ function DeleteAllDanSave(txt) {
                         link.setAttribute('download', 'file.zip');
                         document.body.appendChild(link);
                         link.click();
+                        window.location.reload;
                         // Mostly the same, I was just experimenting with different approaches, tried link.click, iframe and other solutions
                     }).catch(error => console.log(error))
             } else if (result.isDenied) {

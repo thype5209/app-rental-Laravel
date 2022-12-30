@@ -34,7 +34,7 @@ class UserController extends Controller
             'totalPendapatan'=> Sewa::where('status','=','Selesai')->sum('total'),
             'mobilSewa'=> Mobil::where('status', '=', '1')->count(),
             'SewaTelat'=> Sewa::where('status', '=', 'Telat')->get(),
-            'mobil'=> Mobil::paginate(8),
+            'mobil'=> Mobil::paginate(10),
             'sewaTerbaru'=> Sewa::with(['pengguna','waktusewa'])->orderBy('id', 'desc')->where('status', '=', 'Sewa')->paginate(5),
         ]);
     }

@@ -56,9 +56,11 @@ const data = defineProps({
                     </div>
                     <div class="w-full flex justify-between items-center">
                         <ul class="flex flex-row gap-5">
-                            <li>Home</li>
-                            <li>About</li>
-                            <li>Mobil</li>
+                            <li><a href="#home">Home</a></li>
+                            <li>
+                                <a href="#about">About</a>
+                            </li>
+                            <li><a href="#mobil">Mobil</a></li>
                         </ul>
                         <div>
                             <Link :href="route('login')"
@@ -98,9 +100,11 @@ const data = defineProps({
                     <div class="w-full flex justify-between items-center">
 
                         <ul class="flex flex-row gap-10">
-                            <li>Home</li>
-                            <li>About</li>
-                            <li>Mobil</li>
+                            <li><a href="#home">Home</a></li>
+                            <li>
+                                <a href="#about">About</a>
+                            </li>
+                            <li><a href="#mobil">Mobil</a></li>
                         </ul>
                         <div>
                             <Link :href="route('login')"
@@ -113,7 +117,7 @@ const data = defineProps({
             </div>
         </div>
 
-        <div class="relative w-full h-full flex flex-col justify-center items-center">
+        <div id="home" class="relative w-full h-full flex flex-col justify-center items-center">
             <div class="carousel w-full md:w-[28rem] max-w-2xl bg-default-dark px-3 py-5 rounded-md">
                 <img :src="`/img/logo.png`" />
                 <h3 class="text-default-blue shadow-inner text-base md:text-5xl font-extrabold whitespace-nowrap">CV. <span
@@ -129,9 +133,9 @@ const data = defineProps({
             </div>
         </div>
     </div>
-    <CardMobil></CardMobil>
+    <CardMobil id="about"></CardMobil>
 
-    <div class="w-full flex flex-col">
+    <div class="w-full flex flex-col" id="mobil">
         <div class="text-center"><span class="font-extrabold text-2xl md:text-5xl text-gray-800">Jenis Mobil</span></div>
         <div class="container mx-auto py-2 md:pb-7">
             <CarouselVue :mobil="data.mobil"></CarouselVue>
@@ -162,5 +166,6 @@ const data = defineProps({
 <script >
 export default {
     name: 'WelcomeVue',
+
 }
 </script>

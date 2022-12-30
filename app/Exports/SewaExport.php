@@ -52,6 +52,7 @@ class SewaExport implements FromCollection, WithHeadings
         ->join('penggunas','sewas.nik', '=', 'penggunas.nik')
         ->select('kode', 'nopol as NoKendaraan', 'unit','sewas.nik', 'nama', 'no_hp','tgl_sewa','tgl_kembali', 'lama_sewa', 'denda','harga','total as sub_total', 'pdf_url')
         ->where('status', '=', 'Selesai')
-        ->dateFilter($date)->get();
+        ->dateFilter($date)
+        ->get();
     }
 }

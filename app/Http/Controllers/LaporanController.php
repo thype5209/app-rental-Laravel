@@ -301,8 +301,12 @@ class LaporanController extends Controller
             Storage::disk('public')->delete('ZipFile/arsip.zip');
         }
         $this->downloadFile($sewa);
-        if (FacadeRequest::input('Delete')) {
-            $sewa->delete();
+        // dd($sewa);
+        if (FacadeRequest::input('clear', false)) {
+            Sewa::query()->with(['waktusewa', 'pengguna', 'user'])
+        ->where('status', '=', 'Selesai')
+        ->dateFilter(FacadeRequest::only(['min', 'max']))
+        ->delete();
         }
         // return FacadeRequest::only(['min', 'max']);
         return response()->download(public_path() . '/storage/ZipFile/arsip.zip');
@@ -318,10 +322,11 @@ class LaporanController extends Controller
         $zip = new ZipArchive;
 
         $zip->open(public_path() . '/storage/ZipFile/arsip.zip', ZipArchive::CREATE);
+        // dd(public_path('storage/fotoMobil/Avanza-car-side.png'));
+        $zip->addFile(public_path('storage/fotoMobil/Avanza-car-side.png'), 'mobil.png');
         foreach ($sewa as $key => $item) {
             if (Storage::disk('public')->exists($item->pdf_url)) {
                 $zip->addFile(public_path() . '/storage/' . $item->pdf_url, $item->pdf_url);
-                // dd($item->pdf_url);
             }
         }
         $zip->close();
