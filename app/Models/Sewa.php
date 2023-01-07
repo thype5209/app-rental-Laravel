@@ -78,7 +78,7 @@ class Sewa extends Model
                 ->where('status','=','selesai');
             } else {
                 $query->whereHas('waktusewa', function ($query) use ($date) {
-                    $query->whereBetween('tgl_sewa', [$date['min'], $date['max']]);
+                    $query->whereBetween('tgl_kembali', [$date['min'], $date['max']]);
                 });
             }
         });

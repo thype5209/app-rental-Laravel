@@ -131,7 +131,7 @@ class SewaController extends Controller
             'jaminan' => 'string|nullable',
         ]);
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
-            $query->whereIn('status', ['Sewa', 'Belum Dibayar', 'Telat']);
+            $query->whereIn('status', ['2','3','4']);
         })
             ->where('nik', $request->nik)
             ->get();
