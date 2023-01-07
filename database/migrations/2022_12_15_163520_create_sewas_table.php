@@ -31,7 +31,9 @@ return new class extends Migration
             $table->string('denda', 100);
             $table->string('pdf_url', 100);
             $table->string('status',20);
+            $table->string('sisa',30)->nullable();
             $table->string('total',30);
+            $table->enum('status_bayar',['1','2','3', '4'])->comment('1 = Lunas, 2 = Denda, 3=belum lunas, 4= menunggak Pembayaran');
             $table->softDeletes();
             $table->timestamps();
         });

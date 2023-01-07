@@ -51,7 +51,7 @@ const dataInputSewa = {
     jaminan: "",
     panjar: '',
     sisa: '',
-    lunas: '',
+    lunas: false,
 };
 
 if (props.data.req != null && props.data.length > 0) {
@@ -204,23 +204,36 @@ function reduceArray(array, lamasewa) {
 }
 const slideMobil = ref(false);
 const slidebayar = ref(false);
+const lunasBayar = ref(false);
+const jumlahPanjar = ref(0);
 function funSlideMobil() {
     if (Form.nik != null && Form.nama && Form.alamat && Form.tempat_lahir != null && Form.tgl_lahir != null && Form.no_hp != null && Form.no_hp_lain != null) {
         slideMobil.value = true;
     }
 }
-function funSlideBayar(){
+function funSlideBayar() {
     if (Form.mobil_id != null && Form.nilaisewahari && Form.nilaisewabulan && Form.unit != null && Form.nopol != null && Form.tahun != null && Form.tgl_sewa != null && Form.tgl_kembali != null && Form.tujuan != null && Form.jaminan != null) {
         slidebayar.value = true;
         slideMobil.value = false;
     }
 }
-function cancelMObil(){
+function cancelMObil() {
     slideMobil.value = false;
 }
-function cancelBayar(){
+function cancelBayar() {
     slidebayar.value = false
 }
+function lunasfunc(){
+    Form.lunas = ! Form.lunas;
+}
+
+watch(jumlahPanjar, value=>{
+    var total = reduceArray(Form.nilaisewahari, Form.lama_sewa);
+    var sisa = total.split(',');
+    var harga = sisa.reduce((el, b) => el + b);
+    Form.sisa =  harga - value;
+    Form.panjar = value;
+})
 </script>
 
 <template>
@@ -232,7 +245,8 @@ function cancelBayar(){
         <!-- component -->
         <ModalVue :show="true" :maxWidth="`5xl`">
             <form @submit.prevent="submit">
-                <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == false && slidebayar == false">
+                <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2"
+                    v-if="slideMobil == false && slidebayar == false">
                     <div class="flex flex-row justify-left">
                         <Link :href="route('Sewa.index')">
                         <PrimaryButtonVue type="button" class="bg-default-dark">Kembali</PrimaryButtonVue>
@@ -371,7 +385,7 @@ function cancelBayar(){
                                 <option value>---</option>
                                 <option v-for="mobil in props.mobil" :key="mobil.id" :value="mobil.id">Unit= {{
                                     mobil.unit
-                                    }} | Nopol= {{ mobil.nopol }} | Tahun= {{ mobil.tahun }}</option>
+                                }} | Nopol= {{ mobil.nopol }} | Tahun= {{ mobil.tahun }}</option>
                             </SelectVUe>
                             <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
@@ -474,11 +488,11 @@ function cancelBayar(){
 
                     <div class="flex justify-around">
                         <PrimaryButtonVue type="submit" @click="cancelMObil"
-                        class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300"
-                        v-if="ModalShow == false">Sebelumnya</PrimaryButtonVue>
-                    <PrimaryButtonVue type="submit"
-                        class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300"
-                        @click="funSlideBayar">Selanjutnya</PrimaryButtonVue>
+                            class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300"
+                            v-if="ModalShow == false">Sebelumnya</PrimaryButtonVue>
+                        <PrimaryButtonVue type="submit"
+                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="funSlideBayar">
+                            Selanjutnya</PrimaryButtonVue>
                     </div>
                 </div>
                 <div class="inline-flex justify-center items-center w-full" v-if="slidebayar">
@@ -488,42 +502,51 @@ function cancelBayar(){
                 <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2" v-if="slidebayar">
 
                     <div class="-mx-3 sm:flex mb-6">
+                        <InputLabel class=" text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                            for="grid-last-name">Lunas</InputLabel>
+                        <TextInput  class="w-max ml-3" type="checkbox" id="checkbox" placeholder="Jumlah Panjar"
+                             @click="lunasfunc" />
+                        <p  class="text-red text-xs italic text-gray-500 ml-4">
+                            Jika Pembayaran Telah Lunas Mohon Di Centang
+                        </p>
+                    </div>
+                    <div class="-mx-3 sm:flex mb-6">
                         <div class="sm:w-1/3 px-3">
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Panjar</InputLabel>
-                            <TextInput id="grid-last-name" type="text" placeholder="Jumlah Panjar" required
-                                v-model="Form.panjar" />
+                            <TextInput id="grid-last-name" type="text" placeholder="Jumlah Panjar"
+                                v-model="jumlahPanjar" />
                             <p v-if="errors.panjar" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="sm:w-1/3 px-3">
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Sisa Bayar</InputLabel>
-                            <TextInput id="grid-last-name" class="1/2" type="text" placeholder="No. Kendaraan"
-                                required v-model="Form.sisa" />
+                            <TextInput id="grid-last-name" class="1/2" type="text" placeholder="Sisa Bayar"
+                                v-model="Form.sisa" />
                             <p v-if="errors.sisa" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="sm:w-1/2 px-3">
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                for="grid-last-name">Lunas</InputLabel>
+                                for="grid-last-name">Total</InputLabel>
 
-                            <TextInput id="grid-first-name" type="number" placeholder="0000" readonly required
-                                v-model="Form.lunas" />
+                            <TextInput id="grid-first-name" type="text" placeholder="0000" readonly required
+                                :value="reduceArray(Form.nilaisewahari, Form.lama_sewa)" />
                             <p v-if="errors.lunas" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                     </div>
                     <div class="flex justify-around">
                         <PrimaryButtonVue type="submit" @click="cancelBayar"
-                        class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300"
-                        v-if="ModalShow == false">Sebelumnya</PrimaryButtonVue>
-                    <PrimaryButtonVue type="submit"
-                        class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300"
-                        v-if="ModalShow == false">Lanjutkan</PrimaryButtonVue>
-                    <PrimaryButtonVue type="submit"
-                        class="block w-full mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" disabled
-                        v-else>Error Akses Ditolak</PrimaryButtonVue>
+                            class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300"
+                            v-if="ModalShow == false">Sebelumnya</PrimaryButtonVue>
+                        <PrimaryButtonVue type="submit"
+                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300"
+                            v-if="ModalShow == false">Lanjutkan</PrimaryButtonVue>
+                        <PrimaryButtonVue type="submit"
+                            class="block w-full mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" disabled
+                            v-else>Error Akses Ditolak</PrimaryButtonVue>
                     </div>
                 </div>
             </form>
@@ -564,14 +587,18 @@ function cancelBayar(){
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.kode }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.harga }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
-                                        item.waktusewa.lama_sewa }}</td>
+                                        item.waktusewa.lama_sewa
+                                    }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
-                                        item.waktusewa.tgl_sewa }}</td>
+                                        item.waktusewa.tgl_sewa
+                                    }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
-                                        item.waktusewa.tgl_kembali }}</td>
+                                        item.waktusewa.tgl_kembali
+                                    }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.status }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
-                                        reduceArray(item.harga, item.waktusewa.lama_sewa) }} </td>
+                                        reduceArray(item.harga, item.waktusewa.lama_sewa)
+                                    }} </td>
                                 </tr>
                             </table>
                         </div>

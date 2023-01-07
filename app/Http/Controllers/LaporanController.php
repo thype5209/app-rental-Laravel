@@ -45,11 +45,12 @@ class LaporanController extends Controller
 
     public function kodeSewa()
     {
-        $sewa = Sewa::max('kode');
-        if ($sewa == null) {
+        $max_id = Sewa::max('id');
+        $sewa = Sewa::all();
+        if ($max_id == null) {
             $kode = 'S001';
         } else {
-            $k = substr($sewa, 1, 3);
+            $k = (int) substr($max_id, 0);
             $k++;
             $kode = 'S' . sprintf('%03s', $k);
         }
@@ -67,7 +68,7 @@ class LaporanController extends Controller
     {
 
         // CekMobil
-        $mobil = Sewa::where('nopol', $request->nopol)->whereIn('status', ['Sewa'])->get();
+        $mobil = Sewa::where('nopol', $request->nopol)->whereIn('status', ['Sewa', 'Telat'])->get();
         if ($mobil->count() > 0) {
             return Redirect::route('Sewa.index')->with('error', 'Mobil Dalam Penyewaan');
         } else {
@@ -172,6 +173,9 @@ class LaporanController extends Controller
             'unit' => 'avanza',
             'nopol' => 'NK 0012',
             'tahun' => '2022',
+            'panjar'=> '0',
+            'sisa'=> '0',
+            'lunas'=> false,
         ];
         $req = (object) $data;
         // Panggil Fungsi Kode
@@ -182,9 +186,9 @@ class LaporanController extends Controller
 
         // Tanggal
         $carbon = $this->today();
-        $mobil = Mobil::where('nopol', $req->nopol)->first();
+        $mobil = Mobil::find(3);
         // Melakukan Load Data PDF
-        $pdf = Pdf::loadView('pdf-sewa-test', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
+        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
         return $pdf->stream();
     }
     /**
@@ -223,6 +227,10 @@ class LaporanController extends Controller
      */
     public function sewaCreate($request, $kode, $pdf_url)
     {
+        $status_bayar = '3';
+        if($request->sisa == null){
+            $status_bayar = '1';
+        }
         $sewa = Sewa::create([
             'jenis_sewa' => $request->jenis_sewa,
             'kode' => $kode,
@@ -240,6 +248,8 @@ class LaporanController extends Controller
             'pdf_url' => $pdf_url,
             'denda' => '0',
             'status' => 'Sewa',
+            'sisa'=> abs($request->sisa),
+            'status_bayar'=> $status_bayar,
             'total' => intval($request->nilaisewahari) * intval($request->lama_sewa),
         ]);
         WaktuSewa::create([

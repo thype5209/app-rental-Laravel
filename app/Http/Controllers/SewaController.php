@@ -34,7 +34,6 @@ class SewaController extends Controller
      */
     public function index()
     {
-
         return Inertia::render('Sewa/Pinjam', [
             'sewa' =>  Sewa::with(['pengguna', 'waktusewa', 'user'])
                 ->when(FacadesRequest::input('status') ?? null, function ($query, $status) {
@@ -47,6 +46,7 @@ class SewaController extends Controller
                 })
                 ->filter(FacadesRequest::only('search'))
                 ->where('status', '!=', 'Selesai')
+                ->orderBy('kode', 'desc')
                 ->paginate(20) ?? null,
             'can' => [
                 'create' => Auth::user()->can('sewa create'),
@@ -68,6 +68,7 @@ class SewaController extends Controller
                 ->orderBy('status', 'asc')
                 ->where('status', 'Selesai')
                 ->filter(FacadesRequest::only('search'))
+                ->orderBy('kode', 'desc')
                 ->paginate(10),
             'can' => [
                 'create' => Auth::user()->can('permission create'),
@@ -244,7 +245,7 @@ class SewaController extends Controller
             $nilai_denda = $total_denda * $diff;
             $sub_total = (intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)) + $item->denda;
             // dd($nilai_denda);
-            $item->update(['denda' => $nilai_denda, 'status' => "Telat", 'total' => $sub_total]);
+            $item->update(['denda' => $nilai_denda, 'status' => "Telat", 'total' => $sub_total, 'status_bayar'=> '3']);
             WaktuSewa::where('sewa_id',  $item->id)->update(['telat' => $diff]);
         }
     }

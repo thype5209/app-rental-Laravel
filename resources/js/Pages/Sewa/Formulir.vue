@@ -40,9 +40,9 @@ const FormPDF = useForm({
     unit: data.formulir.unit,
     nopol: data.formulir.nopol,
     tahun: data.formulir.tahun,
-    panjar:data.formulir.panjar,
-    sisa:data.formulir.sisa,
-    lunas:data.formulir.lunas,
+    panjar: data.formulir.panjar,
+    sisa: data.formulir.sisa,
+    lunas: data.formulir.lunas,
 })
 
 
@@ -98,14 +98,15 @@ function parseMonth(value) {
 
 function cetakDanSave() {
     FormPDF.post(route('Laporan.saveSewa'), {
-        preserveState:false,
-        replace:false,
-        onSuccess: ()=>{
-            window.location.href = '/Laporan/CetakSewa?pdf=SewaPDF/' + data.kode + "-" +  FormPDF.tgl_sewa + '.pdf';
+        preserveState: false,
+        replace: false,
+        onSuccess: () => {
+            window.location.href = '/Laporan/CetakSewa?pdf=SewaPDF/' + data.kode + "-" + FormPDF.tgl_sewa + '.pdf';
             FormPDF.reset();
         },
     });
 }
+console.log(FormPDF.lunas);
 </script>
 
 <template>
@@ -149,7 +150,7 @@ function cetakDanSave() {
 
                 </table>
 
-                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left" >
+                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left">
 
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
@@ -195,7 +196,8 @@ function cetakDanSave() {
                                 class="border-none text-xs p-0 m-0 w-max max-w-max " /> </td>
                     </tr>
                 </table>
-                <p  class="w-full text-justify font-bold mb-3">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
+                <p class="w-full text-justify font-bold mb-3">Dengan ini menyatakan bahwa pihak rental menitipkan
+                    kendaraan
                     kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
 
                 <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
@@ -220,10 +222,10 @@ function cetakDanSave() {
                         <td>
                             <ul class="list-none flex flex-row gap-4">
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{
-                                        FormPDF.nilaisewahari
+                                    FormPDF.nilaisewahari
                                 }}/Per Hari</li>
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{
-                                        FormPDF.nilaisewabulan
+                                    FormPDF.nilaisewabulan
                                 }}/Per Bulan</li>
                             </ul>
                         </td>
@@ -235,16 +237,19 @@ function cetakDanSave() {
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jumlah Hari</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.lama_sewa }} Hari
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.lama_sewa }}
+                            Hari
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tujuan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.tujuan }} </td>
+                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.tujuan }}
+                        </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jaminan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.jaminan }}</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.jaminan }}
+                        </td>
                     </tr>
                 </table>
 
@@ -288,7 +293,16 @@ function cetakDanSave() {
                     <tr>
                         <td class="border border-black"> {{ FormPDF.panjar }} </td>
                         <td class="border border-black"> {{ FormPDF.sisa }}</td>
-                        <td class="border border-black"> {{ FormPDF.lunas }} </td>
+                        <td class="border border-black">
+                            <svg v-if="FormPDF.lunas == 'true'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                            <svg v-else-if="FormPDF.lunas == 'false'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </td>
                     </tr>
                 </table>
                 <!-- TTD -->

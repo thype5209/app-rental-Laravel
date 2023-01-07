@@ -12,7 +12,7 @@ class Sewa extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'sewas';
-    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'harga_bulan', 'pdf_url', 'total'];
+    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'harga_bulan', 'pdf_url','sisa', 'total', 'status_bayar'];
 
     public function waktusewa()
     {

@@ -43,7 +43,9 @@ class SewaFactory extends Factory
             'denda' => '0',
             'pdf_url' => fake()->imageUrl(),
             'status' => fake()->randomElement(['Telat', 'Selesai','Sewa']),
-            'total'=> '0'
+            'sisa'=> '0',
+            'total'=> '0',
+            'status_bayar'=> '1',
         ];
     }
 }

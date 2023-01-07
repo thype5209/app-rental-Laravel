@@ -139,6 +139,14 @@
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
                         Rp. {{ reduceArray(sewa.harga , sewa.waktusewa.lama_sewa, sewa.denda) }} </td>
                 </tr>
+                <tr>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap">
+                        Status Pembayaran</td>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
+                        {{ statusBayar(sewa.status_bayar) }} </td>
+                </tr>
 
             </table>
         </div>
@@ -179,6 +187,28 @@ export default {
         back() {
             window.history.back();
         },
+        statusBayar(value){
+            var hasil = null;
+            switch (value) {
+                case '1' || 1:
+                    hasil = 'Lunas'
+                    break;
+                case '2' || 2:
+                    hasil = 'Denda'
+                    break;
+                case '3' || 3:
+                    hasil = 'Belum Lunas'
+                    break;
+                case '4' || 4:
+                    hasil = 'Menunggak Pembayaran'
+                    break;
+
+                default:
+                    hasil = 'error'
+                    break;
+            }
+            return hasil;
+        }
     },
 
 

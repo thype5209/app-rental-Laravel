@@ -86,7 +86,8 @@ var ModalShow = ref(false);
 
 var StatusForm = useForm({
     status: null,
-    sewaid: null
+    sewaid: null,
+    status_bayar: null
 });
 function isOpen(dataID) {
     var data = status.sewa.data.find(function ({ id }) {
@@ -94,6 +95,7 @@ function isOpen(dataID) {
     });
     StatusForm.status = data.status;
     StatusForm.sewaid = data.id;
+    StatusForm.status_bayar = data.status_bayar;
     ModalShow.value = true;
 }
 const falshMessage = ref(false);
@@ -356,10 +358,19 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
                         </button>
                         <div class="px-6 py-6 lg:px-8">
                             <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-                                Update Status Mobil
+                                Update Status Penyewaan Mobil
                                 {{ StatusForm.mobilid }}
                             </h3>
                             <form class="space-y-6" @submit.prevent="submitStatus">
+                                <div>
+                                    <InputLabelVue for="email">Pilih Status Pembayaran</InputLabelVue>
+                                    <select id="countries" v-model="StatusForm.status_bayar"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="3">Belum Lunas</option>
+                                        <option value="1" v-if="can.updateselesai">Lunas</option>
+                                    </select>
+                                    <p class="text-xs text-gray-500 text-justify">Keterangan: Pemilihan Status Pembayaran</p>
+                                </div>
                                 <div>
                                     <InputLabelVue for="email">Pilih Status Sewa</InputLabelVue>
                                     <select id="countries" v-model="StatusForm.status"

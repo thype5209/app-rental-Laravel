@@ -12,7 +12,7 @@
 
 <style>
     * {
-        font-size: 13px !important;
+        font-size: 12px !important;
         font-family: 'Times New Roman', Times, serif;
     }
 
@@ -62,7 +62,7 @@
 <body>
     <section class=" md:w-[70%] py-5 px-3 bg-white sm:px-10 md:px-20">
         <!-- Head -->
-        <div class="w-full header opacity-80 border-b-4 border-black py-3">
+        <div class="w-full header opacity-80 border-b-4 border-black pb-3">
             <table class=" bg-white table  table-header">
                 <tr>
                     <td class="text-right ">
@@ -88,76 +88,73 @@
         <table class="table w-full bg-white">
             <tr class=" p-0 m-0">
                 <td colspan="4" class="text-center flex flex-col ">
-                    <span class="text-center font-bold underline">SURAT PERNYATAAN SEWA KENDARAAN</span><br>
+                    <u><span class="text-center font-bold underline">SURAT PERNYATAAN SEWA KENDARAAN</span></u><br>
                     <span class="font-semibold">No:{{ $kode }}</span>
                 </td>
             </tr>
 
         </table>
-        @if ($data->jenis_sewa == 'Lepas')
-            <table class="table w-max sm:w-1/4 md:w-1/3 mb-5">
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
-                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nik }}
-                    </td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">Nama</td>
-                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nama }}
-                    </td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">Tempat/Tanggal Lahir</td>
-                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                        {{ $data->tempat_lahir }}/{{ $data->tgl_lahir }} </td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">Pekerjaan</td>
-                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:{{ $data->pekerjaan }}
-                    </td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">Alamat</td>
-                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->alamat }}
-                    </td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">No. HP</td>
-                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->no_hp }}
-                    </td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">No. HP Kerabat Lain</td>
-                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                        {{ $data->no_hp_lain }}</td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">Sosial Media</td>
-                    <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->sosial }}
-                    </td>
-                </tr>
-            </table>
-            <p class="w-full text-justify font-bold">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
-                kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
-        @endif
+        <table class="table w-max sm:w-1/4 md:w-1/3 mb-2">
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
+                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nik }}
+                </td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0">Nama</td>
+                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nama }}
+                </td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0">Tempat/Tanggal Lahir</td>
+                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                    {{ $data->tempat_lahir }}/{{ $data->tgl_lahir }} </td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0">Pekerjaan</td>
+                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:{{ $data->pekerjaan }}
+                </td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0">Alamat</td>
+                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->alamat }}
+                </td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0">No. HP</td>
+                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->no_hp }}
+                </td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0">No. HP Kerabat Lain</td>
+                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                    {{ $data->no_hp_lain }}</td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0">Sosial Media</td>
+                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->sosial }}
+                </td>
+            </tr>
+        </table>
+        <p class="w-full text-justify">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
+            kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
         <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
             <tr class=" p-0 m-0">
                 <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan</td>
                 <td class=" whitespace-nowrap mb-0 p-0">
-                    <span>
-                        <span class="font-bold capitalize">:</span>&nbsp;&nbsp;
-                        {{ $data->unit }}
-                    </span>
-                    <span class=" whitespace-nowrap mb-0 p-0 font-bold">No. Kendaraan</span>
-                    <span>
-                        <span class="font-bold capitalize">:</span>
-                        {{ $data->nopol }}&nbsp;&nbsp;&nbsp;&nbsp;
-                    </span>
-                    <span class=" whitespace-nowrap mb-0 p-0 font-bold">Tahun</span>
-                    <span>
-                        <span class="font-bold capitalize">:</span>
-                        {{ $data->tahun }}
-                    </span>
+                   {{$data->unit}}
+                </td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0 font-bold">No. Polisi</td>
+                <td class=" whitespace-nowrap mb-0 p-0">
+                   {{$data->nopol}}
+                </td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tahun</td>
+                <td class=" whitespace-nowrap mb-0 p-0">
+                   {{$data->tahun}}
                 </td>
             </tr>
             <tr class=" p-0 m-0">
@@ -171,7 +168,12 @@
                 </td>
             </tr>
             <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0 font-bold">Masa Sewa</td>
+                <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tanggal Pemakaian</td>
+                <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span>{{ $data->tgl_sewa }}
+                </td>
+            </tr>
+            <tr class=" p-0 m-0">
+                <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jumlah Hari</td>
                 <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span>{{ $data->lama_sewa }}
                 </td>
             </tr>
@@ -215,6 +217,30 @@
 
             </ul>
         </div>
+        <table class="table ml-10 mt-5 border">
+            <tr>
+                <th class="py-1 px-2 capitalize bg-blue-200 border border-black">Panjar</th>
+                <th class="py-1 px-2 capitalize bg-blue-200 border border-black">Sisa</th>
+                <th class="py-1 px-2 capitalize bg-blue-200 border border-black">Lunas</th>
+            </tr>
+            <tr>
+                <td class="border border-black"> {{ $data->panjar }} </td>
+                <td class="border border-black"> {{ $data->sisa }}</td>
+                <td class="border border-black">
+                   @if ($data->lunas)
+                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+               </svg>
+                   @else
+                   <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+               </svg>
+                   @endif
+                </td>
+            </tr>
+        </table>
         <!-- TTD -->
         <table class="table w-full mt-10 ">
             <tr>
@@ -258,6 +284,7 @@
             </tr>
         </table>
     </section>
+
     <div class="page-break"></div>
 
     <div class="w-full header opacity-80 border-b-4 border-black py-3">
@@ -369,8 +396,8 @@
         @endphp
         @for ($i = 0; $i < 4; $i++)
             <tr>
-                <td class="border-bottom-none" rowspan="6" style="width: 300px;">
-                    <img src="{{ public_path('fotoMobil/' . $namaF[$i]) }}" width="180" alt="">
+                <td class="border-bottom-none" rowspan="6" style="width: 250px;">
+                    <img src="{{ public_path('storage/fotoMobil/' . $namaF[$i]) }}" width="130" alt="">
                 </td>
                 <td class="border"></td>
             </tr>
