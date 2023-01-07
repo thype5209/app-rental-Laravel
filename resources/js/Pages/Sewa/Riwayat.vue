@@ -10,6 +10,7 @@ const status = defineProps({
         default: () => ({})
     },
     can: Object,
+    statusBayar: String,
 })
 
 const deleteForm = useForm();
@@ -28,7 +29,17 @@ watch(search, (value) => {
         preserveState: true,
     })
 });
+var TabActive = ' py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500'
+var TabNonActive = 'text-gray-600 py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none';
 
+const StatusBayarForm = useForm()
+function TabClick(value){
+    StatusBayarForm.get(route("Sewa.riwayat", { statusBayar: value, search: status.search, page: status.page }), {
+        preserveState: true,
+        preserveScroll: true,
+        replace: true,
+    });
+}
 </script>
 
 
@@ -39,7 +50,23 @@ watch(search, (value) => {
         <!-- Modal -->
 
         <!-- Search -->
-
+        <div
+            class="w-full rounded-lg bg-gray-200 flex flex-wrap justify-between flex-col-reverse md:flex-row overflow-auto">
+            <nav class="flex flex-row">
+                <button v-on:click="TabClick('semua')" v-bind:class="status.statusBayar == 'semua' ? TabActive : TabNonActive">
+                    Semua
+                </button><button v-on:click="TabClick(3)" v-bind:class="status.statusBayar == '3' ? TabActive : TabNonActive">
+                    Belum Lunas
+                </button><button v-on:click="TabClick(1)" v-bind:class="status.statusBayar == '1' ? TabActive : TabNonActive">
+                    Lunas
+                </button>
+            </nav>
+            <div class="p-3 w-32" v-if="can.create">
+                <Link :href="route('Mobil.create')"
+                    class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 cursor-pointer">
+                Tambah</Link>
+            </div>
+        </div>
         <div class="flex items-center max-w-sm py-3">
             <label for="simple-search" class="sr-only">Search</label>
             <div class="relative w-full">
@@ -80,14 +107,14 @@ watch(search, (value) => {
                         <tr v-for="(mobil, index) in status.sewa.data" :key="mobil" :index="index"
                             class="text-gray-700 dark:text-gray-400">
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
-                                {{ (status.sewa.current_page - 1)* status.sewa.per_page + index+1}}
+                                {{ (status.sewa.current_page - 1) * status.sewa.per_page + index + 1}}
 
                             </td>
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
                                 {{ mobil.kode }}
                             </td>
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
-                                <span v-if="mobil.nik !=null">{{ mobil.nik }}</span>
+                                <span v-if="mobil.nik != null">{{ mobil.nik }}</span>
                                 <span v-else>Kunci</span>
                             </td>
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
@@ -122,8 +149,8 @@ watch(search, (value) => {
                                     </svg>
                                 </button>
                                 </Link>
-                                <button class="bg-default-red text-white md:px-2 md:py-1 p-1 rounded-md ml-2" v-if="can.delete"
-                                    @click="destroy(mobil.id)">
+                                <button class="bg-default-red text-white md:px-2 md:py-1 p-1 rounded-md ml-2"
+                                    v-if="can.delete" @click="destroy(mobil.id)">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="sm:w-6 sm:h-6 h-4 w-4">
                                         <path stroke-linecap="round" stroke-linejoin="round"

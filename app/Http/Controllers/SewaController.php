@@ -62,12 +62,14 @@ class SewaController extends Controller
     }
     public function riwayat()
     {
+
         return Inertia::render('Sewa/Riwayat', [
             'sewa' => Sewa::query()
                 ->with(['pengguna', 'waktusewa'])
                 ->orderBy('status', 'asc')
                 ->where('status', 'Selesai')
                 ->filter(FacadesRequest::only('search'))
+                ->StatusBayar(FacadesRequest::input('statusBayar'))
                 ->orderBy('kode', 'desc')
                 ->paginate(10),
             'can' => [
@@ -76,6 +78,7 @@ class SewaController extends Controller
                 'delete' => Auth::user()->can('permission delete'),
                 'update' => Auth::user()->can('permission update'),
             ],
+            'statusBayar'=> FacadesRequest::input('statusBayar', 'semua')
         ]);
     }
 

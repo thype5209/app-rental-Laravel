@@ -83,4 +83,13 @@ class Sewa extends Model
             }
         });
     }
+    public function scopeStatusBayar($query, $statusBayar){
+        $query->when($statusBayar ?? null, function($query) use ($statusBayar){
+            if($statusBayar == 'semua'){
+                $query->orderBy('status_bayar', 'desc');
+            }else{
+                $query->where('status_bayar','=', $statusBayar);
+            }
+        });
+    }
 }
