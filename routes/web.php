@@ -73,7 +73,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::get('/detail/{id}', 'show')->name('show');
             Route::put('/Update/{id}', 'update')->name('update');
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
-            Route::post('/Formulir' , 'formulir')->name('formulir');
+            Route::get('/Formulir' , 'formulir')->name('formulir');
             Route::put('/updateTanggal/{id}' , 'updateTanggal')->name('updateTanggal');
             Route::put('/updateStatusModal/{id}' , 'updateStatusModal')->name('updateStatusModal');
             Route::put('/updateTanggal/{id}' , 'updateTanggal')->name('updateTanggal');

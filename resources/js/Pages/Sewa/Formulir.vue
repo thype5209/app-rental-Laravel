@@ -40,6 +40,9 @@ const FormPDF = useForm({
     unit: data.formulir.unit,
     nopol: data.formulir.nopol,
     tahun: data.formulir.tahun,
+    panjar:data.formulir.panjar,
+    sisa:data.formulir.sisa,
+    lunas:data.formulir.lunas,
 })
 
 
@@ -146,14 +149,7 @@ function cetakDanSave() {
 
                 </table>
 
-                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left" v-if="FormPDF.jenis_sewa == 'Kunci' ">
-                    <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">Sopir</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.sopir_id"
-                                class="border-none text-xs p-0 m-0"></td>
-                    </tr>
-                </table>
-                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left" v-if="FormPDF.jenis_sewa == 'Lepas' ">
+                <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left" >
 
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
@@ -186,32 +182,37 @@ function cetakDanSave() {
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">No. HP</td>
                         <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.no_hp"
-                                class="border-none text-xs p-0 m-0 w-16 max-w-max "> </td>
+                                class="border-none text-xs p-0 m-0 w-max max-w-max "> </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">No. HP Kerabat Lain</td>
                         <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik"
-                                v-model="FormPDF.no_hp_lain" class="border-none text-xs p-0 m-0 w-16 max-w-max "> </td>
+                                v-model="FormPDF.no_hp_lain" class="border-none text-xs p-0 m-0 w-max max-w-max "> </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">Sosial Media</td>
                         <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.sosial"
-                                class="border-none text-xs p-0 m-0 w-16 max-w-max " /> </td>
+                                class="border-none text-xs p-0 m-0 w-max max-w-max " /> </td>
                     </tr>
                 </table>
-                <p v-if="FormPDF.jenis_sewa =='Lepas'" class="w-full text-justify font-bold">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
+                <p  class="w-full text-justify font-bold mb-3">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
                     kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
+
                 <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan</td>
-                        <td>
-                            <ul class=" list-none flex flex-row gap-3">
-                                <li class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.nik }}</li>
-                                <li class=" whitespace-nowrap mb-0 p-0"> <span class="font-bold">No. Kendaraan <span
-                                            class="font-bold">:</span></span> {{ data.formulir.nopol }}</li>
-                                <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">Tahun <span
-                                            class="font-bold">:</span></span> {{ data.formulir.tahun }}</li>
-                            </ul>
+                        <td class=" whitespace-nowrap mb-0 p-0">
+                            <span class="font-bold">:</span> {{ FormPDF.unit }}
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">No. Polisi</td>
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.nopol }}
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tahun</td>
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tahun }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
@@ -228,8 +229,13 @@ function cetakDanSave() {
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Masa Sewa</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.lama_sewa }}
+                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tanggal Pemakaian</td>
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tgl_sewa }}
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jumlah Hari</td>
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.lama_sewa }} Hari
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
@@ -272,6 +278,19 @@ function cetakDanSave() {
 
                     </ul>
                 </div>
+                <!-- Panjar -->
+                <table class="table ml-10 mt-5 border">
+                    <tr>
+                        <th class="py-1 px-2 capitalize bg-blue-200 border border-black">Panjar</th>
+                        <th class="py-1 px-2 capitalize bg-blue-200 border border-black">Sisa</th>
+                        <th class="py-1 px-2 capitalize bg-blue-200 border border-black">Lunas</th>
+                    </tr>
+                    <tr>
+                        <td class="border border-black"> {{ FormPDF.panjar }} </td>
+                        <td class="border border-black"> {{ FormPDF.sisa }}</td>
+                        <td class="border border-black"> {{ FormPDF.lunas }} </td>
+                    </tr>
+                </table>
                 <!-- TTD -->
                 <table class="table w-full mt-10 ">
                     <tr>
