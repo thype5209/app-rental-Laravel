@@ -9,6 +9,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { VueCarousel } from 'vue-carousel';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Jasaudagar';
 createInertiaApp({

@@ -45,10 +45,10 @@ class LaporanController extends Controller
 
     public function kodeSewa()
     {
-        $max_id = Sewa::max('id');
+        $max_id = Sewa::max('kode');
         $sewa = Sewa::all();
         if ($max_id == null) {
-            $kode = 'S001';
+            $kode = 'S011';
         } else {
             $k = (int) substr($max_id, 0);
             $k++;
@@ -256,9 +256,9 @@ class LaporanController extends Controller
         WaktuSewa::create([
             'sewa_id' => $sewa->id,
             'tgl_sewa' => $request->tgl_sewa,
-            'jam_sewa' => '00:00',
+            'jam_sewa' => $request->jam_sewa,
             'tgl_kembali' => $request->tgl_kembali,
-            'jam_kembali' => "00:00",
+            'jam_kembali' => $request->jam_kembali,
             'lama_sewa' => $request->lama_sewa,
         ]);
         Mobil::whereIn('id', $request->mobil_id)->update([

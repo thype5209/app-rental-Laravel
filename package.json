@@ -21,6 +21,8 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^35.4.0",
+        "@ckeditor/ckeditor5-vue": "^4.0.1",
         "file-saver": "^2.0.5",
         "jspdf": "^2.5.1",
         "pdfmake": "^0.2.7",

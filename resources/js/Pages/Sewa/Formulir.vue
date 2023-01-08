@@ -45,6 +45,7 @@ const FormPDF = useForm({
     lunas: data.formulir.lunas,
     jam_sewa: data.formulir.jam_sewa,
     jam_kembali: data.formulir.jam_kembali,
+    ket_syarat: data.formulir.ket_syarat,
 })
 
 
@@ -108,7 +109,7 @@ function cetakDanSave() {
         },
     });
 }
-const jumlahMobil = FormPDF.mobil_id.length;
+const jumlahMobil = FormPDF.nopol.length;
 console.log(jumlahMobil)
 </script>
 
@@ -265,34 +266,7 @@ console.log(jumlahMobil)
                 </table>
 
                 <!-- Keterangan -->
-                <div class="">
-                    <h3 class=" font-bold">Ket.</h3>
-                    <ul class="list-disc  px-10">
-                        <li class="text-justify">Apabila penyewa akan memperpanjang sewa kendaraan maka harus di
-                            konfirmasi
-                            ke pihak rental.</li>
-                        <li class="text-justify">Jika penyewa terlamabat mengembalikan mobil dalam waktu yang di
-                            tentukan
-                            maka akan di kenakan biaya over time 10% per jam darai harga sewa per harinya</li>
-                        <li class="text-justify">Apa bila pemakain sewa kendaraan tidak sesuai dengan Tujuan penyewa
-                            yang di
-                            tentukan penyewa, maka akan di kenakan biaya tambahan sesuai dengan zona-zona yang berlaku.
-                        </li>
-                    </ul>
-                    <h3 class=" font-bold">Penyewa bersedia menyanggupi syarat dan ketentuan penyewa kendaraan di bawah
-                        ini
-                        :.</h3>
-                    <ul class="list-disc  px-10">
-                        <li>Bertanggung jawab segala kerusakan, kehilangan kendaraan atau bagian-bagiannya</li>
-                        <li>Kendaraan tersebut tidak dapat digadaikan atau merubah bentuk aslinya</li>
-                        <li>Pemilik tidak bertanggung jawab atas kegiatan operasionalpenyewa kendaraan</li>
-                        <li>Penyewa tidak di benarkan membawa kendaraan selain tujuan diatas</li>
-                        <li>Melunasi sewa mobil dan segala bentuk tagihan jika terjadi kerusakan dan biaya kerugian
-                            selama
-                            di bengkel.</li>
-                        <li>Penyewa bersedia dituntut pidana apabila melanggar poin-poin diatas</li>
-
-                    </ul>
+                <div class="" v-html="FormPDF.ket_syarat">
                 </div>
                 <!-- Panjar -->
                 <table class="table ml-10 mt-5 border">

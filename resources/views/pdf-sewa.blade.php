@@ -138,7 +138,7 @@
         </table>
         <p class="w-full text-justify">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan
             kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
-            @for ($i = 0; $i < count($data->mobil_id); $i++)
+            @for ($i = 0; $i < count($data->nopol); $i++)
         <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
              <tr class=" p-0 m-0">
                  <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan </td>
@@ -197,34 +197,8 @@
         </table>
 
         <!-- Keterangan -->
-        <div class="">
-            <h3 class=" font-bold">Ket.</h3>
-            <ul class="list-disc  px-10">
-                <li class="text-justify">Apabila penyewa akan memperpanjang sewa kendaraan maka harus di
-                    konfirmasi
-                    ke pihak rental.</li>
-                <li class="text-justify">Jika penyewa terlamabat mengembalikan mobil dalam waktu yang di
-                    tentukan
-                    maka akan di kenakan biaya over time 10% per jam darai harga sewa per harinya</li>
-                <li class="text-justify">Apa bila pemakain sewa kendaraan tidak sesuai dengan Tujuan penyewa
-                    yang di
-                    tentukan penyewa, maka akan di kenakan biaya tambahan sesuai dengan zona-zona yang berlaku.
-                </li>
-            </ul>
-            <h3 class=" font-bold">Penyewa bersedia menyanggupi syarat dan ketentuan penyewa kendaraan di bawah
-                ini
-                :.</h3>
-            <ul class="list-disc  px-10">
-                <li>Bertanggung jawab segala kerusakan, kehilangan kendaraan atau bagian-bagiannya</li>
-                <li>Kendaraan tersebut tidak dapat digadaikan atau merubah bentuk aslinya</li>
-                <li>Pemilik tidak bertanggung jawab atas kegiatan operasionalpenyewa kendaraan</li>
-                <li>Penyewa tidak di benarkan membawa kendaraan selain tujuan diatas</li>
-                <li>Melunasi sewa mobil dan segala bentuk tagihan jika terjadi kerusakan dan biaya kerugian
-                    selama
-                    di bengkel.</li>
-                <li>Penyewa bersedia dituntut pidana apabila melanggar poin-poin diatas</li>
-
-            </ul>
+        <div>
+            {!! $data->ket_syarat !!}
         </div>
         <div class="container mx-auto px-20" style="padding-left: 1rem; padding-right:1rem;">
             <table class="table mt-3 border w-full">

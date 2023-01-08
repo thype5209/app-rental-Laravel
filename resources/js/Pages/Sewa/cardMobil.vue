@@ -54,7 +54,7 @@ function GetMobil(event, jumlahMobil) {
                     mobil.unit
                 }} | Nopol= {{ mobil.nopol }} | Tahun= {{ mobil.tahun }}</option>
             </SelectVUe>
-            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+            <p v-if="1 < 2" class="text-red text-xs italic text-gray-500">Mohon Di Isi</p>
         </div>
     </div>
     <div class="-mx-3 sm:flex mb-6">
@@ -62,26 +62,26 @@ function GetMobil(event, jumlahMobil) {
             <InputLabel
                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                 for="grid-last-name">Jenis Kendaraan</InputLabel>
-            <TextInput id="grid-last-name" type="text" placeholder="Jenis Kendaraan" readonly required
+            <TextInput id="grid-last-name" type="text" placeholder="Jenis Kendaraan/Unit"  required
                 v-model="props.form.unit[jumlahMobil]" />
-            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+            <p v-if="1 < 2" class="text-red text-xs italic text-gray-500">Mohon Di Isi</p>
         </div>
         <div class="sm:w-1/3 px-3">
             <InputLabel
                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                 for="grid-first-name">No. Kendaraan</InputLabel>
-            <TextInput id="grid-last-name" class="1/2" type="text" placeholder="No. Kendaraan" readonly
+            <TextInput id="grid-last-name" class="1/2" type="text" placeholder="No. Kendaraan"
                 required v-model="props.form.nopol[jumlahMobil]" />
-            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+            <p v-if="1 < 2" class="text-red text-xs italic text-gray-500">Mohon Di Isi</p>
         </div>
         <div class="sm:w-1/2 px-3">
             <InputLabel
                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                 for="grid-last-name">Tahun</InputLabel>
 
-            <TextInput id="grid-first-name" type="number" placeholder="0000" readonly required
+            <TextInput id="grid-first-name" type="number" placeholder="0000"  required
                 v-model="props.form.tahun[jumlahMobil]" />
-            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+            <p v-if="1 < 2" class="text-red text-xs italic text-gray-500">Mohon Di Isi</p>
         </div>
     </div>
     <div class="-mx-3 sm:flex justify-center w-full">
@@ -89,23 +89,20 @@ function GetMobil(event, jumlahMobil) {
             <InputLabel
                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                 for="grid-first-name">Nilai Sewa/Hari</InputLabel>
-            <TextInput id="grid-first-name" type="text" readonly placeholder="0000"
+            <TextInput id="grid-first-name" type="text"  placeholder="0000"
                 v-model="props.form.nilaisewahari[jumlahMobil]" />
-            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">
-                Please fill out
-                this field.
+            <p v-if="1 < 2" class="text-red text-xs italic text-gray-500">
+                Masukkan Hanya Angka
             </p>
         </div>
         <div class="md:w-1/2 px-3">
             <InputLabel
                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                 for="grid-last-name">Nilai Sewa/Bulan</InputLabel>
-            <TextInput id="grid-last-name" type="text" readonly placeholder="0000"
+            <TextInput id="grid-last-name" type="text"  placeholder="0000"
                 v-model="props.form.nilaisewabulan[jumlahMobil]" />
-            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">
-                Please fill
-                out
-                this field.
+            <p v-if="1 < 2" class="text-red text-xs italic text-gray-500">
+                Masukkan Hanya Angka
             </p>
         </div>
     </div>

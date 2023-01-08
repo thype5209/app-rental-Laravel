@@ -126,8 +126,8 @@ class SewaController extends Controller
             'nilaisewabulan' => 'required',
             'tgl_sewa' => 'required|date',
             'tgl_kembali' => 'required|date',
-            // 'lama_sewa' => 'required|string',
-            'tujuan' => 'required|string',
+            'lama_sewa' => 'required',
+            'tujuan' => 'required',
             'jaminan' => 'string|nullable',
         ]);
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
@@ -198,7 +198,10 @@ class SewaController extends Controller
      */
     public function destroy(Sewa $sewa, $id)
     {
-        $sewa->find($id)->delete();
+        $data = Sewa::find($id);
+        $exp = explode(',', $data->nopol);
+        Mobil::whereIn('nopol', $exp)->update(['status'=> '2']);
+        $data->delete();
     }
     /**
      * StatusUpdate
@@ -312,7 +315,8 @@ class SewaController extends Controller
         $sewa->update([
             'status' =>  $request->status,
         ]);
-        Mobil::where('nopol', '=', $sewa->nopol)->update([
+        $exp = explode(',', $sewa->nopol);
+        Mobil::whereIn('nopol',  $exp)->update([
             'status' => $request->status == 'Selesai' ? '2' : '1',
         ]);
         // Synchronously
