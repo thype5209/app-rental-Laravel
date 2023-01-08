@@ -68,10 +68,10 @@ function reduceArray(array = [], lamasewa = 1) {
             <PrimaryButtonVue @click="copy">Copy Link</PrimaryButtonVue>
 
         </div>
-        <div>
+        <div class="flex flex-col sm:flex-row justify-start py-3">
             <textarea name="textwa" id="textwa" ref="inputwa" v-on:focus="$event.target.select()" cols="50" rows="10" v-model="myinputwa">
             </textarea>
-            <PrimaryButtonVue @click="copytext">Copy Link</PrimaryButtonVue>
+            <PrimaryButtonVue class=" w-full md:w-max" @click="copytext">Copy Text</PrimaryButtonVue>
         </div>
         <iframe :src="`/storage/${pdf}`" class="w-full h-screen"></iframe>
 

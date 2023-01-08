@@ -19,6 +19,7 @@ const data = defineProps({
 
 const FormPDF = useForm({
     jenis_sewa: data.formulir.jenis_sewa,
+    foto_ktp: data.formulir.foto_ktp,
     sopir_id: data.formulir.sopir_id,
     mobil_id: data.formulir.mobil_id,
     nik: data.formulir.nik,

@@ -28,17 +28,41 @@ const props = defineProps({
     },
     errors: Object
 });
-const dataInputSewa = {
-    jenis_sewa: '',
+// if (props.data.req != null && props.data.length > 0) {
+//     const DataKembali = props.data.req.FormPDF;
+//     dataInputSewa.nik = DataKembali.nik;
+//     dataInputSewa.nama = DataKembali.nama;
+//     dataInputSewa.tempat_lahir = DataKembali.tempat_lahir;
+//     dataInputSewa.tgl_lahir = DataKembali.tgl_lahir;
+//     dataInputSewa.alamat = DataKembali.alamat;
+//     dataInputSewa.pekerjaan = DataKembali.pekerjaan;
+//     dataInputSewa.sosial = DataKembali.sosial;
+//     dataInputSewa.unit = DataKembali.unit;
+//     dataInputSewa.no_hp = DataKembali.no_hp;
+//     dataInputSewa.no_hp_lain = DataKembali.no_hp_lain;
+//     dataInputSewa.nilaisewahari = DataKembali.nilaisewahari;
+//     dataInputSewa.nilaisewabulan = DataKembali.nilaisewabulan;
+//     dataInputSewa.tujuan = DataKembali.tujuan;
+//     dataInputSewa.lama_sewa = DataKembali.lama_sew;
+//     dataInputSewa.jaminan = DataKembali.jaminan;
+//     dataInputSewa.panjar = DataKembali.panjar;
+//     dataInputSewa.sisa = DataKembali.sisa;
+//     dataInputSewa.lunas = DataKembali.lunas;
+// }
+
+
+const Form = useForm({
+    jenis_sewa: 'Lepas',
+    foto_ktp: null,
     sopir_id: [],
-    nik: "",
-    nama: "",
-    tempat_lahir: "",
-    tgl_lahir: "",
-    alamat: "",
-    no_hp: "",
-    no_hp_lain: "",
-    pekerjaan: "",
+    nik: null,
+    nama: null,
+    tempat_lahir: null,
+    tgl_lahir: null,
+    alamat: null,
+    no_hp: null,
+    no_hp_lain: null,
+    pekerjaan: null,
     sosial: "FB",
     mobil_id: [],
     unit: [],
@@ -87,32 +111,7 @@ const dataInputSewa = {
 
             </ul>
         </div>`,
-};
-
-if (props.data.req != null && props.data.length > 0) {
-    const DataKembali = props.data.req.FormPDF;
-    dataInputSewa.nik = DataKembali.nik;
-    dataInputSewa.nama = DataKembali.nama;
-    dataInputSewa.tempat_lahir = DataKembali.tempat_lahir;
-    dataInputSewa.tgl_lahir = DataKembali.tgl_lahir;
-    dataInputSewa.alamat = DataKembali.alamat;
-    dataInputSewa.pekerjaan = DataKembali.pekerjaan;
-    dataInputSewa.sosial = DataKembali.sosial;
-    dataInputSewa.unit = DataKembali.unit;
-    dataInputSewa.no_hp = DataKembali.no_hp;
-    dataInputSewa.no_hp_lain = DataKembali.no_hp_lain;
-    dataInputSewa.nilaisewahari = DataKembali.nilaisewahari;
-    dataInputSewa.nilaisewabulan = DataKembali.nilaisewabulan;
-    dataInputSewa.tujuan = DataKembali.tujuan;
-    dataInputSewa.lama_sewa = DataKembali.lama_sew;
-    dataInputSewa.jaminan = DataKembali.jaminan;
-    dataInputSewa.panjar = DataKembali.panjar;
-    dataInputSewa.sisa = DataKembali.sisa;
-    dataInputSewa.lunas = DataKembali.lunas;
-}
-
-
-const Form = useForm(dataInputSewa);
+});
 var TabActive =
     "bg-green-500 py-2 md:px-6 block hover:text-green-500 focus:outline-none text-white border-b-2 font-medium border-default-dark";
 var TabNonActive =
@@ -139,7 +138,25 @@ function GetMobil(event) {
 
 // Kirim Data
 function submit() {
-    Form.get(route("Sewa.formulir"), { preserveState: true });
+    Form.get(route("Sewa.formulir"),{
+        onError: (error)=> console.log(error),
+        preserveState:true,
+    });
+}
+
+function returnslide(){
+    console.log(Form)
+    if( slideMobil.value == 1 && Form.nik != null && Form.nama != null){
+        slideMobil.value = 2;
+    }
+    if(jumlahMobil.value == 2 || Form.unit.length > 0 ){
+        slideMobil.value++;
+    }
+    if(jumlahMobil.value == 3 || Form.unit.length > 0 ){
+        slideMobil.value = 4;
+    }else{
+        console.log('err')
+    }
 }
 
 
@@ -230,9 +247,6 @@ watch(SearchNIK, value => {
     })
 })
 // End
-var $string = '12332,1jdka';
-var hasils = $string.search('\,/');
-console.log(hasils)
 function reduceArray(array = [], lamasewa = 0) {
     var sisa = array.split(',');
     var harga = sisa.reduce((el, b) => Number(el) + Number(b));
@@ -241,8 +255,7 @@ function reduceArray(array = [], lamasewa = 0) {
 }
 function arraySum(array = []) {
     var hasil = array.reduce((a, b) => {
-        console.log(a)
-        console.log(b)
+
         var asisa = a.split(',');
         var aharga = asisa.reduce((el, b) => el + b);
         var bsisa = b.split(',');
@@ -299,8 +312,14 @@ watch(jumlahMobil, value => {
 
         <!-- component -->
         <ModalVue :show="true" :maxWidth="`5xl`">
-            <form @submit.prevent="submit">
+            <form @submit.prevent="submit" >
+
                 <!-- Slide Tambah Penyewa -->
+                <div class="flex flex-col">
+                    <span v-for="item in Form.errors" :key="item" class="bg-white w-full p-3">
+                        {{ item }}
+                    </span>
+                </div>
                 <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == 1">
                     <div class="flex flex-row justify-left">
                         <Link :href="route('Sewa.index')">
@@ -316,8 +335,8 @@ watch(jumlahMobil, value => {
                         </PrimaryButtonVue>
                     </nav>
 
-                    <div class="-mx-3 md:flex mb-6">
-                        <div class="w-full px-3 relative">
+                    <div class="-mx-3 md:flex flex-col mb-6">
+                        <div class="w-full px-3 relative z-10">
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Pilih Pengguna </InputLabel>
@@ -331,6 +350,14 @@ watch(jumlahMobil, value => {
                                 </SelectVUe>
                             </div>
                             <p class="text-red text-xs italic text-gray-500">Cari Data Pengguna Yang Ada</p>
+                        </div>
+                        <div class="w-full px-3 relative pt-5">
+                            <InputLabel
+                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                for="grid-first-name">Foto KTP Penyewa </InputLabel>
+                            <TextInput id="grid-first-name" type="file" @input="Form.foto_ktp = $event.target.files[0]"
+                                placeholder="Masukkan NIK" class="max-w-md" />
+                            <p class="text-red text-xs italic text-gray-500">Ket: dapat dikosongkan</p>
                         </div>
                     </div>
                     <div class="-mx-3 md:flex mb-6">
@@ -419,7 +446,7 @@ watch(jumlahMobil, value => {
                         </div>
                     </div>
                     <div class="mx-auto mb-3">
-                        <PrimaryButtonVue type="button" class="bg-default-blue hover:bg-blue-600" @click="slideMobil++">
+                        <PrimaryButtonVue type="button" class="bg-default-blue hover:bg-blue-600" @click="returnslide">
                             Selanjutnya
                         </PrimaryButtonVue>
                     </div>
@@ -505,7 +532,7 @@ watch(jumlahMobil, value => {
                             class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300">Sebelumnya
                         </PrimaryButtonVue>
                         <PrimaryButtonVue type="button"
-                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="slideMobil++">
+                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="returnslide">
                             Selanjutnya</PrimaryButtonVue>
                     </div>
                 </div>
@@ -563,7 +590,8 @@ watch(jumlahMobil, value => {
                             class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div class="flex items-center pl-3">
-                                    <input id="horizontal-list-radio-license" type="radio" v-model="Form.metode_bayar" chec value="Transfer" name="list-radio"
+                                    <input id="horizontal-list-radio-license" type="radio" v-model="Form.metode_bayar"
+                                        chec value="Transfer" name="list-radio"
                                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                     <label for="horizontal-list-radio-license"
                                         class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Transfer</label>
@@ -571,7 +599,8 @@ watch(jumlahMobil, value => {
                             </li>
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div class="flex items-center pl-3">
-                                    <input id="horizontal-list-radio-id" type="radio" v-model="Form.metode_bayar" value="Cash" name="list-radio"
+                                    <input id="horizontal-list-radio-id" type="radio" v-model="Form.metode_bayar"
+                                        value="Cash" name="list-radio"
                                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                     <label for="horizontal-list-radio-id"
                                         class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cash</label>
@@ -582,8 +611,10 @@ watch(jumlahMobil, value => {
                     </div>
                     <div class="mb-5">
 
-                        <p class=" font-semibold text-gray-900 dark:text-white text-sm lowercase">Isi Kolom Input Dibawah Dengan Detail Pengiriman Mobil Apakah Diambil Ditempat Atau Dikirim Ke Penyewa</p>
-                        <TextInput type="text" v-model="Form.list_pengiriman" placeholder="Isikan Keterangan Pengambilan" required />
+                        <p class=" font-semibold text-gray-900 dark:text-white text-sm lowercase">Isi Kolom Input
+                            Dibawah Dengan Detail Pengiriman Mobil Apakah Diambil Ditempat Atau Dikirim Ke Penyewa</p>
+                        <TextInput type="text" v-model="Form.list_pengiriman"
+                            placeholder="Isikan Keterangan Pengambilan" required />
 
                     </div>
                     <div class="flex justify-around">
@@ -591,7 +622,7 @@ watch(jumlahMobil, value => {
                             class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300">Sebelumnya
                         </PrimaryButtonVue>
                         <PrimaryButtonVue type="submit"
-                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="slideMobil++">
+                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="returnslide">
                             Lanjutkan</PrimaryButtonVue>
 
                     </div>

@@ -110,6 +110,7 @@ class SewaController extends Controller
      */
     public function formulir(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'jenis_sewa' => 'required',
             'nik' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required|numeric',
@@ -314,11 +315,14 @@ class SewaController extends Controller
         $sewa = Sewa::find($id);
         $sewa->update([
             'status' =>  $request->status,
+            'status_bayar' =>  $request->status_bayar,
         ]);
         $exp = explode(',', $sewa->nopol);
         Mobil::whereIn('nopol',  $exp)->update([
             'status' => $request->status == 'Selesai' ? '2' : '1',
         ]);
+        return Redirect::back()->with('success', "Status Sewa ". $sewa->kode ." Berhasil Diganti ");
+
         // Synchronously
     }
 
@@ -334,6 +338,7 @@ class SewaController extends Controller
         $sewa = Sewa::find($id);
         $waktusewa = WaktuSewa::where('sewa_id', $sewa->id)->update([
             'tgl_kembali' => $request->tgl_kembali,
+            'jam_kembali' => $request->jam_kembali,
             'lama_sewa' => $request->lama_sewa,
         ]);
 

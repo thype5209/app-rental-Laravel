@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('penggunas', function (Blueprint $table) {
             $table->id();
+            $table->string('foto_ktp',200)->nullable();
             $table->string('nik',30)->unique();
             $table->string('nama',100);
             $table->string('alamat',100);

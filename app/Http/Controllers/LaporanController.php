@@ -41,16 +41,16 @@ class LaporanController extends Controller
         $sewa = Sewa::where('kode', $request->kode)->with(['waktusewa', 'pengguna', 'user'])->first();
         return Inertia::render('Laporan/CetakSewaSave', [
             'pdf' => $request->pdf,
-            'sewa'=> $sewa,
+            'sewa' => $sewa,
         ]);
     }
 
     public function kodeSewa()
     {
-        $max_id = Sewa::max('kode');
+        $max_id = Sewa::max('id');
         $sewa = Sewa::all();
         if ($max_id == null) {
-            $kode = 'S011';
+            $kode = 'S001';
         } else {
             $k = (int) substr($max_id, 0);
             $k++;
@@ -202,9 +202,16 @@ class LaporanController extends Controller
      */
     public function createPengguna($request)
     {
+        // dd($request->all());
         $pengguna = Pengguna::where('nik', $request->nik)->get();
-        if ($pengguna->count() < 1 && $request->jenis_sewa == "Lepas") {
+        $nama_ktp = null;
+        if ($request->file('foto_ktp') != null) {
+            $nama_ktp = $request->nik . '.' .  $request->foto_ktp->getClientOriginalName();
+            $request->file('foto_ktp')->storeAs('public/FotoKTP', $nama_ktp);
+        }
+        if ($pengguna->count() < 1) {
             Pengguna::create([
+                'foto_ktp' => $nama_ktp,
                 'nama' => $request->nama,
                 'nik' => $request->nik,
                 'alamat' => $request->alamat,
@@ -214,6 +221,10 @@ class LaporanController extends Controller
                 'tempat_lahir' => $request->tempat_lahir,
                 'tgl_lahir' => $request->tgl_lahir,
             ]);
+        } else {
+            foreach ($pengguna as $item) {
+                $item->update(['foto_ktp' => $nama_ktp]);
+            }
         }
     }
 
@@ -240,8 +251,8 @@ class LaporanController extends Controller
             'nopol' => implode(',', $request->nopol),
             'unit' => implode(',', $request->unit),
             'tahun' => implode(',', $request->tahun),
-            'harga' => implode(',',$this->parseStringToNumber($request->nilaisewahari)),
-            'harga_bulan' => implode(',',$this->parseStringToNumber($request->nilaisewabulan)),
+            'harga' => implode(',', $this->parseStringToNumber($request->nilaisewahari)),
+            'harga_bulan' => implode(',', $this->parseStringToNumber($request->nilaisewabulan)),
             'nik' => $request->nik,
             'sopir_id' => $request->sopir_id,
             'tujuan' => $request->tujuan,
@@ -272,15 +283,15 @@ class LaporanController extends Controller
     public function parseStringToNumber($string_array)
     {
         $nilai = null;
-        foreach($string_array as $item){
+        foreach ($string_array as $item) {
             $tambah_arr = null;
-            if(strpos($item, ',') !== false){
+            if (strpos($item, ',') !== false) {
                 $hasil = explode(',', $item);
-                for($i= 0; $i < count($hasil); $i++){
+                for ($i = 0; $i < count($hasil); $i++) {
                     $tambah_arr .= $hasil[$i];
                 }
                 $nilai[] = $tambah_arr;
-            }else{
+            } else {
 
                 $nilai[] = $item;
             }

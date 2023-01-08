@@ -122,7 +122,9 @@ var ModalPerpanjang = ref(false);
 const PerpanjangForm = useForm({
     tgl_sewa: null,
     tgl_kembali: null,
+    jam_kembali: null,
     lama_sewa: null,
+    lama_sewa_new: null,
     sewaid: null
 });
 function isOpenTgl(dataID) {
@@ -131,6 +133,7 @@ function isOpenTgl(dataID) {
     });
     PerpanjangForm.tgl_sewa = data.waktusewa.tgl_sewa;
     PerpanjangForm.tgl_kembali = data.waktusewa.tgl_kembali;
+    PerpanjangForm.jam_kembali = data.waktusewa.jam_kembali;
     PerpanjangForm.lama_sewa = data.waktusewa.lama_sewa;
     PerpanjangForm.lama_sewa_new = lamaSewa(data.waktusewa.tgl_sewa, data.waktusewa.tgl_kembali);
     PerpanjangForm.sewaid = data.id;
@@ -429,6 +432,11 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
                                     <InputLabelVue for="email">Tanggal Kembali</InputLabelVue>
                                     <TextInputVue type="date" name="tgl_kembali" id="tgl_kembali"
                                         v-model="PerpanjangForm.tgl_kembali" />
+                                </div>
+                                <div>
+                                    <InputLabelVue for="email">Jam Kembali</InputLabelVue>
+                                    <TextInputVue type="time" name="jam_kembali" id="jam_kembali"
+                                        v-model="PerpanjangForm.jam_kembali" />
                                 </div>
                                 <div>
                                     <TextInputVue type="hidden" name="sewaid" id="sewaid"
