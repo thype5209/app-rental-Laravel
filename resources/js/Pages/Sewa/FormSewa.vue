@@ -6,7 +6,7 @@ import SelectVUe from "@/Components/Select.vue";
 import PrimaryButtonVue from "@/Components/PrimaryButton.vue";
 import { defineProps, ref, watch, onBeforeMount, onMounted, h } from "vue";
 import ModalVue from "@/Components/Modal.vue";
-
+import cardMobil from './cardMobil.vue';
 const props = defineProps({
     pengguna: {
         type: Object,
@@ -28,7 +28,7 @@ const props = defineProps({
 });
 const dataInputSewa = {
     jenis_sewa: '',
-    sopir_id: '',
+    sopir_id: [],
     nik: "",
     nama: "",
     tempat_lahir: "",
@@ -38,14 +38,16 @@ const dataInputSewa = {
     no_hp_lain: "",
     pekerjaan: "",
     sosial: "FB",
-    mobil_id: "",
-    unit: "",
-    nopol: "",
-    tahun: "",
-    nilaisewahari: "",
-    nilaisewabulan: "",
+    mobil_id: [],
+    unit: [],
+    nopol: [],
+    tahun: [],
+    nilaisewahari: [],
+    nilaisewabulan: [],
     tgl_sewa: "",
     tgl_kembali: "",
+    jam_sewa: "",
+    jam_kembali: "",
     lama_sewa: "",
     tujuan: "",
     jaminan: "",
@@ -196,15 +198,30 @@ watch(SearchNIK, value => {
 })
 // End
 
-function reduceArray(array, lamasewa) {
+function reduceArray(array = [], lamasewa = 0) {
     var sisa = array.split(',');
     var harga = sisa.reduce((el, b) => el + b);
 
     return Number(parseInt(harga) * lamasewa).toLocaleString();
 }
-const slideMobil = ref(false);
+function arraySum(array = []) {
+    var hasil = array.reduce((a, b) => {
+        console.log(a)
+        console.log(b)
+        var asisa = a.split(',');
+        var aharga = asisa.reduce((el, b) => el + b);
+        var bsisa = b.split(',');
+        var bharga = bsisa.reduce((el, b) => el + b);
+        return Number(Number(aharga) + Number(bharga)).toLocaleString();
+    });
+    return hasil;
+}
+var r = ['20,000', '30,000'];
+var p = '30,000';
+console.log(arraySum(r))
+
+const slideMobil = ref(1);
 const slidebayar = ref(false);
-const lunasBayar = ref(false);
 const jumlahPanjar = ref(0);
 function funSlideMobil() {
     if (Form.nik != null && Form.nama && Form.alamat && Form.tempat_lahir != null && Form.tgl_lahir != null && Form.no_hp != null && Form.no_hp_lain != null) {
@@ -212,10 +229,10 @@ function funSlideMobil() {
     }
 }
 function funSlideBayar() {
-    if (Form.mobil_id != null && Form.nilaisewahari && Form.nilaisewabulan && Form.unit != null && Form.nopol != null && Form.tahun != null && Form.tgl_sewa != null && Form.tgl_kembali != null && Form.tujuan != null && Form.jaminan != null) {
-        slidebayar.value = true;
-        slideMobil.value = false;
-    }
+    slidebayar.value = true;
+    slideMobil.value = false;
+    // if (Form.mobil_id != null && Form.nilaisewahari && Form.nilaisewabulan && Form.unit != null && Form.nopol != null && Form.tahun != null && Form.tgl_sewa != null && Form.tgl_kembali != null && Form.tujuan != null && Form.jaminan != null) {
+    // }
 }
 function cancelMObil() {
     slideMobil.value = false;
@@ -223,16 +240,21 @@ function cancelMObil() {
 function cancelBayar() {
     slidebayar.value = false
 }
-function lunasfunc(){
-    Form.lunas = ! Form.lunas;
+function lunasfunc() {
+    Form.lunas = !Form.lunas;
 }
 
-watch(jumlahPanjar, value=>{
-    var total = reduceArray(Form.nilaisewahari, Form.lama_sewa);
+watch(jumlahPanjar, value => {
+    var total = reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa);
     var sisa = total.split(',');
     var harga = sisa.reduce((el, b) => el + b);
-    Form.sisa =  harga - value;
+    Form.sisa = harga - value;
     Form.panjar = value;
+})
+
+const jumlahMobil = ref(1);
+watch(jumlahMobil, value => {
+    jumlahMobil.value = value
 })
 </script>
 
@@ -245,8 +267,9 @@ watch(jumlahPanjar, value=>{
         <!-- component -->
         <ModalVue :show="true" :maxWidth="`5xl`">
             <form @submit.prevent="submit">
+                <!-- Slide Tambah Penyewa -->
                 <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2"
-                    v-if="slideMobil == false && slidebayar == false">
+                    v-if="slideMobil == 1">
                     <div class="flex flex-row justify-left">
                         <Link :href="route('Sewa.index')">
                         <PrimaryButtonVue type="button" class="bg-default-dark">Kembali</PrimaryButtonVue>
@@ -257,7 +280,7 @@ watch(jumlahPanjar, value=>{
                             v-bind:class="Form.jenis_sewa == 'Lepas' ? TabActive : TabNonActive">Lepas Kunci
                         </PrimaryButtonVue>
                         <PrimaryButtonVue @click="Form.jenis_sewa = 'Kunci'"
-                            v-bind:class="Form.jenis_sewa == 'Kunci' ? TabActive : TabNonActive">Kunci
+                            v-bind:class="Form.jenis_sewa == 'Kunci' ? TabActive : TabNonActive">Dengan Driver
                         </PrimaryButtonVue>
                     </nav>
 
@@ -364,84 +387,25 @@ watch(jumlahPanjar, value=>{
                         </div>
                     </div>
                     <div class="mx-auto mb-3">
-                        <PrimaryButtonVue class="bg-default-blue hover:bg-blue-600" @click="funSlideMobil()">Selanjutnya
+                        <PrimaryButtonVue type="button" class="bg-default-blue hover:bg-blue-600"
+                            @click="slideMobil++">Selanjutnya
                         </PrimaryButtonVue>
                     </div>
                 </div>
 
-                <div class="inline-flex justify-center items-center w-full" v-if="slideMobil">
+                <div class="inline-flex justify-center items-center w-full" v-if="slideMobil == 2">
                     <hr class="my-1 w-full h-1 bg-gray-200 rounded border-0 " />
                     <div class="absolute left-1/2 px-4 bg-white -translate-x-1/2 ">Detail Mobil</div>
                 </div>
-                <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil">
+                <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == 2">
+                    <!-- Component Mobil -->
+                    <div v-for="slid in jumlahMobil">
+                        <cardMobil :mobil="props.mobil" :form="Form" :jumlah-mobil="slid"></cardMobil>
+                    </div>
+                    <PrimaryButtonVue type="button" @click="jumlahMobil++">Tambah Mobil</PrimaryButtonVue>
 
-                    <div class="-mx-3 md:flex mb-6">
-                        <div class="w-full px-3">
-                            <InputLabel
-                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                for="grid-first-name">Jenis Mobil</InputLabel>
-                            <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                id="mobil_id" for="grid-first-name" @change="GetMobil($event)">
-                                <option value>---</option>
-                                <option v-for="mobil in props.mobil" :key="mobil.id" :value="mobil.id">Unit= {{
-                                    mobil.unit
-                                }} | Nopol= {{ mobil.nopol }} | Tahun= {{ mobil.tahun }}</option>
-                            </SelectVUe>
-                            <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
-                        </div>
-                    </div>
-                    <div class="-mx-3 sm:flex mb-6">
-                        <div class="sm:w-1/3 px-3">
-                            <InputLabel
-                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                for="grid-last-name">Jenis Kendaraan</InputLabel>
-                            <TextInput id="grid-last-name" type="text" placeholder="Jenis Kendaraan" readonly required
-                                v-model="Form.unit" />
-                            <p v-if="errors.unit" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
-                        </div>
-                        <div class="sm:w-1/3 px-3">
-                            <InputLabel
-                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                for="grid-first-name">No. Kendaraan</InputLabel>
-                            <TextInput id="grid-last-name" class="1/2" type="text" placeholder="No. Kendaraan" readonly
-                                required v-model="Form.nopol" />
-                            <p v-if="errors.nopol" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
-                        </div>
-                        <div class="sm:w-1/2 px-3">
-                            <InputLabel
-                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                for="grid-last-name">Tahun</InputLabel>
 
-                            <TextInput id="grid-first-name" type="number" placeholder="0000" readonly required
-                                v-model="Form.tahun" />
-                            <p v-if="errors.tahun" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
-                        </div>
-                    </div>
-                    <div class="-mx-3 sm:flex justify-center w-full">
-                        <div class="md:w-1/2 px-3 mb-4 md:mb-0">
-                            <InputLabel
-                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                for="grid-first-name">Nilai Sewa/Hari</InputLabel>
-                            <TextInput id="grid-first-name" type="text" readonly placeholder="0000"
-                                v-model="Form.nilaisewahari" />
-                            <p v-if="errors.nilaisewahari" class="text-red text-xs italic text-red-500">
-                                Please fill out
-                                this field.
-                            </p>
-                        </div>
-                        <div class="md:w-1/2 px-3">
-                            <InputLabel
-                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                for="grid-last-name">Nilai Sewa/Bulan</InputLabel>
-                            <TextInput id="grid-last-name" type="text" readonly placeholder="0000"
-                                v-model="Form.nilaisewabulan" />
-                            <p v-if="errors.nilaisewabulan" class="text-red text-xs italic text-red-500">
-                                Please fill
-                                out
-                                this field.
-                            </p>
-                        </div>
-                    </div>
+                    <!-- Waktu Sewa -->
                     <hr class="my-2 h-px bg-gray-800 border-0 " />
                     <div class="-mx-3 grid grid-cols-1 sm:grid-cols-3 justify-center mb-6">
                         <div class="md:w-full px-3 mb-4 md:mb-0">
@@ -449,7 +413,7 @@ watch(jumlahPanjar, value=>{
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Tanggal Sewa</InputLabel>
                             <TextInput id="grid-first-name" type="date" placeholder="+62" v-model="Form.tgl_sewa" />
-                            <p v-if="errors.tgl_sewa" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-full px-3">
                             <InputLabel
@@ -457,14 +421,33 @@ watch(jumlahPanjar, value=>{
                                 for="grid-last-name">Tanggal Kembali</InputLabel>
                             <TextInput id="grid-last-name" type="date" placeholder="+62" @change="getTanggal($event)"
                                 v-model="Form.tgl_kembali" />
-                            <p v-if="errors.tgl_kembali" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-full px-3">
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Lama Sewa</InputLabel>
                             <TextInput id="grid-last-name" type="text" placeholder="...." v-model="Form.lama_sewa" />
-                            <p v-if="errors.lama_sewa" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                        </div>
+                    </div>
+
+                    <!-- Jam Sewa -->
+                    <div class="-mx-3 grid grid-cols-1 sm:grid-cols-3 justify-center mb-6">
+                        <div class="md:w-full px-3 mb-4 md:mb-0">
+                            <InputLabel
+                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                for="grid-first-name">Jam Sewa</InputLabel>
+                            <TextInput id="grid-first-name" type="time" placeholder="+62" v-model="Form.jam_sewa" />
+                            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                        </div>
+                        <div class="md:w-full px-3">
+                            <InputLabel
+                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                for="grid-last-name">Jam Kembali</InputLabel>
+                            <TextInput id="grid-last-name" type="time" placeholder="+62"
+                                v-model="Form.jam_kembali" />
+                            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                     </div>
                     <div class="-mx-3 grid grid-cols-1 sm:grid-cols-2 justify-center mb-2">
@@ -474,7 +457,7 @@ watch(jumlahPanjar, value=>{
                                 for="grid-first-name">Tujuan Penyewa</InputLabel>
                             <TextInput id="grid-first-name" type="text" placeholder="......................"
                                 v-model="Form.tujuan" />
-                            <p v-if="errors.tujuan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                            <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                         <div class="md:w-1/2 px-3">
                             <InputLabel
@@ -482,31 +465,31 @@ watch(jumlahPanjar, value=>{
                                 for="grid-last-name">Jaminan Sewa</InputLabel>
                             <TextInput id="grid-last-name" type="text" placeholder="......................"
                                 v-model="Form.jaminan" />
-                            <!-- <p v-if="errors.jaminan" class="text-red text-xs italic text-red-500">Mohon Di Isi</p> -->
+                            <!-- <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p> -->
                         </div>
                     </div>
-
                     <div class="flex justify-around">
-                        <PrimaryButtonVue type="submit" @click="cancelMObil"
+                        <PrimaryButtonVue type="submit" @click="slideMobil--"
                             class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300"
-                            v-if="ModalShow == false">Sebelumnya</PrimaryButtonVue>
-                        <PrimaryButtonVue type="submit"
-                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="funSlideBayar">
+                           >Sebelumnya</PrimaryButtonVue>
+                        <PrimaryButtonVue type="button"
+                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="slideMobil++">
                             Selanjutnya</PrimaryButtonVue>
                     </div>
                 </div>
-                <div class="inline-flex justify-center items-center w-full" v-if="slidebayar">
+                <div class="inline-flex justify-center items-center w-full" v-if="slideMobil == 3">
                     <hr class="my-1 w-full h-1 bg-gray-200 rounded border-0 " />
                     <div class="absolute left-1/2 px-4 bg-white -translate-x-1/2 ">Detail Pembayaran</div>
                 </div>
-                <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2" v-if="slidebayar">
+                <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == 3">
+                    <!-- Pembayran Sewa -->
 
                     <div class="-mx-3 sm:flex mb-6">
                         <InputLabel class=" text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-last-name">Lunas</InputLabel>
-                        <TextInput  class="w-max ml-3" type="checkbox" id="checkbox" placeholder="Jumlah Panjar"
-                             @click="lunasfunc" />
-                        <p  class="text-red text-xs italic text-gray-500 ml-4">
+                        <TextInput class="w-max ml-3" type="checkbox" id="checkbox" placeholder="Jumlah Panjar"
+                            @click="lunasfunc" />
+                        <p class="text-red text-xs italic text-gray-500 ml-4">
                             Jika Pembayaran Telah Lunas Mohon Di Centang
                         </p>
                     </div>
@@ -533,18 +516,17 @@ watch(jumlahPanjar, value=>{
                                 for="grid-last-name">Total</InputLabel>
 
                             <TextInput id="grid-first-name" type="text" placeholder="0000" readonly required
-                                :value="reduceArray(Form.nilaisewahari, Form.lama_sewa)" />
+                                :value="reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa)" />
                             <p v-if="errors.lunas" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
                     </div>
                     <div class="flex justify-around">
-                        <PrimaryButtonVue type="submit" @click="cancelBayar"
-                            class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300"
-                            v-if="ModalShow == false">Sebelumnya</PrimaryButtonVue>
+                        <PrimaryButtonVue type="button" @click="slideMobil--"
+                            class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300">Sebelumnya</PrimaryButtonVue>
                         <PrimaryButtonVue type="submit"
                             class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300"
                             v-if="ModalShow == false">Lanjutkan</PrimaryButtonVue>
-                        <PrimaryButtonVue type="submit"
+                        <PrimaryButtonVue type="button"
                             class="block w-full mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" disabled
                             v-else>Error Akses Ditolak</PrimaryButtonVue>
                     </div>

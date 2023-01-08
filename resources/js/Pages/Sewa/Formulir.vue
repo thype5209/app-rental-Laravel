@@ -43,6 +43,8 @@ const FormPDF = useForm({
     panjar: data.formulir.panjar,
     sisa: data.formulir.sisa,
     lunas: data.formulir.lunas,
+    jam_sewa: data.formulir.jam_sewa,
+    jam_kembali: data.formulir.jam_kembali,
 })
 
 
@@ -106,7 +108,8 @@ function cetakDanSave() {
         },
     });
 }
-console.log(FormPDF.lunas);
+const jumlahMobil = FormPDF.mobil_id.length;
+console.log(jumlahMobil)
 </script>
 
 <template>
@@ -200,21 +203,21 @@ console.log(FormPDF.lunas);
                     kendaraan
                     kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
 
-                <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
+                <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify " v-for="(item,index) in jumlahMobil" :key="item" :index="index">
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan</td>
                         <td class=" whitespace-nowrap mb-0 p-0">
-                            <span class="font-bold">:</span> {{ FormPDF.unit }}
+                            <span class="font-bold">:</span> {{ FormPDF.unit[index] }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">No. Polisi</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.nopol }}
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.nopol[index] }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tahun</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tahun }}
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tahun[index] }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
@@ -222,17 +225,25 @@ console.log(FormPDF.lunas);
                         <td>
                             <ul class="list-none flex flex-row gap-4">
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{
-                                    FormPDF.nilaisewahari
+                                    FormPDF.nilaisewahari[index]
                                 }}/Per Hari</li>
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{
-                                    FormPDF.nilaisewabulan
+                                    FormPDF.nilaisewabulan[index]
                                 }}/Per Bulan</li>
                             </ul>
                         </td>
                     </tr>
+
+                </table>
+                <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tanggal Pemakaian</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tgl_sewa }}
+                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tanggal/Jam Sewa</td>
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tgl_sewa }}/{{ FormPDF.jam_sewa }} WITA
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tanggal/Jam Kembali</td>
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tgl_kembali }}/{{ FormPDF.jam_kembali }} WITA
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">

@@ -153,7 +153,6 @@ class LaporanController extends Controller
     {
         $data = [
             'jenis_sewa' => 'Kunci',
-            'mobil_id' => '1',
             'nik' => '91010',
             'nama' => 'wawan',
             'tempat_lahir' => 'Bulukumba',
@@ -163,22 +162,24 @@ class LaporanController extends Controller
             'sosial' => 'FB',
             'no_hp' => '081920019',
             'no_hp_lain' => '019020191',
-            'nilaisewahari' => '20000',
-            'nilaisewabulan' => '90000',
             'tgl_sewa' => '2022-12-01',
             'tgl_kembali' => '2022-12-10',
-            'lama_sewa' => '10 hari',
+            'lama_sewa' => '10',
             'tujuan' => 'Bulukumba',
             'jaminan' => 'KTP',
-            'unit' => 'avanza',
-            'nopol' => 'NK 0012',
-            'tahun' => '2022',
-            'panjar'=> '0',
-            'sisa'=> '0',
-            'lunas'=> false,
+            'lunas' => 'false',
+            'mobil_id' => ['1', '2'],
+            'nilaisewahari' => ['20000', '30,000'],
+            'nilaisewabulan' => ['90000', '800000'],
+            'unit' => ['avanza', 'Jaguar'],
+            'nopol' => ['NK 0012', 'DD JSK 99'],
+            'tahun' => ['2022', '2021'],
+            'panjar' => '0',
+            'sisa' => '0',
         ];
         $req = (object) $data;
         // Panggil Fungsi Kode
+        $cek = intval(array_sum($req->nilaisewahari)) * intval($req->lama_sewa);
         $kode = $this->kodeSewa();
         $path =  'SewaPDF/';
         $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
@@ -186,7 +187,7 @@ class LaporanController extends Controller
 
         // Tanggal
         $carbon = $this->today();
-        $mobil = Mobil::find(3);
+        $mobil = Mobil::whereIn('id', $req->mobil_id)->get();
         // Melakukan Load Data PDF
         $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
         return $pdf->stream();
@@ -228,17 +229,17 @@ class LaporanController extends Controller
     public function sewaCreate($request, $kode, $pdf_url)
     {
         $status_bayar = '3';
-        if($request->sisa == null){
+        if ($request->sisa == null) {
             $status_bayar = '1';
         }
         $sewa = Sewa::create([
             'jenis_sewa' => $request->jenis_sewa,
             'kode' => $kode,
-            'nopol' => $request->nopol,
-            'unit' => $request->unit,
-            'tahun' => $request->tahun,
-            'harga' => $request->nilaisewahari,
-            'harga_bulan' => $request->nilaisewabulan,
+            'nopol' => implode(',', $request->nopol),
+            'unit' => implode(',', $request->unit),
+            'tahun' => implode(',', $request->tahun),
+            'harga' => implode(',',$this->parseStringToNumber($request->nilaisewahari)),
+            'harga_bulan' => implode(',',$this->parseStringToNumber($request->nilaisewabulan)),
             'nik' => $request->nik,
             'sopir_id' => $request->sopir_id,
             'tujuan' => $request->tujuan,
@@ -248,9 +249,9 @@ class LaporanController extends Controller
             'pdf_url' => $pdf_url,
             'denda' => '0',
             'status' => 'Sewa',
-            'sisa'=> abs($request->sisa),
-            'status_bayar'=> $status_bayar,
-            'total' => intval($request->nilaisewahari) * intval($request->lama_sewa),
+            'sisa' => abs($request->sisa),
+            'status_bayar' => $status_bayar,
+            'total' => intval(array_sum($this->parseStringToNumber($request->nilaisewahari))) * intval($request->lama_sewa),
         ]);
         WaktuSewa::create([
             'sewa_id' => $sewa->id,
@@ -260,11 +261,28 @@ class LaporanController extends Controller
             'jam_kembali' => "00:00",
             'lama_sewa' => $request->lama_sewa,
         ]);
-        Mobil::find($request->mobil_id)->update([
+        Mobil::whereIn('id', $request->mobil_id)->update([
             'status' => '1',
         ]);
     }
+    public function parseStringToNumber($string_array)
+    {
+        $nilai = null;
+        foreach($string_array as $item){
+            $tambah_arr = null;
+            if(strpos($item, ',') !== false){
+                $hasil = explode(',', $item);
+                for($i= 0; $i < count($hasil); $i++){
+                    $tambah_arr .= $hasil[$i];
+                }
+                $nilai[] = $tambah_arr;
+            }else{
 
+                $nilai[] = $item;
+            }
+        }
+        return $nilai;
+    }
     public function CetakPDF()
     {
         $data =  Sewa::query()->with(['waktusewa', 'pengguna', 'user'])
@@ -303,9 +321,9 @@ class LaporanController extends Controller
     public function cekDowloadFile()
     {
         $sewa = Sewa::query()->with(['waktusewa', 'pengguna', 'user'])
-        ->where('status', '=', 'Selesai')
-        ->dateFilter(FacadeRequest::only(['min', 'max']))
-        ->get();
+            ->where('status', '=', 'Selesai')
+            ->dateFilter(FacadeRequest::only(['min', 'max']))
+            ->get();
 
         if (Storage::disk('public')->exists('ZipFile/arsip.zip')) {
             Storage::disk('public')->delete('ZipFile/arsip.zip');
@@ -314,9 +332,9 @@ class LaporanController extends Controller
         // dd($sewa);
         if (FacadeRequest::input('clear', false)) {
             Sewa::query()->with(['waktusewa', 'pengguna', 'user'])
-        ->where('status', '=', 'Selesai')
-        ->dateFilter(FacadeRequest::only(['min', 'max']))
-        ->delete();
+                ->where('status', '=', 'Selesai')
+                ->dateFilter(FacadeRequest::only(['min', 'max']))
+                ->delete();
         }
         // return FacadeRequest::only(['min', 'max']);
         return response()->download(public_path() . '/storage/ZipFile/arsip.zip');

@@ -32,7 +32,7 @@
                         Harga Sewa</td>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
-                        Rp. {{ sewa.harga }}</td>
+                        Rp. {{ reduceArray(sewa.harga) }}</td>
                 </tr>
                 <tr>
                     <td
@@ -176,7 +176,7 @@ export default {
     setup(){
         function reduceArray(array = [], lamasewa = 1, denda = 0) {
             var sisa = array.split(',');
-            var harga = sisa.reduce((el, b) => el + b);
+            var harga = sisa.reduce((el, b) => Number(el) + Number(b));
             var total = (parseInt(harga) * lamasewa) + parseInt(denda);
             return Number(total).toLocaleString();
         }

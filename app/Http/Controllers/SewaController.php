@@ -119,11 +119,11 @@ class SewaController extends Controller
             'pekerjaan' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required|string',
             'no_hp' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required',
             'no_hp_lain' =>  $request->jenis_sewa == "Kunci" ? 'nullable' : 'required',
-            'unit' => 'required|string',
-            'nopol' => 'required|string',
-            'tahun' => 'required|string',
-            'nilaisewahari' => 'required|string',
-            'nilaisewabulan' => 'required|string',
+            'unit' => 'required',
+            'nopol' => 'required',
+            'tahun' => 'required',
+            'nilaisewahari' => 'required',
+            'nilaisewabulan' => 'required',
             'tgl_sewa' => 'required|date',
             'tgl_kembali' => 'required|date',
             // 'lama_sewa' => 'required|string',
@@ -216,14 +216,45 @@ class SewaController extends Controller
     }
 
 
+    private function reduceArrayMany($array)
+    {
+        $nilai = null;
+        // dd($array);
+        foreach($array as $item){
+            $tambah_arr = null;
+            if(strpos($item, ',') !== false){
+                $hasil = explode(',', $item);
+                for($i= 0; $i < count($hasil); $i++){
+                    $tambah_arr .= $hasil[$i];
+                }
+                $nilai[] = $tambah_arr;
+            }else{
+
+                $nilai[] = $item;
+            }
+        }
+        return $nilai;
+    }
     private function reduceArray($array)
     {
+        $nilai = null;
+        // dd($array);
         $exp = explode(',', $array);
-        $hasil = null;
-        for ($i = 0; $i < count($exp); $i++) {
-            $hasil .= $exp[$i];
+        foreach($exp as $item){
+            $tambah_arr = null;
+            if(strpos($item, ',') !== false){
+                $hasil = explode(',', $item);
+                for($i= 0; $i < count($hasil); $i++){
+                    $tambah_arr .= $hasil[$i];
+                }
+                $nilai[] = $tambah_arr;
+            }else{
+
+                $nilai[] = $item;
+            }
         }
-        return $hasil;
+        // dd(array_sum($nilai));
+        return array_sum($nilai);
     }
 
     /**
