@@ -1,17 +1,42 @@
 <script setup>
 import { defineProps, ref, onMounted } from 'vue';
 import AuthenticatedLayoutVue from '@/Layouts/AuthenticatedLayout.vue';
-import { Link , usePage} from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
 import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
-import  TextInput from '@/Components/TextInput.vue'
-const pdfFile = defineProps({
+import TextInput from '@/Components/TextInput.vue'
+const data = defineProps({
     pdf: {
         type: String,
         default: () => ({})
+    },
+    sewa: {
+        type: Object,
+        default: () => ({})
     }
 })
-const myinput = window.location.origin +'/storage/'+ pdfFile.pdf;
+var jenis_sewa = null;
+if(data.sewa.jenis_sewa === 'Lepas'){
+    jenis_sewa = 'Lepas Kunci'
+}else if(data.sewa.jenis_sewa === 'Kunci'){
+    jenis_sewa = 'Dengan Driver'
+}
+const myinput = window.location.origin + '/storage/' + data.pdf;
+const myinputwa = `PEMAKAIAN DENGAN ${ jenis_sewa }
+No. SPK :${ data.sewa.kode }
+Nama pemake : ${ data.sewa.pengguna.nama }
+Nama driver : ${ data.sewa.sopir_id !== null ? data.sewa.sopir.nama: '--' }
+Jenis mobil : ${ data.sewa.unit }
+No. Plat : ${ data.sewa.nopol }
+Tgl Mulai-jam : ${ data.sewa.waktusewa.tgl_sewa }/${ data.sewa.waktusewa.jam_sewa } WITA
+Tgl Selesai-jam :  ${ data.sewa.waktusewa.tgl_kembali }/${ data.sewa.waktusewa.jam_kembali } WITA
+Jumlah Hari : ${ data.sewa.waktusewa.lamasewa }
+Zona : ${ data.sewa.tujuan }
+Sewa Per Hari : ${ reduceArray(data.sewa.harga) }
+Panjar / dp : ${ data.sewa.total - data.sewa.sisa }
+Ket.
+${ data.sewa.list_pengiriman }`;
 const input = ref(null)
+const inputwa = ref(null)
 
 onMounted(() => {
     console.log(myinput)
@@ -24,13 +49,29 @@ function copy() {
     navigator.clipboard.writeText(myinput);
 
 }
+function copytext() {
+    inputwa.value.focus()
+    navigator.clipboard.writeText(myinputwa);
+}
+function reduceArray(array = [], lamasewa = 1) {
+            var sisa = array.split(',');
+            var harga = sisa.reduce((el, b) => Number(el) + Number(b));
+            var total = (parseInt(harga) * lamasewa) ;
+            return Number(total).toLocaleString();
+        }
+
 </script>
 <template>
     <AuthenticatedLayoutVue>
         <div class="flex">
             <TextInput class="max-w-md" v-on:focus="$event.target.select()" ref="input" readonly :value="myinput" />
-        <PrimaryButtonVue @click="copy">Copy Link</PrimaryButtonVue>
+            <PrimaryButtonVue @click="copy">Copy Link</PrimaryButtonVue>
 
+        </div>
+        <div>
+            <textarea name="textwa" id="textwa" ref="inputwa" v-on:focus="$event.target.select()" cols="50" rows="10" v-model="myinputwa">
+            </textarea>
+            <PrimaryButtonVue @click="copytext">Copy Link</PrimaryButtonVue>
         </div>
         <iframe :src="`/storage/${pdf}`" class="w-full h-screen"></iframe>
 

@@ -46,6 +46,8 @@ const FormPDF = useForm({
     jam_sewa: data.formulir.jam_sewa,
     jam_kembali: data.formulir.jam_kembali,
     ket_syarat: data.formulir.ket_syarat,
+    list_pengiriman: data.formulir.list_pengiriman,
+    metode_bayar: data.formulir.metode_bayar,
 })
 
 
@@ -104,7 +106,7 @@ function cetakDanSave() {
         preserveState: false,
         replace: false,
         onSuccess: () => {
-            window.location.href = '/Laporan/CetakSewa?pdf=SewaPDF/' + data.kode + "-" + FormPDF.tgl_sewa + '.pdf';
+            window.location.href = '/Laporan/CetakSewa?pdf=SewaPDF/' + data.kode + "-" + FormPDF.tgl_sewa + '.pdf&&kode=' + data.kode;
             FormPDF.reset();
         },
     });

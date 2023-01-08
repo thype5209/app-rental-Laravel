@@ -38,8 +38,10 @@ class LaporanController extends Controller
      */
     public function saveSewaCetak(Request $request)
     {
+        $sewa = Sewa::where('kode', $request->kode)->with(['waktusewa', 'pengguna', 'user'])->first();
         return Inertia::render('Laporan/CetakSewaSave', [
             'pdf' => $request->pdf,
+            'sewa'=> $sewa,
         ]);
     }
 
@@ -251,6 +253,8 @@ class LaporanController extends Controller
             'status' => 'Sewa',
             'sisa' => abs($request->sisa),
             'status_bayar' => $status_bayar,
+            'metode_bayar' => $request->metode_bayar,
+            'list_pengiriman' => $request->list_pengiriman,
             'total' => intval(array_sum($this->parseStringToNumber($request->nilaisewahari))) * intval($request->lama_sewa),
         ]);
         WaktuSewa::create([

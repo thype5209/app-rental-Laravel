@@ -46,16 +46,18 @@ const dataInputSewa = {
     tahun: [],
     nilaisewahari: [],
     nilaisewabulan: [],
-    tgl_sewa: "",
-    tgl_kembali: "",
-    jam_sewa: "",
-    jam_kembali: "",
-    lama_sewa: "",
-    tujuan: "",
-    jaminan: "",
-    panjar: '',
-    sisa: '',
+    tgl_sewa: "2023-01-08",
+    tgl_kembali: "2023-01-10",
+    jam_sewa: "00:00",
+    jam_kembali: "00:00",
+    lama_sewa: "2",
+    tujuan: "Makassar",
+    jaminan: "KTP",
+    panjar: '20000',
+    sisa: '10000',
     lunas: false,
+    metode_bayar: 'Transfer',
+    list_pengiriman: null,
     ket_syarat: `<div class="">
             <h3 class=" font-bold">Ket.</h3>
             <ul class="list-disc  px-10">
@@ -233,9 +235,9 @@ var hasils = $string.search('\,/');
 console.log(hasils)
 function reduceArray(array = [], lamasewa = 0) {
     var sisa = array.split(',');
-    var harga = sisa.reduce((el, b) => el + b);
-
-    return Number(parseInt(harga) * lamasewa).toLocaleString();
+    var harga = sisa.reduce((el, b) => Number(el) + Number(b));
+    var total = (parseInt(harga) * lamasewa);
+    return Number(total).toLocaleString();
 }
 function arraySum(array = []) {
     var hasil = array.reduce((a, b) => {
@@ -251,7 +253,7 @@ function arraySum(array = []) {
 }
 
 
-const slideMobil = ref(4);
+const slideMobil = ref(1);
 const slidebayar = ref(false);
 const jumlahPanjar = ref(0);
 function funSlideMobil() {
@@ -457,7 +459,8 @@ watch(jumlahMobil, value => {
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Lama Sewa</InputLabel>
-                            <TextInput id="grid-last-name" type="text" placeholder="...." readonly v-model="Form.lama_sewa" />
+                            <TextInput id="grid-last-name" type="text" placeholder="...." readonly
+                                v-model="Form.lama_sewa" />
                             <!-- <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p> -->
                         </div>
                     </div>
@@ -516,7 +519,7 @@ watch(jumlahMobil, value => {
                 <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == 3">
                     <!-- Pembayran Sewa -->
 
-                    <div class="-mx-3 sm:flex mb-6">
+                    <div class="-mx-3 sm:flex mb-6 px-3">
                         <InputLabel class=" text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                             for="grid-last-name">Lunas</InputLabel>
                         <TextInput class="w-max ml-3" type="checkbox" id="checkbox" placeholder="Jumlah Panjar"
@@ -551,6 +554,37 @@ watch(jumlahMobil, value => {
                                 :value="reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa)" />
                             <p v-if="errors.lunas" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
+
+                    </div>
+                    <div class="mb-5">
+
+                        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Metode Pembayaran</h3>
+                        <ul
+                            class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="horizontal-list-radio-license" type="radio" v-model="Form.metode_bayar" chec value="Transfer" name="list-radio"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="horizontal-list-radio-license"
+                                        class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Transfer</label>
+                                </div>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="horizontal-list-radio-id" type="radio" v-model="Form.metode_bayar" value="Cash" name="list-radio"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="horizontal-list-radio-id"
+                                        class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cash</label>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="mb-5">
+
+                        <p class=" font-semibold text-gray-900 dark:text-white text-sm lowercase">Isi Kolom Input Dibawah Dengan Detail Pengiriman Mobil Apakah Diambil Ditempat Atau Dikirim Ke Penyewa</p>
+                        <TextInput type="text" v-model="Form.list_pengiriman" placeholder="Isikan Keterangan Pengambilan" required />
+
                     </div>
                     <div class="flex justify-around">
                         <PrimaryButtonVue type="button" @click="slideMobil--"

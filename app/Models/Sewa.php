@@ -11,7 +11,7 @@ class Sewa extends Model
 {
     use HasFactory;
     protected $table = 'sewas';
-    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'harga_bulan', 'pdf_url','sisa', 'total', 'status_bayar'];
+    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit','sopir_id', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'harga_bulan', 'pdf_url','sisa', 'total', 'status_bayar', 'list_pengiriman', 'metode_bayar'];
 
     public function waktusewa()
     {
@@ -28,6 +28,10 @@ class Sewa extends Model
     public function mobil()
     {
         return $this->hasOne(Mobil::class, 'nopol', 'nopol');
+    }
+    public function sopir()
+    {
+        return $this->hasOne(Sopir::class, 'id', 'sopir_id');
     }
 
     public function scopeFilter($query, array $filters)
