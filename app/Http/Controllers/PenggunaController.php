@@ -89,9 +89,12 @@ class PenggunaController extends Controller
      * @param  \App\Models\Pengguna  $pengguna
      * @return \Illuminate\Http\Response
      */
-    public function show(Pengguna $pengguna)
+    public function show(Pengguna $pengguna,$id)
     {
-        //
+
+        return Inertia::render('Pengguna/RiwayatPengguna', [
+            'riwayat'=> $pengguna->with(['sewa', 'sewa.waktusewa'])->find($id),
+        ]);
     }
 
     /**

@@ -26,52 +26,77 @@
                             <th class="px-4 py-3">Nik</th>
                             <th class="px-4 py-3">Nama</th>
                             <th class="px-4 py-3">No. HP</th>
+                            <th class="px-4 py-3">No. HP Kerabat/Saudara</th>
                             <th class="px-4 py-3">Alamat</th>
                             <th class="px-4 py-3">Tunggakan</th>
+                            <th class="px-4 py-3">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                         <tr v-for="(user, index) in pengguna.data" :key="user" :index="index"
                             class="text-gray-700 dark:text-gray-400">
 
-                            <td class="px-4 py-3 text-xs">
-                                {{ (pengguna.current_page -1)* pengguna.per_page + index + 1}}
+                            <td class="px-4 py-3 text-xs border">
+                                {{ (pengguna.current_page - 1) * pengguna.per_page + index + 1}}
                             </td>
-                            <td class="px-4 py-3 text-xs">
+                            <td class="px-4 py-3 text-xs border">
                                 {{ user.nik }}
                             </td>
-                            <td class="px-4 py-3 text-xs">
+                            <td class="px-4 py-3 text-xs border">
                                 <p class="font-semibold">{{ user.nama }}</p>
 
                             </td>
-                            <td class="px-4 py-3 text-xs whitespace-nowrap">
+                            <td class="px-4 py-3 text-xs border whitespace-nowrap">
                                 <span
                                     class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
                                     {{ user.no_hp }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-xs">
+                            <td class="px-4 py-3 text-xs border whitespace-nowrap">
+                                <span
+                                    class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                    {{ user.no_hp_lain }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-xs border">
                                 {{ user.alamat }}
                             </td>
-                            <td class="px-4 py-3 text-xs">
+                            <td class="px-4 py-3 text-xs border">
                                 <ul class="space-y-1 max-w-md list-none list-inside text-gray-500 dark:text-gray-400">
                                     <li v-for=" item in user.sewa " :key="item">
-                                        <span v-if="item.status_bayar == '3' || item.status_bayar == '2' || item.status_bayar == '4'" class="font-semibold text-gray-900 dark:text-white">Rp. {{ reduceArray(item.harga, item.waktusewa.lama_sewa, item.denda) }}</span>
-                                        <span v-else class="font-semibold text-gray-900 dark:text-white">Rp. ------</span>
+                                        <span
+                                            v-if="item.status_bayar == '3' || item.status_bayar == '2' || item.status_bayar == '4'"
+                                            class="font-semibold text-gray-900 dark:text-white">Rp. {{
+                                                reduceArray(item.harga, item.waktusewa.lama_sewa, item.denda)
+                                            }}</span>
+                                        <span v-else class="font-semibold text-gray-900 dark:text-white">Rp.
+                                            ------</span>
                                     </li>
                                 </ul>
                                 <span>
 
                                 </span>
                             </td>
+                            <td class="px-4 py-3 text-xs border">
+                                <Link :href="route('Pengguna.show', {id: user.id})">
+                                <button class="bg-blue-500 text-white px-2 py-1 rounded-md ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </button>
+                                </Link>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <PaginationVue :links="pengguna.links"></PaginationVue>
-                <div
-                class="bg-white flex justify-center">
+                <div class="bg-white flex justify-center">
+                </div>
             </div>
-        </div>
         </div>
     </AuthenticatedLayout>
 </template>
@@ -79,21 +104,22 @@
 <script>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import PaginationVue from '@/Components/Pagination.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm, Link } from '@inertiajs/inertia-vue3';
 export default {
     name: 'PenggunaVue',
     components: {
         AuthenticatedLayout,
-        PaginationVue
+        PaginationVue,
+        Link
     },
-    setup(){
+    setup() {
         function reduceArray(array = [], lamasewa = 1, denda = 0) {
             var sisa = array.split(',');
-            var harga = sisa.reduce((el, b) => el + b);
+            var harga = sisa.reduce((el, b) => Number(el) + Number(b));
             var total = (parseInt(harga) * lamasewa) + parseInt(denda);
             return Number(total).toLocaleString();
         }
-        return {reduceArray}
+        return { reduceArray }
     },
     data() {
         return {

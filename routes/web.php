@@ -97,6 +97,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/NIK', 'CariNIK')->name('CariNIK');
             Route::get('/GetID{id}', 'GetID')->name('GetID');
+            Route::get('/Detail/Pengguna/{id}', 'show')->name('show');
         });
     });
     Route::group(['prefix'=> 'Sopir', 'as'=> 'Sopir.'],function(){
