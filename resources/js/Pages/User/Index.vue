@@ -12,7 +12,6 @@ const props = defineProps({
     default: () => ({}),
   },
 })
-console.log(props.user)
 </script>
 <template>
     <Head title="users" />

@@ -47,8 +47,6 @@ function parseDateNow() {
 
     return SewaToday;
 }
-var yesterday =
-console.log(parseDateNow())
 let forDate = parseDateNow();
 </script>
 

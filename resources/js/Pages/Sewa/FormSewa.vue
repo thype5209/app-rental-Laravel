@@ -160,17 +160,14 @@ watch(FOTOKTP, value => {
 })
 
 function returnslide() {
-    console.log(Form)
     if (slideMobil.value == 1 && Form.nik != null && Form.nama != null) {
         slideMobil.value = 2;
     }
     if (jumlahMobil.value == 2 || Form.unit.length > 0) {
-        slideMobil.value +=1;
+        slideMobil.value += 1;
     }
     if (jumlahMobil.value == 3 || Form.unit.length > 0) {
         slideMobil.value = 4;
-    } else {
-        console.log('err')
     }
 }
 
@@ -262,21 +259,35 @@ watch(SearchNIK, value => {
     })
 })
 // End
-function reduceArray(array = [], lamasewa = 0) {
-    var sisa = array.split(',');
-    var harga = sisa.reduce((el, b) => Number(el) + Number(b));
+function reduceArray(array, lamasewa = 0) {
+    var arrayToString = array.toString();
+    var harga = null;
+    if (arrayToString.indexOf(',') > -1) {
+        var sisa = array.split(',');
+        var harga = sisa.reduce((el, b) => Number(el) +''+ Number(b));
+        console.log('sisa = '+ sisa);
+        console.log('harga = '+ harga);
+    } else {
+        harga = array
+        console.log('harga = '+ harga);
+    }
     var total = (parseInt(harga) * lamasewa);
+    console.log(total)
     return Number(total).toLocaleString();
 }
 function arraySum(array = []) {
-    var hasil = array.reduce((a, b) => {
-
-        var asisa = a.split(',');
-        var aharga = asisa.reduce((el, b) => el + b);
-        var bsisa = b.split(',');
-        var bharga = bsisa.reduce((el, b) => el + b);
-        return Number(Number(aharga) + Number(bharga)).toLocaleString();
-    });
+    var hasil = null;
+    if (array.length > 1) {
+      hasil =  array.reduce((a, b) => {
+            var asisa = a.split(',');
+            var aharga = asisa.reduce((el, b) => el + b);
+            var bsisa = b.split(',');
+            var bharga = bsisa.reduce((el, b) => el + b);
+            return Number(Number(aharga) + Number(bharga));
+        });
+    }else{
+        hasil = array.reduce((a,b)=> { a+ b});
+    }
     return hasil;
 }
 
@@ -591,7 +602,8 @@ watch(jumlahMobil, value => {
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Total</InputLabel>
-
+                            <p>{{ arraySum(Form.nilaisewahari) }}</p>
+                            <p>{{ Number(Form.lama_sewa) }}</p>
                             <TextInput id="grid-first-name" type="text" placeholder="0000" readonly required
                                 :value="reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa)" />
                             <p v-if="errors.lunas" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>

@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('pdf_url', 100);
             $table->string('status',20);
             $table->string('sisa',30)->nullable();
+            $table->string('panjar',30)->nullable();
             $table->string('total',30);
             $table->string('metode_bayar',30);
             $table->string('list_pengiriman',30);

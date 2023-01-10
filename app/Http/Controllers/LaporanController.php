@@ -263,6 +263,7 @@ class LaporanController extends Controller
             'denda' => '0',
             'status' => 'Sewa',
             'sisa' => abs($request->sisa),
+            'panjar' => abs($request->panjar),
             'status_bayar' => $status_bayar,
             'metode_bayar' => $request->metode_bayar,
             'list_pengiriman' => $request->list_pengiriman,

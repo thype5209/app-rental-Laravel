@@ -24,7 +24,6 @@ const status = defineProps({
     },
     page: Object.toString(),
 });
-console.log(status.sewa)
 const deleteForm = useForm();
 function destroy(id) {
     if (confirm("Are you sure you want to Delete")) {

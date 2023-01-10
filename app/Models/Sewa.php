@@ -11,7 +11,7 @@ class Sewa extends Model
 {
     use HasFactory;
     protected $table = 'sewas';
-    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit','sopir_id', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'harga_bulan', 'pdf_url','sisa', 'total', 'status_bayar', 'list_pengiriman', 'metode_bayar'];
+    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit', 'sopir_id', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'harga_bulan', 'pdf_url', 'sisa', 'panjar', 'total', 'status_bayar', 'list_pengiriman', 'metode_bayar'];
 
     public function waktusewa()
     {
@@ -78,7 +78,7 @@ class Sewa extends Model
         $query->when($date ?? null, function ($query) use ($date) {
             if ($date['min'] == null || $date['max'] == null) {
                 $query->orderBy('id', 'asc')
-                ->where('status','=','selesai');
+                    ->where('status', '=', 'selesai');
             } else {
                 $query->whereHas('waktusewa', function ($query) use ($date) {
                     $query->whereBetween('tgl_kembali', [$date['min'], $date['max']]);
@@ -86,12 +86,13 @@ class Sewa extends Model
             }
         });
     }
-    public function scopeStatusBayar($query, $statusBayar){
-        $query->when($statusBayar ?? null, function($query) use ($statusBayar){
-            if($statusBayar == 'semua'){
+    public function scopeStatusBayar($query, $statusBayar)
+    {
+        $query->when($statusBayar ?? null, function ($query) use ($statusBayar) {
+            if ($statusBayar == 'semua') {
                 $query->orderBy('status_bayar', 'desc');
-            }else{
-                $query->where('status_bayar','=', $statusBayar);
+            } else {
+                $query->where('status_bayar', '=', $statusBayar);
             }
         });
     }
