@@ -20,7 +20,7 @@ const status = defineProps({
     Tab: Object.toString(),
     search: {
         type: String,
-        default: ()=>({}),
+        default: () => ({}),
     },
     page: Object.toString(),
 });
@@ -170,6 +170,28 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
     var total = (parseInt(harga) * lamasewa) + parseInt(denda);
     return Number(total).toLocaleString();
 }
+function statusBayar(value) {
+    var hasil = null;
+    switch (value) {
+        case '1' || 1:
+            hasil = 'Lunas'
+            break;
+        case '2' || 2:
+            hasil = 'Denda'
+            break;
+        case '3' || 3:
+            hasil = 'Belum Lunas'
+            break;
+        case '4' || 4:
+            hasil = 'Menunggak Pembayaran'
+            break;
+
+        default:
+            hasil = 'error'
+            break;
+    }
+    return hasil;
+}
 </script>
 
 
@@ -248,6 +270,7 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
                                 <th class="p-1 text-[0.67rem] whitespace-pre border">Penanggung Jawab</th>
                                 <th class="p-1 text-[0.67rem] whitespace-pre border" v-if="Tab == 'Telat'">Denda</th>
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">Status</th>
+                                <th class="p-1.5 text-xs whitespace-nowrap border text-center">Status Pembayaran</th>
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -260,7 +283,7 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
                                 <td
                                     class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     {{
-                                            mobil.kode
+                                        mobil.kode
                                     }}</td>
                                 <td
                                     class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
@@ -269,7 +292,7 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
                                 </td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
                                     v-if="mobil.pengguna != null">{{
-                                            mobil.pengguna.nama
+                                        mobil.pengguna.nama
                                     }}</td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
                                     v-else>
@@ -277,34 +300,41 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
                                 <td
                                     class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     {{
-                                            mobil.nopol
+                                        mobil.nopol
                                     }}</td>
                                 <td
                                     class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     {{
-                                            mobil.waktusewa.tgl_sewa
+                                        mobil.waktusewa.tgl_sewa
                                     }}</td>
                                 <td
                                     class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     {{ mobil.waktusewa.tgl_kembali }}
                                     <br />
-                                    <span class="text-xs text-red-500">{{ diffDate(mobil.waktusewa.tgl_kembali)
+                                    <span class="text-xs text-red-500">{{
+                                        diffDate(mobil.waktusewa.tgl_kembali)
                                     }}</span>
                                 </td>
                                 <td
                                     class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     {{
-                                            mobil.user.name
+                                        mobil.user.name
                                     }}</td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
                                     v-if="Tab == 'Telat'">Rp. {{
-                                            reduceArray(mobil.denda)
+                                        reduceArray(mobil.denda)
                                     }}</td>
 
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-xs border">
                                     <span @click="isOpen(mobil.id)"
                                         class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">{{
-                                                mobil.status
+                                            mobil.status
+                                        }}</span>
+                                </td>
+                                <td class="md:px-4 md:py-3 px-2 py-2 text-xs border">
+                                    <span
+                                        class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">{{
+                                            statusBayar(mobil.status_bayar)
                                         }}</span>
                                 </td>
                                 <td class="md:px-4 md:py-3 px-2 py-2 text-sm flex">
@@ -371,7 +401,8 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
                                         <option value="3">Belum Lunas</option>
                                         <option value="1" v-if="can.updateselesai">Lunas</option>
                                     </select>
-                                    <p class="text-xs text-gray-500 text-justify">Keterangan: Pemilihan Status Pembayaran</p>
+                                    <p class="text-xs text-gray-500 text-justify">Keterangan: Pemilihan Status
+                                        Pembayaran</p>
                                 </div>
                                 <div>
                                     <InputLabelVue for="email">Pilih Status Sewa</InputLabelVue>

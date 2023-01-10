@@ -77,9 +77,9 @@ const Form = useForm({
     lama_sewa: "2",
     tujuan: "Makassar",
     jaminan: "KTP",
-    panjar: '20000',
-    sisa: '10000',
-    lunas: false,
+    panjar: '',
+    sisa: '',
+    lunas: true,
     metode_bayar: 'Transfer',
     list_pengiriman: null,
     ket_syarat: `<div class="">
@@ -602,8 +602,6 @@ watch(jumlahMobil, value => {
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Total</InputLabel>
-                            <p>{{ arraySum(Form.nilaisewahari) }}</p>
-                            <p>{{ Number(Form.lama_sewa) }}</p>
                             <TextInput id="grid-first-name" type="text" placeholder="0000" readonly required
                                 :value="reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa)" />
                             <p v-if="errors.lunas" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
@@ -722,7 +720,7 @@ watch(jumlahMobil, value => {
                                     }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.status }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
-                                        reduceArray(item.harga, item.waktusewa.lama_sewa)
+                                        reduceArray(item.sisa,1,item.denda)
                                     }} </td>
                                 </tr>
                             </table>

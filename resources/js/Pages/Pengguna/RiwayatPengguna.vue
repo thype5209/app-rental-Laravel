@@ -86,7 +86,7 @@ function statusBayar(value) {
                                     data.pengguna.nik
                                 }}</td>
                             <td
-                                class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
                                 {{
                                     data.pengguna.alamat
                                 }}</td>
@@ -113,14 +113,14 @@ function statusBayar(value) {
                             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">No.</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Kode</th>
-                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">NIK</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">No. Polisi</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Tanggal Sewa</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Tanggal Kembali</th>
-                            <th class="p-1 text-[0.67rem] whitespace-pre border">Penanggung Jawab</th>
+                            <!-- <th class="p-1 text-[0.67rem] whitespace-pre border">Penanggung Jawab</th> -->
                             <th class="p-1 text-[0.67rem] whitespace-pre border">Denda</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Status sewa</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Status Pembayaran</th>
+                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">Sisa Pembayaran</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Total</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Aksi</th>
                         </tr>
@@ -138,18 +138,6 @@ function statusBayar(value) {
                                 {{
                                     sewa.kode
                                 }}</td>
-                            <td
-                                class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
-                                <span v-if="sewa.nik != null">{{ sewa.nik }}</span>
-                                <span v-else>---------</span>
-                            </td>
-                            <td class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
-                                v-if="sewa.sewa != null">{{
-                                    sewa.sewa.nama
-                                }}</td>
-                            <td class=" md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
-                                v-else>
-                                Sopir</td>
                             <td
                                 class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                 {{
@@ -182,6 +170,9 @@ function statusBayar(value) {
                                     class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">{{
                                         statusBayar(sewa.status_bayar)
                                     }}</span>
+                            </td>
+                            <td class=" whitespace-nowrap md:px-4 md:py-3 px-2 py-2 text-xs border">
+                                Rp. {{ reduceArray(sewa.sisa) }}
                             </td>
                             <td class=" whitespace-nowrap md:px-4 md:py-3 px-2 py-2 text-xs border">
                                 Rp. {{ reduceArray(sewa.total) }}

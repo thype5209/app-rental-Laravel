@@ -73,12 +73,13 @@ class SewaController extends Controller
                 ->orderBy('kode', 'desc')
                 ->paginate(10),
             'can' => [
-                'create' => Auth::user()->can('permission create'),
-                'edit' => Auth::user()->can('permission edit'),
-                'delete' => Auth::user()->can('permission delete'),
-                'update' => Auth::user()->can('permission update'),
+                'create' => Auth::user()->can('sewa create'),
+                'edit' => Auth::user()->can('sewa edit'),
+                'delete' => Auth::user()->can('sewa delete'),
+                'update' => Auth::user()->can('sewa update'),
+                'updateselesai' => Auth::user()->can('sewa updateselesai'),
             ],
-            'statusBayar'=> FacadesRequest::input('statusBayar', 'semua')
+            'statusBayar' => FacadesRequest::input('statusBayar', 'semua')
         ]);
     }
 
@@ -132,7 +133,7 @@ class SewaController extends Controller
             'jaminan' => 'string|nullable',
         ]);
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
-            $query->whereIn('status', ['2','3','4']);
+            $query->whereIn('status', ['2', '3', '4']);
         })
             ->where('nik', $request->nik)
             ->get();
@@ -202,7 +203,7 @@ class SewaController extends Controller
     {
         $data = Sewa::find($id);
         $exp = explode(',', $data->nopol);
-        Mobil::whereIn('nopol', $exp)->update(['status'=> '2']);
+        Mobil::whereIn('nopol', $exp)->update(['status' => '2']);
         $data->delete();
     }
     /**
@@ -225,15 +226,15 @@ class SewaController extends Controller
     {
         $nilai = null;
         // dd($array);
-        foreach($array as $item){
+        foreach ($array as $item) {
             $tambah_arr = null;
-            if(strpos($item, ',') !== false){
+            if (strpos($item, ',') !== false) {
                 $hasil = explode(',', $item);
-                for($i= 0; $i < count($hasil); $i++){
+                for ($i = 0; $i < count($hasil); $i++) {
                     $tambah_arr .= $hasil[$i];
                 }
                 $nilai[] = $tambah_arr;
-            }else{
+            } else {
 
                 $nilai[] = $item;
             }
@@ -245,15 +246,15 @@ class SewaController extends Controller
         $nilai = null;
         // dd($array);
         $exp = explode(',', $array);
-        foreach($exp as $item){
+        foreach ($exp as $item) {
             $tambah_arr = null;
-            if(strpos($item, ',') !== false){
+            if (strpos($item, ',') !== false) {
                 $hasil = explode(',', $item);
-                for($i= 0; $i < count($hasil); $i++){
+                for ($i = 0; $i < count($hasil); $i++) {
                     $tambah_arr .= $hasil[$i];
                 }
                 $nilai[] = $tambah_arr;
-            }else{
+            } else {
 
                 $nilai[] = $item;
             }
@@ -284,7 +285,7 @@ class SewaController extends Controller
             $nilai_denda = $total_denda * $diff;
             $sub_total = (intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)) + $item->denda;
             // dd($nilai_denda);
-            $item->update(['denda' => $nilai_denda, 'status' => "Telat", 'total' => $sub_total, 'status_bayar'=> '3']);
+            $item->update(['denda' => $nilai_denda, 'status' => "Telat", 'total' => $sub_total, 'status_bayar' => '3']);
             WaktuSewa::where('sewa_id',  $item->id)->update(['telat' => $diff]);
         }
     }
@@ -322,7 +323,7 @@ class SewaController extends Controller
         Mobil::whereIn('nopol',  $exp)->update([
             'status' => $request->status == 'Selesai' ? '2' : '1',
         ]);
-        return Redirect::back()->with('success', "Status Sewa ". $sewa->kode ." Berhasil Diganti ");
+        return Redirect::back()->with('success', "Status Sewa " . $sewa->kode . " Berhasil Diganti ");
 
         // Synchronously
     }
@@ -343,7 +344,7 @@ class SewaController extends Controller
             'lama_sewa' => $request->lama_sewa,
         ]);
 
-        return Redirect::back()->with('success', "Perpanjang Sewa ". $sewa->kode ." Berhasil Diganti ");
+        return Redirect::back()->with('success', "Perpanjang Sewa " . $sewa->kode . " Berhasil Diganti ");
 
         // Synchronously
     }
@@ -379,7 +380,4 @@ class SewaController extends Controller
             $item->update(['kode' => $kode]);
         }
     }
-
-
-
 }
