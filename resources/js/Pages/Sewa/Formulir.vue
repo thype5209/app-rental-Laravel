@@ -175,8 +175,8 @@ const jumlahMobil = FormPDF.nopol.length;
                     <div>
                         <ul class=" flex flex-col justify-center text-center">
                             <li class="text-orange-500 font-bold">CV. JASA SAUDAGAR</li>
-                            <li class="font-bold text-base">JL. MASJID RAYA No. 72 A Kab. GOWA</li>
-                            <li><span>Tlp( 0411 )8985984, mobile 0811 4145 999</span></li>
+                            <li class="font-bold text-base text-black">JL. MASJID RAYA No. 72 A Kab. GOWA</li>
+                            <li><span class="text-black">Tlp( 0411 )8985984, mobile 0811 4145 999</span></li>
                             <li>
                                 <span>Email : <a class="text-blue-500"
                                         href="mailto:cvjasasaudagar@gmail.com">cvjasasaudagar@gmail.com</a>
@@ -189,8 +189,8 @@ const jumlahMobil = FormPDF.nopol.length;
                 <table class="table w-full bg-white mb-5">
                     <tr class=" p-0 m-0">
                         <td colspan="4" class="text-center flex flex-col justify-center  ">
-                            <span class="text-center font-bold underline">SURAT PERNYATAAN SEWA KENDARAAN</span>
-                            <span class="font-semibold text-center">No: {{ data.kode }}</span>
+                            <span class="text-center font-bold underline text-black">SURAT PERNYATAAN SEWA KENDARAAN</span>
+                            <span class="font-semibold text-black text-center">No: {{ data.kode }}</span>
                         </td>
                     </tr>
 
@@ -318,7 +318,7 @@ const jumlahMobil = FormPDF.nopol.length;
                 </table>
 
                 <!-- Keterangan -->
-                <div class="" v-html="FormPDF.ket_syarat">
+                <div class="text-black" v-html="FormPDF.ket_syarat">
                 </div>
                 <!-- Panjar -->
                 <table class="table ml-10 mt-5 border">
@@ -343,36 +343,36 @@ const jumlahMobil = FormPDF.nopol.length;
                 <!-- TTD -->
                 <table class="table w-full mt-10 ">
                     <tr>
-                        <td colspan="3" class="text-right"> Makassar, {{ today }}</td>
+                        <td colspan="3" class="text-black text-right"> Makassar, {{ today }}</td>
                     </tr>
                     <tr>
-                        <td class="text-center">Direktur CV. JASA SAUDAGAR</td>
+                        <td class="text-black text-center">Direktur CV. JASA SAUDAGAR</td>
 
                         <td>&nbsp;</td>
 
-                        <td class="text-center">YANG MEMBUAT PERNYATAAN</td>
+                        <td class="text-black text-center">YANG MEMBUAT PERNYATAAN</td>
                     </tr>
                     <tr>
-                        <td class="text-center"></td>
+                        <td class="text-black text-center"></td>
 
                         <td>&nbsp;</td>
 
-                        <td class="text-center"></td>
+                        <td class="text-black text-center"></td>
                     </tr>
                     <tr>
-                        <td class="text-center h-10 "><span
+                        <td class="text-black text-center h-10 "><span
                                 class="border-b-2 border-black">(..................................)</span></td>
-                        <td class="text-center h-10 "><span
+                        <td class="text-black text-center h-10 "><span
                                 class="border-b-2 border-black">(..................................)</span></td>
-                        <td class="text-center h-10 "><span
+                        <td class="text-black text-center h-10 "><span
                                 class="border-b-2 border-black">(..................................)</span></td>
                     </tr>
                     <tr>
-                        <td class="text-center">Yang Menyerahkan Kendaraan</td>
+                        <td class="text-black text-center">Yang Menyerahkan Kendaraan</td>
 
-                        <td class="text-center">Saksi</td>
+                        <td class="text-black text-center">Saksi</td>
 
-                        <td class="text-center">Penyewa</td>
+                        <td class="text-black text-center">Penyewa</td>
                     </tr>
                 </table>
             </section>
