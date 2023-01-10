@@ -243,7 +243,7 @@ const jumlahMobil = FormPDF.nopol.length;
                                 class="border-none text-xs p-0 m-0 w-max max-w-max " /> </td>
                     </tr>
                 </table>
-                <p class="w-full text-justify font-bold mb-3">Dengan ini menyatakan bahwa pihak rental menitipkan
+                <p class="w-full text-justify font-bold mb-3 text-black">Dengan ini menyatakan bahwa pihak rental menitipkan
                     kendaraan
                     kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
 
