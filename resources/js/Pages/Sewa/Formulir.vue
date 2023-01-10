@@ -200,46 +200,46 @@ const jumlahMobil = FormPDF.nopol.length;
                 <table class="table w-max sm:w-1/4 md:w-1/3 mb-5 text-left">
 
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.nik"
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">NIK</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik" v-model="FormPDF.nik"
                                 class="border-none text-xs p-0 m-0"></td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">Nama</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nama" v-model="FormPDF.nama"
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">Nama</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nama" v-model="FormPDF.nama"
                                 class="border-none text-xs p-0 m-0 capitalize"></td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">Tempat/Tanggal Lahir</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="tempat_lahir"
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">Tempat/Tanggal Lahir</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="tempat_lahir"
                                 v-model="FormPDF.tempat_lahir" class="border-none text-xs p-0 m-0 w-16 max-w-max ">/
                             <input type="text" name="nik" v-model="FormPDF.tgl_lahir"
                                 class="border-none text-xs p-0 m-0">
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">Pekerjaan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik"
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">Pekerjaan</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik"
                                 v-model="FormPDF.pekerjaan" class="border-none text-xs p-0 m-0 w-max max-w-max "></td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">Alamat</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.alamat"
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">Alamat</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik" v-model="FormPDF.alamat"
                                 class="border-none text-xs p-0 m-0 w-max max-w-max "></td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">No. HP</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.no_hp"
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">No. HP</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik" v-model="FormPDF.no_hp"
                                 class="border-none text-xs p-0 m-0 w-max max-w-max "> </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">No. HP Kerabat Lain</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik"
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">No. HP Kerabat Lain</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik"
                                 v-model="FormPDF.no_hp_lain" class="border-none text-xs p-0 m-0 w-max max-w-max "> </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">Sosial Media</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">: <input type="text" name="nik" v-model="FormPDF.sosial"
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">Sosial Media</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik" v-model="FormPDF.sosial"
                                 class="border-none text-xs p-0 m-0 w-max max-w-max " /> </td>
                     </tr>
                 </table>
@@ -250,27 +250,27 @@ const jumlahMobil = FormPDF.nopol.length;
                 <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify "
                     v-for="(item, index) in jumlahMobil" :key="item" :index="index">
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0">
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Jenis Kendaraan</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">
                             <span class="font-bold">:</span> {{ FormPDF.unit[index] }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">No. Polisi</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">No. Polisi</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black"><span class="font-bold">:</span> {{
                             FormPDF.nopol[index]
                         }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tahun</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Tahun</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black"><span class="font-bold">:</span> {{
                             FormPDF.tahun[index]
                         }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Nilai Sewa</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Nilai Sewa</td>
                         <td>
                             <ul class="list-none flex flex-row gap-4">
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{
@@ -286,33 +286,33 @@ const jumlahMobil = FormPDF.nopol.length;
                 </table>
                 <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tanggal/Jam Sewa</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Tanggal/Jam Sewa</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black"><span class="font-bold">:</span> {{
                             FormPDF.tgl_sewa
                         }}/{{ FormPDF.jam_sewa }} WITA
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tanggal/Jam Kembali</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Tanggal/Jam Kembali</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black"><span class="font-bold">:</span> {{
                             FormPDF.tgl_kembali
                         }}/{{ FormPDF.jam_kembali }} WITA
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jumlah Hari</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.lama_sewa }}
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Jumlah Hari</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black"><span class="font-bold">:</span> {{ FormPDF.lama_sewa }}
                             Hari
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tujuan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.tujuan }}
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Tujuan</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black "><span class="font-bold">:</span> {{ FormPDF.tujuan }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jaminan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 "><span class="font-bold">:</span> {{ FormPDF.jaminan }}
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Jaminan</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black "><span class="font-bold">:</span> {{ FormPDF.jaminan }}
                         </td>
                     </tr>
                 </table>

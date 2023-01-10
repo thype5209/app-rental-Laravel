@@ -47,7 +47,7 @@
                 <tr>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap">
-                        Penyewa</td>
+                        Penyewa/NIK</td>
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
                         v-if="sewa.pengguna != null">{{ sewa.pengguna.nama }}/{{ sewa.nik }}</td>
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
@@ -63,9 +63,9 @@
                 <tr v-if="sewa.pengguna != null">
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap">
-                        Nomor HP Penyewa</td>
+                        Nomor HP Penyewa/Kerabat</td>
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
-                        v-if="sewa.pengguna != null">{{ sewa.pengguna.no_hp }}/{{ sewa.pengguna.no_hp_lain }} </td>
+                        v-if="sewa.pengguna != null">{{ sewa.pengguna.no_hp }} / {{ sewa.pengguna.no_hp_lain }} </td>
                 </tr>
                 <tr>
                     <td

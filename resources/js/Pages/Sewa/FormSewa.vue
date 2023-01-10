@@ -599,14 +599,14 @@ const syaratKet = ref(``);
 
                     <div class="-mx-3 mb-6 px-3">
 
-                        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Pilih Jumlah Pembayaran</h3>
+                        <h3 class="mb-4 font-semibold text-gray-900 ">Pilih Jumlah Pembayaran</h3>
                         <ul
-                            class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 ">
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div class="flex items-center pl-3">
                                     <input id="horizontal-list-radio-license" type="radio" v-model="BayarLunas"
                                         value="1" name="bayarlunas"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
                                     <label for="horizontal-list-radio-license"
                                         class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Lunas
                                     </label>
@@ -616,7 +616,7 @@ const syaratKet = ref(``);
                                 <div class="flex items-center pl-3">
                                     <input id="horizontal-list-radio-id" type="radio" v-model="BayarLunas" value="3"
                                         name="bayarlunas"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
                                     <label for="horizontal-list-radio-id"
                                         class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Belum
                                         Lunas</label>
@@ -654,14 +654,14 @@ const syaratKet = ref(``);
                     </div>
                     <div class="mb-5">
 
-                        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Metode Pembayaran</h3>
+                        <h3 class="mb-4 font-semibold text-gray-900 ">Metode Pembayaran</h3>
                         <ul
-                            class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 ">
                             <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div class="flex items-center pl-3">
                                     <input id="horizontal-list-radio-license" type="radio" v-model="Form.metode_bayar"
                                         chec value="Transfer" name="list-radio"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
                                     <label for="horizontal-list-radio-license"
                                         class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Transfer</label>
                                 </div>
@@ -670,7 +670,7 @@ const syaratKet = ref(``);
                                 <div class="flex items-center pl-3">
                                     <input id="horizontal-list-radio-id" type="radio" v-model="Form.metode_bayar"
                                         value="Cash" name="list-radio"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
                                     <label for="horizontal-list-radio-id"
                                         class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cash</label>
                                 </div>
@@ -680,7 +680,7 @@ const syaratKet = ref(``);
                     </div>
                     <div class="mb-5">
 
-                        <p class=" font-semibold text-gray-900 dark:text-white text-sm lowercase">Isi Kolom Input
+                        <p class=" font-semibold text-gray-900  text-sm lowercase">Isi Kolom Input
                             Dibawah Dengan Detail Pengiriman Mobil Apakah Diambil Ditempat Atau Dikirim Ke Penyewa</p>
                         <TextInput type="text" v-model="Form.list_pengiriman"
                             placeholder="Isikan Keterangan Pengambilan" required />
