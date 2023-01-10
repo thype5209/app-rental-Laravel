@@ -1,8 +1,9 @@
 <script setup>
 import AuthenticatedLayoutVue from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, usePage, useForm } from '@inertiajs/inertia-vue3';
-import { defineProps, computed } from 'vue';
+import { defineProps, computed, onMounted, ref } from 'vue';
 import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
+import TextInputVue from '@/Components/TextInput.vue';
 
 const data = defineProps({
     formulir: {
@@ -17,9 +18,47 @@ const data = defineProps({
 
 })
 
+function getPhoto() {
+    var base64 = localStorage.getItem('image');
+    var base64Parts = base64.split(",");
+    var fileFormat = base64Parts[0].match(/:(.*?);/)[1];
+    var typeFile = fileFormat.split('/');
+    var fileContent = base64Parts[1];
+    console.log(base64Parts)
+
+    var file = new File([fileContent], "image.png", { type: fileFormat });
+    return file;
+}
+function dataURLtoFile(dataurl, filename) {
+
+    var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+}
+const file = ref(null);
+const fileReader = new FileReader();
+onMounted(() => {
+    if (window.localStorage.getItem('image')) {
+        try {
+            file.value = dataURLtoFile(window.localStorage.getItem('image'), 'image.png')
+
+        } catch (e) {
+            //
+        }
+    }
+    console.log(file)
+})
 const FormPDF = useForm({
     jenis_sewa: data.formulir.jenis_sewa,
-    foto_ktp: data.formulir.foto_ktp,
+    foto_ktp: file,
     sopir_id: data.formulir.sopir_id,
     mobil_id: data.formulir.mobil_id,
     nik: data.formulir.nik,
@@ -113,16 +152,19 @@ function cetakDanSave() {
     });
 }
 const jumlahMobil = FormPDF.nopol.length;
-console.log(jumlahMobil)
 </script>
 
 <template>
+
+    <Head title="Formulir Sewa Mobil" />
     <AuthenticatedLayoutVue class="bg-gray-200">
 
-        <Head title="Formulir Sewa Mobil" />
         <PrimaryButtonVue>
             <Link :href="route('Sewa.create')" :data="{ FormPDF }">Kembali</Link>
         </PrimaryButtonVue>
+
+        <TextInputVue type="text" v-model="file"></TextInputVue>
+
         <form @submit.prevent="cetakDanSave()"
             class="bg-gray-200 container mx-auto md:px-10 flex flex-col justify-center items-center">
             <section class=" md:w-[70%] py-5 px-3 bg-white sm:px-10 md:px-20">
@@ -207,7 +249,8 @@ console.log(jumlahMobil)
                     kendaraan
                     kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
 
-                <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify " v-for="(item,index) in jumlahMobil" :key="item" :index="index">
+                <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify "
+                    v-for="(item, index) in jumlahMobil" :key="item" :index="index">
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Jenis Kendaraan</td>
                         <td class=" whitespace-nowrap mb-0 p-0">
@@ -216,12 +259,16 @@ console.log(jumlahMobil)
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">No. Polisi</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.nopol[index] }}
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{
+                            FormPDF.nopol[index]
+                        }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tahun</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tahun[index] }}
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{
+                            FormPDF.tahun[index]
+                        }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
@@ -242,12 +289,16 @@ console.log(jumlahMobil)
                 <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tanggal/Jam Sewa</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tgl_sewa }}/{{ FormPDF.jam_sewa }} WITA
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{
+                            FormPDF.tgl_sewa
+                        }}/{{ FormPDF.jam_sewa }} WITA
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 font-bold">Tanggal/Jam Kembali</td>
-                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{ FormPDF.tgl_kembali }}/{{ FormPDF.jam_kembali }} WITA
+                        <td class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> {{
+                            FormPDF.tgl_kembali
+                        }}/{{ FormPDF.jam_kembali }} WITA
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
@@ -282,12 +333,12 @@ console.log(jumlahMobil)
                         <td class="border border-black"> {{ FormPDF.panjar }} </td>
                         <td class="border border-black"> {{ FormPDF.sisa }}</td>
                         <td class="border border-black">
-                            <svg v-if="FormPDF.lunas == 'true'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <svg v-if="FormPDF.lunas == 'true'" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                             </svg>
-                            <svg v-else-if="FormPDF.lunas == 'false'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <svg v-else-if="FormPDF.lunas == 'false'" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </td>

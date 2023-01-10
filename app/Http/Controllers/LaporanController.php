@@ -68,6 +68,7 @@ class LaporanController extends Controller
      */
     public function saveSewa(Request $request)
     {
+        // dd($request->all());
 
         // CekMobil
         $mobil = Sewa::where('nopol', $request->nopol)->whereIn('status', ['Sewa', 'Telat'])->get();
@@ -202,7 +203,6 @@ class LaporanController extends Controller
      */
     public function createPengguna($request)
     {
-        // dd($request->all());
         $pengguna = Pengguna::where('nik', $request->nik)->get();
         $nama_ktp = null;
         if ($request->file('foto_ktp') != null) {

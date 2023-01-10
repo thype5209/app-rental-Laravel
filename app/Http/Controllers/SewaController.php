@@ -41,12 +41,12 @@ class SewaController extends Controller
                         $query->orWhere('status', $status);
                         $query->orderBy('status', 'desc');
                     } elseif ($status == 'semua') {
-                        $query->orderBy('kode', 'desc');
+                        $query->orderBy('id', 'desc');
                     }
                 })
                 ->filter(FacadesRequest::only('search'))
                 ->where('status', '!=', 'Selesai')
-                ->orderBy('kode', 'desc')
+                ->orderBy('id', 'desc')
                 ->paginate(20) ?? null,
             'can' => [
                 'create' => Auth::user()->can('sewa create'),
@@ -145,6 +145,7 @@ class SewaController extends Controller
             return Redirect::route('Sewa.index')->with('error', 'Tunggakan Pembayaran Belum Lunas');
         }
         $dat = $request->all();
+        // dd($dat);
         return Inertia::render('Sewa/Formulir', [
             'formulir' => $dat,
             'kode' => $this->kodeSewa(),

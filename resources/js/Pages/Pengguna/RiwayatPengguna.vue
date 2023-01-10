@@ -3,8 +3,13 @@ import AuthenticatedLayoutVue from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { defineProps } from 'vue';
 import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
+import Pengguna from './Pengguna.vue';
 const data = defineProps({
     riwayat: {
+        type: Object,
+        default: () => ({})
+    },
+    pengguna: {
         type: Object,
         default: () => ({})
     }
@@ -15,8 +20,30 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
     var total = (parseInt(harga) * lamasewa) + parseInt(denda);
     return Number(total).toLocaleString();
 }
-function back(){
+function back() {
     window.history.back()
+}
+function statusBayar(value) {
+    var msg = null;
+    switch (value) {
+        case '1':
+            msg = 'Lunas';
+            break;
+        case '2':
+            msg = 'Denda';
+            break;
+        case '3':
+            msg = 'Belum Lunas';
+            break;
+        case '4':
+            msg = 'Tunggak';
+            break;
+
+        default:
+            msg = 'error';
+            break;
+    }
+    return msg;
 }
 </script>
 
@@ -29,7 +56,57 @@ function back(){
                 <PrimaryButtonVue class="bg-default-red" @click="back">Kembali</PrimaryButtonVue>
                 <PrimaryButtonVue> Data Pengguna = {{ data.riwayat.nama }}</PrimaryButtonVue>
             </div>
+            <div class="sm:px-10">
+                <table class="table w-full mb-5">
+                    <thead>
+                        <tr
+                            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
+                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">Foto KTP</th>
+                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">Nama.</th>
+                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">NIK</th>
+                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">Alamat</th>
+                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">No HP</th>
+                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">No HP Kerabat</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                        <tr class="text-gray-700 dark:text-gray-400">
+                            <td
+                                class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                <img :src="`/storage/FotoKTP/${data.pengguna.foto_ktp}`" alt="" class="w-52">
+                            </td>
+                            <td
+                                class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                {{
+                                    data.pengguna.nama
+                                }}</td>
+                            <td
+                                class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                {{
+                                    data.pengguna.nik
+                                }}</td>
+                            <td
+                                class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                {{
+                                    data.pengguna.alamat
+                                }}</td>
+                            <td
+                                class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                {{
+                                    data.pengguna.no_hp
+                                }}</td>
+                            <td
+                                class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
+                                {{
+                                    data.pengguna.no_hp_lain
+                                }}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="w-full overflow-x-auto">
+                <h1 class="text-center font-semibold">Riwayat Penyewa</h1>
                 <table class="w-full whitespace-no-wrap">
                     <thead>
                         <tr
@@ -42,7 +119,8 @@ function back(){
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Tanggal Kembali</th>
                             <th class="p-1 text-[0.67rem] whitespace-pre border">Penanggung Jawab</th>
                             <th class="p-1 text-[0.67rem] whitespace-pre border">Denda</th>
-                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">Status</th>
+                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">Status sewa</th>
+                            <th class="p-1.5 text-xs whitespace-nowrap border text-center">Status Pembayaran</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Total</th>
                             <th class="p-1.5 text-xs whitespace-nowrap border text-center">Aksi</th>
                         </tr>
@@ -53,12 +131,12 @@ function back(){
                             <td
                                 class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                 {{ index
-                                        + 1
+                                + 1
                                 }}</td>
                             <td
                                 class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                 {{
-                                        sewa.kode
+                                    sewa.kode
                                 }}</td>
                             <td
                                 class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
@@ -67,7 +145,7 @@ function back(){
                             </td>
                             <td class="  md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
                                 v-if="sewa.sewa != null">{{
-                                        sewa.sewa.nama
+                                    sewa.sewa.nama
                                 }}</td>
                             <td class=" md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
                                 v-else>
@@ -75,12 +153,12 @@ function back(){
                             <td
                                 class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                 {{
-                                        sewa.nopol
+                                    sewa.nopol
                                 }}</td>
                             <td
                                 class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                 {{
-                                        sewa.waktusewa.tgl_sewa
+                                    sewa.waktusewa.tgl_sewa
                                 }}</td>
                             <td
                                 class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
@@ -90,13 +168,19 @@ function back(){
                             <td
                                 class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                 Rp. {{
-                                        Number(sewa.denda).toLocaleString()
+                                    Number(sewa.denda).toLocaleString()
                                 }}</td>
 
                             <td class=" whitespace-nowrap md:px-4 md:py-3 px-2 py-2 text-xs border">
                                 <span
                                     class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">{{
-                                            sewa.status
+                                        sewa.status
+                                    }}</span>
+                            </td>
+                            <td class=" whitespace-nowrap md:px-4 md:py-3 px-2 py-2 text-xs border">
+                                <span
+                                    class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">{{
+                                        statusBayar(sewa.status_bayar)
                                     }}</span>
                             </td>
                             <td class=" whitespace-nowrap md:px-4 md:py-3 px-2 py-2 text-xs border">

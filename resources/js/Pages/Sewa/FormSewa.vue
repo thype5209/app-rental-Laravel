@@ -50,7 +50,7 @@ const props = defineProps({
 //     dataInputSewa.lunas = DataKembali.lunas;
 // }
 
-
+const FOTOKTP = ref(null);
 const Form = useForm({
     jenis_sewa: 'Lepas',
     foto_ktp: null,
@@ -138,23 +138,38 @@ function GetMobil(event) {
 
 // Kirim Data
 function submit() {
-    Form.get(route("Sewa.formulir"),{
-        onError: (error)=> console.log(error),
-        preserveState:true,
+    Form.get(route("Sewa.formulir", { ktp: FOTOKTP }), {
+        onError: (error) => console.log(error),
+        preserveState: true,
     });
 }
 
-function returnslide(){
+// Cek Foto KTP
+watch(FOTOKTP, value => {
+    const reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+        // convert image file to base64 string and save to localStorage
+        localStorage.setItem("image", reader.result);
+    }, false);
+
+    if (value != null) {
+        reader.readAsDataURL(value);
+    }
+    console.log(value)
+})
+
+function returnslide() {
     console.log(Form)
-    if( slideMobil.value == 1 && Form.nik != null && Form.nama != null){
+    if (slideMobil.value == 1 && Form.nik != null && Form.nama != null) {
         slideMobil.value = 2;
     }
-    if(jumlahMobil.value == 2 || Form.unit.length > 0 ){
-        slideMobil.value++;
+    if (jumlahMobil.value == 2 || Form.unit.length > 0) {
+        slideMobil.value +=1;
     }
-    if(jumlahMobil.value == 3 || Form.unit.length > 0 ){
+    if (jumlahMobil.value == 3 || Form.unit.length > 0) {
         slideMobil.value = 4;
-    }else{
+    } else {
         console.log('err')
     }
 }
@@ -312,7 +327,7 @@ watch(jumlahMobil, value => {
 
         <!-- component -->
         <ModalVue :show="true" :maxWidth="`5xl`">
-            <form @submit.prevent="submit" >
+            <form @submit.prevent="submit">
 
                 <!-- Slide Tambah Penyewa -->
                 <div class="flex flex-col">
@@ -327,10 +342,10 @@ watch(jumlahMobil, value => {
                         </Link>
                     </div>
                     <nav class="flex justify-center gap-4 pb-5 py-5">
-                        <PrimaryButtonVue @click="Form.jenis_sewa = 'Lepas'"
+                        <PrimaryButtonVue @click="Form.jenis_sewa = 'Lepas'" type="button"
                             v-bind:class="Form.jenis_sewa == 'Lepas' ? TabActive : TabNonActive">Lepas Kunci
                         </PrimaryButtonVue>
-                        <PrimaryButtonVue @click="Form.jenis_sewa = 'Kunci'"
+                        <PrimaryButtonVue @click="Form.jenis_sewa = 'Kunci'" type="button"
                             v-bind:class="Form.jenis_sewa == 'Kunci' ? TabActive : TabNonActive">Dengan Driver
                         </PrimaryButtonVue>
                     </nav>
@@ -355,7 +370,7 @@ watch(jumlahMobil, value => {
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Foto KTP Penyewa </InputLabel>
-                            <TextInput id="grid-first-name" type="file" @input="Form.foto_ktp = $event.target.files[0]"
+                            <TextInput id="grid-first-name" type="file" @input="FOTOKTP = $event.target.files[0]"
                                 placeholder="Masukkan NIK" class="max-w-md" />
                             <p class="text-red text-xs italic text-gray-500">Ket: dapat dikosongkan</p>
                         </div>
@@ -528,11 +543,11 @@ watch(jumlahMobil, value => {
                         </div>
                     </div>
                     <div class="flex justify-around">
-                        <PrimaryButtonVue type="submit" @click="slideMobil--"
+                        <PrimaryButtonVue type="button" @click="slideMobil--"
                             class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300">Sebelumnya
                         </PrimaryButtonVue>
                         <PrimaryButtonVue type="button"
-                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="returnslide">
+                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="slideMobil++">
                             Selanjutnya</PrimaryButtonVue>
                     </div>
                 </div>
@@ -621,7 +636,7 @@ watch(jumlahMobil, value => {
                         <PrimaryButtonVue type="button" @click="slideMobil--"
                             class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300">Sebelumnya
                         </PrimaryButtonVue>
-                        <PrimaryButtonVue type="submit"
+                        <PrimaryButtonVue type="button"
                             class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="returnslide">
                             Lanjutkan</PrimaryButtonVue>
 

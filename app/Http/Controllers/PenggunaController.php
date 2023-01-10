@@ -91,9 +91,10 @@ class PenggunaController extends Controller
      */
     public function show(Pengguna $pengguna,$id)
     {
-
+// dd(Pengguna::find($id));
         return Inertia::render('Pengguna/RiwayatPengguna', [
             'riwayat'=> $pengguna->with(['sewa', 'sewa.waktusewa'])->find($id),
+            'pengguna'=> Pengguna::find($id),
         ]);
     }
 
