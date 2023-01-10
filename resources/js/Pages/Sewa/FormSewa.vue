@@ -326,7 +326,17 @@ watch(jumlahPanjar, value => {
     var total = reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa);
     var sisa = total.split(',');
     var harga = sisa.reduce((el, b) => el + b);
-    Form.sisa = harga - value;
+    const stringValue = value.toLocaleString();
+    console.log(stringValue)
+    var totalvalue= reduceArray(stringValue)
+    if (stringValue.indexOf(',') > -1) {
+        var sisa = stringValue.split(',');
+        totalvalue = sisa.reduce((el, b) => Number(el) + '' + Number(b));
+
+    } else {
+        totalvalue = value;
+    }
+    Form.sisa = harga - Number(totalvalue);
     Form.panjar = value;
 })
 
@@ -693,7 +703,7 @@ const syaratKet = ref(``);
                 </div>
                 <div class="bg-gray-200 shadow-md rounded md:px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == 4">
                     <ckeditor :editor="editor" v-model="Form.ket_syarat" :config="editorConfig"></ckeditor>
-                    <div v-html="Form.ket_syarat"></div>
+                    <!-- <div v-html="Form.ket_syarat"></div> -->
 
                     <div class="flex justify-around">
                         <PrimaryButtonVue type="button" @click="slideMobil--"

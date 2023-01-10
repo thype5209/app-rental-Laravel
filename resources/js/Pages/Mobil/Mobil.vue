@@ -38,12 +38,14 @@ var ModalShow = ref(false);
 var StatusForm = useForm({
     status: null,
     mobilid: null,
+    kode: null,
 })
 function isOpen(dataID) {
     var data = props.mobil.data.find(function ({ id }) {
         return id == dataID
     });
     StatusForm.status = data.status;
+    StatusForm.kode = data.unit;
     StatusForm.mobilid = data.id;
     ModalShow.value = true;
 
@@ -118,8 +120,8 @@ function   Status(n) {
                         <span class="sr-only">Close modal</span>
                     </button>
                     <div class="px-6 py-6 lg:px-8">
-                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Update Status Mobil
-                            {{ StatusForm.mobilid }}</h3>
+                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Update Status Unit
+                            {{ StatusForm.kode }}</h3>
                         <form class="space-y-6" @submit.prevent="submitStatus">
                             <div>
                                 <InputLabelVue for="email">Pilih Status Unit</InputLabelVue>
