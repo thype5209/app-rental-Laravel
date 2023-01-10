@@ -246,10 +246,7 @@ class LaporanController extends Controller
      */
     public function sewaCreate($request, $kode, $pdf_url)
     {
-        $status_bayar = '3';
-        if ($request->sisa == null) {
-            $status_bayar = '1';
-        }
+        $status_bayar = $request->lunas;
         $sewa = Sewa::create([
             'jenis_sewa' => $request->jenis_sewa,
             'kode' => $kode,

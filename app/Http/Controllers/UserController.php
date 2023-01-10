@@ -28,7 +28,11 @@ class UserController extends Controller
 
     public function Dashboard(){
         $carbon = Carbon::now()->format('m');
+        $tgl_bsok = Carbon::now()->addDay('+1')->format('Y-m-d');
         $sewa = Sewa::whereMonth('created_at', $carbon)->get();
+        $sewa_telat = Sewa::with(['waktusewa','pengguna','sopir'])->whereHas('waktusewa', function($query)use($tgl_bsok){
+            $query->whereDate('tgl_kembali', $tgl_bsok);
+        })->get();
         return Inertia::render('Dashboard',[
             'penyewa'=> $sewa->count(),
             'totalPendapatan'=> Sewa::where('status','=','Selesai')->sum('total'),
@@ -36,6 +40,7 @@ class UserController extends Controller
             'SewaTelat'=> Sewa::where('status', '=', 'Telat')->get(),
             'mobil'=> Mobil::paginate(10),
             'sewaTerbaru'=> Sewa::with(['pengguna','waktusewa'])->orderBy('id', 'desc')->where('status', '=', 'Sewa')->paginate(5),
+            'sewatelat'=> $sewa_telat,
         ]);
     }
     public function index()

@@ -79,7 +79,7 @@ const Form = useForm({
     jaminan: "KTP",
     panjar: '20000',
     sisa: '10000',
-    lunas: false,
+    lunas: '',
     metode_bayar: 'Transfer',
     list_pengiriman: null,
     ket_syarat: `<div class="">
@@ -265,29 +265,27 @@ function reduceArray(array, lamasewa = 0) {
     var harga = null;
     if (arrayToString.indexOf(',') > -1) {
         var sisa = array.split(',');
-        var harga = sisa.reduce((el, b) => Number(el) +''+ Number(b));
-        console.log('sisa = '+ sisa);
-        console.log('harga = '+ harga);
+        var harga = sisa.reduce((el, b) => Number(el) + '' + Number(b));
+
     } else {
-        harga = array
-        console.log('harga = '+ harga);
+        harga = array;
     }
     var total = (parseInt(harga) * lamasewa);
-    console.log(total)
+
     return Number(total).toLocaleString();
 }
 function arraySum(array = []) {
     var hasil = null;
     if (array.length > 1) {
-      hasil =  array.reduce((a, b) => {
+        hasil = array.reduce((a, b) => {
             var asisa = a.split(',');
             var aharga = asisa.reduce((el, b) => el + b);
             var bsisa = b.split(',');
             var bharga = bsisa.reduce((el, b) => el + b);
             return Number(Number(aharga) + Number(bharga));
         });
-    }else{
-        hasil = array.reduce((a,b)=> { a+ b});
+    } else {
+        hasil = array.reduce((a, b) => { a + b });
     }
     return hasil;
 }
@@ -296,27 +294,17 @@ function arraySum(array = []) {
 const slideMobil = ref(1);
 const slidebayar = ref(false);
 const jumlahPanjar = ref(0);
-function funSlideMobil() {
-    if (Form.nik != null && Form.nama && Form.alamat && Form.tempat_lahir != null && Form.tgl_lahir != null && Form.no_hp != null && Form.no_hp_lain != null) {
-        slideMobil.value = true;
+const BayarLunas = ref(1);
+watch(BayarLunas, value=>{
+    if(value === 1 || value == '1' ){
+        jumlahPanjar.value = 0;
+        Form.sisa = 0;
+        Form.lunas = value;
+        console.log(value);
+    }else{
+        console.log('err')
     }
-}
-function funSlideBayar() {
-    slidebayar.value = true;
-    slideMobil.value = false;
-    // if (Form.mobil_id != null && Form.nilaisewahari && Form.nilaisewabulan && Form.unit != null && Form.nopol != null && Form.tahun != null && Form.tgl_sewa != null && Form.tgl_kembali != null && Form.tujuan != null && Form.jaminan != null) {
-    // }
-}
-function cancelMObil() {
-    slideMobil.value = false;
-}
-function cancelBayar() {
-    slidebayar.value = false
-}
-function lunasfunc() {
-    Form.lunas = !Form.lunas;
-}
-
+})
 watch(jumlahPanjar, value => {
     var total = reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa);
     var sisa = total.split(',');
@@ -456,25 +444,27 @@ watch(jumlahMobil, value => {
                             <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sosial" />
                         </div>
                     </div>
-                    <div class="-mx-3 md:flex mb-6 items-center" v-if="Form.jenis_sewa == 'Kunci'" >
-                        <div class="w-full px-3" >
+                    <div class="-mx-3 md:flex mb-6 items-center" v-if="Form.jenis_sewa == 'Kunci'">
+                        <div class="w-full px-3">
                             <div v-for="jml in jmlSopir">
                                 <InputLabel
-                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                for="grid-first-name">Nama Supir</InputLabel>
-                            <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                id="mobil_id" for="grid-first-name" @change="SelectSopir($event)"
-                                v-model="Form.sopir_id">
-                                <option value="">---</option>
-                                <option v-for="sopir in props.sopir" :key="sopir.id" :value="sopir.id">
-                                    Nama= {{ sopir.nama }} | Nik= {{ sopir.nik }} | No.HP= {{ sopir.no_hp }}
-                                </option>
-                            </SelectVUe>
-                            <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                                    class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                    for="grid-first-name">Nama Supir</InputLabel>
+                                <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                    id="mobil_id" for="grid-first-name" @change="SelectSopir($event)"
+                                    v-model="Form.sopir_id">
+                                    <option value="">---</option>
+                                    <option v-for="sopir in props.sopir" :key="sopir.id" :value="sopir.id">
+                                        Nama= {{ sopir.nama }} | Nik= {{ sopir.nik }} | No.HP= {{ sopir.no_hp }}
+                                    </option>
+                                </SelectVUe>
+                                <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                             </div>
                         </div>
-                        <PrimaryButtonVue type="button" v-if="jmlSopir > 1" class="bg-red-500 text-lg hover:bg-red-600" @click="jmlSopir--">X</PrimaryButtonVue>
-                        <PrimaryButtonVue type="button"  class="bg-default-dark text-lg hover:bg-default-dark" @click="jmlSopir++">+</PrimaryButtonVue>
+                        <PrimaryButtonVue type="button" v-if="jmlSopir > 1" class="bg-red-500 text-lg hover:bg-red-600"
+                            @click="jmlSopir--">X</PrimaryButtonVue>
+                        <PrimaryButtonVue type="button" class="bg-default-dark text-lg hover:bg-default-dark"
+                            @click="jmlSopir++">+</PrimaryButtonVue>
                     </div>
                     <div class="mx-auto mb-3">
                         <PrimaryButtonVue type="button" class="bg-default-blue hover:bg-blue-600" @click="returnslide">
@@ -577,14 +567,31 @@ watch(jumlahMobil, value => {
                 <div class="bg-gray-200 shadow-md rounded px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == 3">
                     <!-- Pembayran Sewa -->
 
-                    <div class="-mx-3 sm:flex mb-6 px-3">
-                        <InputLabel class=" text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                            for="grid-last-name">Lunas</InputLabel>
-                        <TextInput class="w-max ml-3" type="checkbox" id="checkbox" placeholder="Jumlah Panjar"
-                            @click="lunasfunc" />
-                        <p class="text-red text-xs italic text-gray-500 ml-4">
-                            Jika Pembayaran Telah Lunas Mohon Di Centang
-                        </p>
+                    <div class="-mx-3 mb-6 px-3">
+
+                        <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Pilih Jumlah Pembayaran</h3>
+                        <ul
+                            class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="horizontal-list-radio-license" type="radio" v-model="BayarLunas" value="1" name="bayarlunas"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="horizontal-list-radio-license"
+                                        class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Lunas
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input id="horizontal-list-radio-id" type="radio" v-model="BayarLunas" value="3" name="bayarlunas"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="horizontal-list-radio-id"
+                                        class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Belum
+                                        Lunas</label>
+                                </div>
+                            </li>
+                        </ul>
+
                     </div>
                     <div class="-mx-3 sm:flex mb-6">
                         <div class="sm:w-1/3 px-3">
@@ -725,7 +732,7 @@ watch(jumlahMobil, value => {
                                     }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.status }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
-                                        reduceArray(item.sisa,1,item.denda)
+                                        reduceArray(item.sisa, 1, item.denda)
                                     }} </td>
                                 </tr>
                             </table>

@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head,Link } from '@inertiajs/inertia-vue3';
+import { Head, Link } from '@inertiajs/inertia-vue3';
 import { defineProps, ref, watch } from 'vue';
 
 const data = defineProps({
@@ -13,6 +13,10 @@ const data = defineProps({
         default: () => ({})
     },
     sewaTerbaru: Object,
+    sewatelat: {
+        type: Object,
+        default: () => ({}),
+    }
 })
 function mapArray() {
     let nilaiMap = data.mobil.data;
@@ -125,7 +129,7 @@ let forDate = parseDateNow();
         <div class="grid grid-cols-1 lg:grid-cols-2 p-4 gap-4">
 
             <!-- Social Traffic -->
-            <div
+            <!-- <div
                 class="relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
                 <div class="rounded-t mb-0 px-0 border-0">
                     <div class="flex flex-wrap items-center px-4 py-2">
@@ -168,7 +172,7 @@ let forDate = parseDateNow();
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- ./Social Traffic -->
 
             <!-- Recent Activities -->
@@ -182,7 +186,8 @@ let forDate = parseDateNow();
                         </div>
                         <div class="relative w-full max-w-full flex-grow flex-1 text-right">
                             <Link :href="route('Sewa.index')"
-                                class="bg-default-dark dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Lihat Semua</Link>
+                                class="bg-default-dark dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                            Lihat Semua</Link>
                         </div>
                     </div>
                     <div class="block w-full">
@@ -204,20 +209,21 @@ let forDate = parseDateNow();
                                     <div class="flex-grow flex justify-between items-center">
                                         <div class="self-center">
                                             <a class="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
-                                                href="#0" style="outline: none;">{{dateNow.kode}}</a> ,Penyewa <a
+                                                href="#0" style="outline: none;">{{ dateNow.kode }}</a> ,Penyewa <a
                                                 class="font-medium text-gray-800 dark:text-gray-50 dark:hover:text-gray-100"
-                                                href="#0" style="outline: none;">{{dateNow.pengguna.nama}}</a>
+                                                href="#0" style="outline: none;">{{ dateNow.pengguna.nama }}</a>
                                         </div>
                                         <div class="flex-shrink-0 ml-2">
-                                            <Link class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
-                                                :href="route('Sewa.show', {id:dateNow.id})" style="outline: none;">
-                                                View<span><svg width="20" height="20" viewBox="0 0 20 20"
-                                                        fill="currentColor"
-                                                        class="transform transition-transform duration-500 ease-in-out">
-                                                        <path fill-rule="evenodd"
-                                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                            clip-rule="evenodd"></path>
-                                                    </svg></span>
+                                            <Link
+                                                class="flex items-center font-medium text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500"
+                                                :href="route('Sewa.show', { id: dateNow.id })" style="outline: none;">
+                                            View<span><svg width="20" height="20" viewBox="0 0 20 20"
+                                                    fill="currentColor"
+                                                    class="transform transition-transform duration-500 ease-in-out">
+                                                    <path fill-rule="evenodd"
+                                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg></span>
                                             </Link>
                                         </div>
                                     </div>
@@ -242,7 +248,7 @@ let forDate = parseDateNow();
                                     <div class="flex-grow flex justify-between items-center">
                                         <div class="self-center">
                                             <a class="font-medium text-gray-800 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
-                                                href="#0" style="outline: none;">{{sewadate.kode}}</a> ,Penyewa
+                                                href="#0" style="outline: none;">{{ sewadate.kode }}</a> ,Penyewa
                                             to <a
                                                 class="font-medium text-gray-800 dark:text-gray-50 dark:hover:text-gray-100"
                                                 href="#0" style="outline: none;">{{ sewadate.pengguna.nama }}</a>
@@ -273,10 +279,9 @@ let forDate = parseDateNow();
         <div class="mt-8 mx-4">
             <div
                 class="p-4 bg-blue-50 dark:bg-gray-800 dark:text-gray-50 border border-blue-500 dark:border-gray-500 rounded-lg shadow-md">
-                <h4 class="text-lg font-semibold">Have taken ideas & reused components from the following
-                    resources:</h4>
+                <h4 class="text-lg font-semibold">Penyewaan Mobil, Kembali Besok</h4>
                 <ul>
-                    <li class="mt-3">
+                    <li class="mt-3" v-for="sewa in sewatelat" :key="sewa">
                         <a class="flex items-center text-blue-700 dark:text-gray-100"
                             href="https://tailwindcomponents.com/component/sidebar-navigation-1" target="_blank">
                             <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -284,62 +289,7 @@ let forDate = parseDateNow();
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <span class="inline-flex pl-2">Sidebar Navigation</span>
-                        </a>
-                    </li>
-                    <li class="mt-2">
-                        <a class="flex items-center text-blue-700 dark:text-gray-100"
-                            href="https://tailwindcomponents.com/component/contact-form-1" target="_blank">
-                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                class="transform transition-transform duration-500 ease-in-out">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="inline-flex pl-2">Contact Form</span>
-                        </a>
-                    </li>
-                    <li class="mt-2">
-                        <a class="flex items-center text-blue-700 dark:text-gray-100"
-                            href="https://tailwindcomponents.com/component/trello-panel-clone" target="_blank">
-                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                class="transform transition-transform duration-500 ease-in-out">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="inline-flex pl-2">Section: Task Summaries</span>
-                        </a>
-                    </li>
-                    <li class="mt-2">
-                        <a class="flex items-center text-blue-700 dark:text-gray-100"
-                            href="https://windmill-dashboard.vercel.app/" target="_blank">
-                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                class="transform transition-transform duration-500 ease-in-out">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="inline-flex pl-2">Section: Client Table</span>
-                        </a>
-                    </li>
-                    <li class="mt-2">
-                        <a class="flex items-center text-blue-700 dark:text-gray-100"
-                            href="https://demos.creative-tim.com/notus-js/pages/admin/dashboard.html" target="_blank">
-                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                class="transform transition-transform duration-500 ease-in-out">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="inline-flex pl-2">Section: Social Traffic</span>
-                        </a>
-                    </li>
-                    <li class="mt-2">
-                        <a class="flex items-center text-blue-700 dark:text-gray-100" href="https://mosaic.cruip.com"
-                            target="_blank">
-                            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                class="transform transition-transform duration-500 ease-in-out">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="inline-flex pl-2">Section: Recent Activities</span>
+                            <span class="inline-flex pl-2">{{sewa.kode}}, Penyewa {{sewa.pengguna.nama}}, Nomor Telepon : {{sewa.pengguna.no_hp}}</span>
                         </a>
                     </li>
                 </ul>
