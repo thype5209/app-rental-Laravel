@@ -269,7 +269,7 @@
     </section>
 
 
-    @if ($data->jenis_sewa === 'Lepas Kunci')
+    @if ($data->jenis_sewa == 'Lepas')
         <div class="page-break"></div>
         <div class="w-full header opacity-80 border-b-4 border-black py-3">
             <table class=" bg-white table  table-header">
@@ -382,8 +382,8 @@
             @endphp
             @for ($i = 0; $i < 4; $i++)
                 <tr>
-                    <td class="border-bottom-none" rowspan="6" style="width: 250px;">
-                        <img src="{{ public_path('storage/fotoMobil/' . $namaF[$i]) }}" width="130"
+                    <td class="border-bottom-none" rowspan="6" style="width: 200px;">
+                        <img src="{{ public_path('storage/fotoMobil/' . $namaF[$i]) }}" width="110"
                             alt="">
                     </td>
                     <td class="border"></td>

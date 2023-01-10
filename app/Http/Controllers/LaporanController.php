@@ -167,7 +167,7 @@ class LaporanController extends Controller
     public function TESTdata()
     {
         $data = [
-            'jenis_sewa' => 'Kunci',
+            'jenis_sewa' => 'Lepas',
             'nik' => '91010',
             'nama' => 'wawan',
             'tempat_lahir' => 'Bulukumba',
@@ -206,7 +206,7 @@ class LaporanController extends Controller
 
         // Tanggal
         $carbon = $this->today();
-        $mobil = Mobil::whereIn('id', $req->mobil_id)->get();
+        $mobil = Mobil::whereIn('id', $req->mobil_id)->first();
         // Melakukan Load Data PDF
         $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
         return $pdf->stream();
