@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use ZipArchive;
 use Carbon\Carbon;
 use App\Models\Sewa;
@@ -209,7 +210,7 @@ class SewaController extends Controller
     {
         $data = Sewa::find($id);
         $exp = explode(',', $data->nopol);
-        if(Storage::disk('public')->exists($data->pdf_url)){
+        if (Storage::disk('public')->exists($data->pdf_url)) {
             Storage::disk('public')->delete($data->pdf_url);
         }
         Mobil::whereIn('nopol', $exp)->update(['status' => '2']);
@@ -323,16 +324,24 @@ class SewaController extends Controller
      */
     public function updateStatusModal($id, Request $request)
     {
-        $sewa = Sewa::find($id);
-        $sewa->update([
-            'status' =>  $request->status,
-            'status_bayar' =>  $request->status_bayar,
-        ]);
-        $exp = explode(',', $sewa->nopol);
-        Mobil::whereIn('nopol',  $exp)->update([
-            'status' => $request->status == 'Selesai' ? '2' : '1',
-        ]);
-        return Redirect::back()->with('success', "Status Sewa " . $sewa->kode . " Berhasil Diganti ");
+        try {
+            $sewa = Sewa::find($id);
+            $sewa->update([
+                'status' =>  $request->status,
+                'status_bayar' =>  $request->status_bayar,
+            ]);
+            // dd($request->all());
+            if ($request->status == 'Selesai') {
+                $exp = explode(',', $sewa->nopol);
+                Mobil::whereIn('nopol',  $exp)->update([
+                    'status' => $request->status == 'Selesai' ? '2' : '1',
+                ]);
+            }
+            return Redirect::back()->with('success', "Status Sewa " . $sewa->kode . " Berhasil Diganti ");
+        } catch (Exception $e) {
+            return Redirect::back()->with('error', $e->getMessage());
+
+        }
 
         // Synchronously
     }

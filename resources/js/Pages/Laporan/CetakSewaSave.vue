@@ -82,7 +82,7 @@ function reduceArray(array = [], lamasewa = 1) {
 
         </div>
         <div class="flex flex-col sm:flex-row justify-start py-3">
-            <textarea name="textwa" id="textwa" ref="inputwa" v-on:focus="$event.target.select()" cols="50" rows="10" v-model="myinputwa">
+            <textarea name="textwa" id="textwa" class="text-black border" ref="inputwa" v-on:focus="$event.target.select()" cols="50" rows="10" v-model="myinputwa">
             </textarea>
             <PrimaryButtonVue class=" w-full md:w-max" @click="copytext">Copy Text</PrimaryButtonVue>
         </div>
