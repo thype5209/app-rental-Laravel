@@ -40,11 +40,18 @@ class LaporanController extends Controller
     public function saveSewaCetak(Request $request)
     {
         $sewa = Sewa::where('kode', $request->kode)->with(['waktusewa', 'pengguna', 'user', 'sopir'])->first();
-        $sopir_id = explode(',', $sewa->sopir_id);
+        if($sewa == null){
+            $sewa = Sewa::with(['waktusewa', 'pengguna', 'user', 'sopir'])->latest()->first();
+        }
+        // dd($sewa);
+        $sopir_id = [];
+        if($sewa->sopir_id != null || $sewa->sopir_id != ''){
+            $sopir_id = explode(',', $sewa->sopir_id);
+        }
         $sopir = Sopir::whereIn('id', $sopir_id)->get();
         // dd($sewa->sopir_id);
         return Inertia::render('Laporan/CetakSewaSave', [
-            'pdf' => $request->pdf,
+            'pdf' => $sewa->pdf_url,
             'sewa' => $sewa,
             'sopir'=> $sopir,
         ]);
@@ -98,7 +105,7 @@ class LaporanController extends Controller
             // Simpan File PDF Ke Public Storage
             Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
 
-            return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF])->with('success', 'Berhasil Disimpan SPK=' . $kode);
+            return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF, 'kode'=> $kode])->with('success', 'Berhasil Disimpan SPK=' . $kode);
         }
     }
 
@@ -172,10 +179,13 @@ class LaporanController extends Controller
             'no_hp_lain' => '019020191',
             'tgl_sewa' => '2022-12-01',
             'tgl_kembali' => '2022-12-10',
+            'jam_sewa' => '00:00',
+            'jam_kembali' => '00:00',
+            'ket_syarat' => '00:00',
             'lama_sewa' => '10',
             'tujuan' => 'Bulukumba',
             'jaminan' => 'KTP',
-            'lunas' => 'false',
+            'lunas' => '1',
             'mobil_id' => ['1', '2'],
             'nilaisewahari' => ['20000', '30,000'],
             'nilaisewabulan' => ['90000', '800000'],
@@ -184,6 +194,7 @@ class LaporanController extends Controller
             'tahun' => ['2022', '2021'],
             'panjar' => '0',
             'sisa' => '0',
+
         ];
         $req = (object) $data;
         // Panggil Fungsi Kode

@@ -163,7 +163,6 @@ const jumlahMobil = FormPDF.nopol.length;
             <Link :href="route('Sewa.create')" :data="{ FormPDF }">Kembali</Link>
         </PrimaryButtonVue>
 
-        <TextInputVue type="text" v-model="file"></TextInputVue>
 
         <form @submit.prevent="cetakDanSave()"
             class="bg-gray-200 container mx-auto md:px-10 flex flex-col justify-center items-center">
@@ -333,14 +332,12 @@ const jumlahMobil = FormPDF.nopol.length;
                         <td class="border border-black"> {{ FormPDF.panjar }} </td>
                         <td class="border border-black"> {{ FormPDF.sisa }}</td>
                         <td class="border border-black">
-                            <svg v-if="FormPDF.lunas == '1'" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                            <svg v-else-if="FormPDF.lunas == '3'" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                            <span v-if="FormPDF.lunas == '1'" class="text-lg text-black" >
+                                Lunas
+                            </span>
+                            <span v-if="FormPDF.lunas == '3'" class="text-lg text-black" >
+                                Belum Lunas
+                            </span>
                         </td>
                     </tr>
                 </table>

@@ -36,16 +36,16 @@ console.log(namaSopir.value)
 const myinput = window.location.origin + '/storage/' + data.pdf;
 const myinputwa = `PEMAKAIAN DENGAN ${ jenis_sewa }
 No. SPK :${ data.sewa.kode }
-Nama pemake : ${ data.sewa.pengguna.nama }
+Nama Penyewa : ${ data.sewa.pengguna.nama }
 Nama driver : ${ data.sopir.length > 0 ? namaSopir.value : '--' }
 Jenis mobil : ${ data.sewa.unit }
 No. Plat : ${ data.sewa.nopol }
 Tgl Mulai-jam : ${ data.sewa.waktusewa.tgl_sewa }/${ data.sewa.waktusewa.jam_sewa } WITA
 Tgl Selesai-jam :  ${ data.sewa.waktusewa.tgl_kembali }/${ data.sewa.waktusewa.jam_kembali } WITA
-Jumlah Hari : ${ data.sewa.waktusewa.lamasewa }
+Jumlah Hari : ${ data.sewa.waktusewa.lama_sewa }
 Zona : ${ data.sewa.tujuan }
 Sewa Per Hari : ${ reduceArray(data.sewa.harga) }
-Panjar / dp : ${ data.sewa.total - data.sewa.sisa }
+Panjar / dp : Rp. ${ Number(data.sewa.total - data.sewa.sisa).toLocaleString() }
 Ket.
 ${ data.sewa.list_pengiriman }`;
 const input = ref(null)
