@@ -140,7 +140,7 @@
         </table>
         <p class="w-full text-justify">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan spesifikasi kendaraan sebagai berikut.</p>
         @for ($i = 0; $i < count($data->nopol); $i++)
-            <table class="table w-full ml-5 mb-5 h-max text-justify ">
+            <table class="table w-max ml-5 mb-5 h-max text-justify ">
                 <tr class=" p-0 m-0">
                     <td class=" whitespace-nowrap mb-0 p-0">Jenis Kendaraan </td>
                     <td class=" whitespace-nowrap mb-0 p-0"> :
@@ -171,7 +171,7 @@
                 </tr>
             </table>
         @endfor
-        <table class="table w-full ml-5  mb-5 h-max text-justify ">
+        <table class="table w-max  mb-5 h-max text-justify ">
             <tr class=" p-0 m-0">
                 <td class=" whitespace-nowrap mb-0 p-0">Tanggal/Jam Sewa </td>
                 <td class=" whitespace-nowrap mb-0 p-0"> : {{ $data->tgl_sewa }}/{{ $data->jam_sewa }} WITA

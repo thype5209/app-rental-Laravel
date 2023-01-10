@@ -130,6 +130,12 @@ class SewaController extends Controller
             'tgl_kembali' => 'required|date',
             'lama_sewa' => 'required',
             'tujuan' => 'required',
+            // 'status_bayar' => 'required',
+            'metode_bayar' => 'required',
+            'list_pengiriman' => 'required',
+            'lunas' => 'required',
+            'panjar' => 'required',
+            'sisa' => 'required',
             'jaminan' => 'string|nullable',
         ]);
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {

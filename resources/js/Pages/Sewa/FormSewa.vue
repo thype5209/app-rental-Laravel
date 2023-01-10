@@ -1,5 +1,5 @@
 <script setup>
-import { Link, Head, useForm, usePage } from "@inertiajs/inertia-vue3";
+import { Link, Head, useForm, usePage, useRemember } from "@inertiajs/inertia-vue3";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import SelectVUe from "@/Components/Select.vue";
@@ -30,7 +30,12 @@ const props = defineProps({
 });
 
 
+const slideMobil = ref(1);
+const jumlahPanjar = ref(0);
+const BayarLunas = ref(1);
 const FOTOKTP = ref(null);
+const jumlahMobil = ref(1);
+
 const Form = useForm({
     jenis_sewa: 'Lepas',
     foto_ktp: null,
@@ -62,24 +67,23 @@ const Form = useForm({
     lunas: '',
     metode_bayar: 'Transfer',
     list_pengiriman: null,
-    ket_syarat: `<div class="">
-            <h3 class=" font-bold">Ket.</h3>
-            <ul class="list-disc  px-10">
-                <li class="text-justify">Apabila penyewa akan memperpanjang sewa kendaraan maka harus di
+    ket_syarat: `<h3>Ket.</h3>
+            <ul>
+                <li>Apabila penyewa akan memperpanjang sewa kendaraan maka harus di
                     konfirmasi
                     ke pihak rental.</li>
-                <li class="text-justify">Jika penyewa terlamabat mengembalikan mobil dalam waktu yang di
+                <li>Jika penyewa terlamabat mengembalikan mobil dalam waktu yang di
                     tentukan
                     maka akan di kenakan biaya over time 10% per jam darai harga sewa per harinya</li>
-                <li class="text-justify">Apa bila pemakain sewa kendaraan tidak sesuai dengan Tujuan penyewa
+                <li>Apa bila pemakain sewa kendaraan tidak sesuai dengan Tujuan penyewa
                     yang di
                     tentukan penyewa, maka akan di kenakan biaya tambahan sesuai dengan zona-zona yang berlaku.
                 </li>
             </ul>
-            <h3 class=" font-bold">Penyewa bersedia menyanggupi syarat dan ketentuan penyewa kendaraan di bawah
+            <h3>Penyewa bersedia menyanggupi syarat dan ketentuan penyewa kendaraan di bawah
                 ini
                 :.</h3>
-            <ul class="list-disc  px-10">
+            <ul>
                 <li>Bertanggung jawab segala kerusakan, kehilangan kendaraan atau bagian-bagiannya</li>
                 <li>Kendaraan tersebut tidak dapat digadaikan atau merubah bentuk aslinya</li>
                 <li>Pemilik tidak bertanggung jawab atas kegiatan operasionalpenyewa kendaraan</li>
@@ -89,9 +93,46 @@ const Form = useForm({
                     di bengkel.</li>
                 <li>Penyewa bersedia dituntut pidana apabila melanggar poin-poin diatas</li>
 
-            </ul>
-        </div>`,
+            </ul>`,
 });
+
+
+// console.log(props)
+onMounted(()=>{
+    if (props.data != null) {
+    if (props.data.req != null) {
+        if (props.data.req.FormPDF != null) {
+            const DataKembali = props.data.req.FormPDF;
+            Form.jenis_sewa = DataKembali.jenis_sewa;
+            Form.nik = DataKembali.nik;
+            Form.nama = DataKembali.nama;
+            Form.tempat_lahir = DataKembali.tempat_lahir;
+            Form.ket_syarat = DataKembali.ket_syarat;
+            Form.list_pengiriman = DataKembali.list_pengiriman;
+            Form.tgl_lahir = DataKembali.tgl_lahir;
+            Form.alamat = DataKembali.alamat;
+            Form.pekerjaan = DataKembali.pekerjaan;
+            Form.sosial = DataKembali.sosial;
+            Form.no_hp = DataKembali.no_hp;
+            Form.no_hp_lain = DataKembali.no_hp_lain;
+            Form.tujuan = DataKembali.tujuan;
+            Form.lama_sewa = DataKembali.lama_sewa;
+            Form.jam_sewa = DataKembali.jam_sewa;
+            Form.jam_kembali = DataKembali.jam_kembali;
+            Form.jaminan = DataKembali.jaminan;
+            Form.panjar = DataKembali.panjar;
+            Form.sisa = DataKembali.sisa;
+            Form.metode_bayar = DataKembali.metode_bayar;
+            Form.lunas = DataKembali.lunas;
+
+            BayarLunas.value = DataKembali.lunas;
+            // jumlahMobil.value = DataKembali.unit.length
+
+        }
+    }
+}
+})
+
 var TabActive =
     "bg-green-500 py-2 md:px-6 block hover:text-green-500 focus:outline-none text-white border-b-2 font-medium border-default-dark";
 var TabNonActive =
@@ -139,17 +180,6 @@ watch(FOTOKTP, value => {
     console.log(value)
 })
 
-function returnslide() {
-    if (slideMobil.value == 1 && Form.nik != null && Form.nama != null) {
-        slideMobil.value = 2;
-    }
-    if (jumlahMobil.value == 2 || Form.unit.length > 0) {
-        slideMobil.value += 1;
-    }
-    if (jumlahMobil.value == 3 || Form.unit.length > 0) {
-        slideMobil.value = 4;
-    }
-}
 
 
 // Fungsi Lama Sewa
@@ -260,7 +290,7 @@ function arraySum(array = []) {
         hasil = array.reduce((a, b) => {
             const arrA = a.toString();
             const arrb = b.toString();
-            console.log(a,b)
+            console.log(a, b)
             if (arrA.indexOf(',') > -1) {
                 var asisa = arrA.split(',');
                 var aharga = asisa.reduce((el, b) => el + b);
@@ -282,9 +312,6 @@ function arraySum(array = []) {
 }
 
 
-const slideMobil = ref(1);
-const jumlahPanjar = ref(0);
-const BayarLunas = ref(1);
 watch(BayarLunas, value => {
     if (value === 1 || value == '1') {
         jumlahPanjar.value = 0;
@@ -303,10 +330,13 @@ watch(jumlahPanjar, value => {
     Form.panjar = value;
 })
 
-const jumlahMobil = ref(1);
 watch(jumlahMobil, value => {
     jumlahMobil.value = value
 })
+
+// Watch Syarat Dan Keterangan
+const syaratKet = ref(``);
+
 </script>
 
 <template>
@@ -457,7 +487,7 @@ watch(jumlahMobil, value => {
                             @click="jmlSopir++">+</PrimaryButtonVue>
                     </div>
                     <div class="mx-auto mb-3">
-                        <PrimaryButtonVue type="button" class="bg-default-blue hover:bg-blue-600" @click="returnslide">
+                        <PrimaryButtonVue type="button" class="bg-default-blue hover:bg-blue-600" @click="slideMobil++">
                             Selanjutnya
                         </PrimaryButtonVue>
                     </div>
@@ -651,7 +681,7 @@ watch(jumlahMobil, value => {
                             class=" mb-3 text-center bg-red-500 disabled:bg-red-600 disabled:text-gray-300">Sebelumnya
                         </PrimaryButtonVue>
                         <PrimaryButtonVue type="button"
-                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="returnslide">
+                            class=" mb-3 text-center disabled:bg-red-600 disabled:text-gray-300" @click="slideMobil++">
                             Lanjutkan</PrimaryButtonVue>
 
                     </div>
@@ -663,6 +693,7 @@ watch(jumlahMobil, value => {
                 </div>
                 <div class="bg-gray-200 shadow-md rounded md:px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == 4">
                     <ckeditor :editor="editor" v-model="Form.ket_syarat" :config="editorConfig"></ckeditor>
+                    <div v-html="Form.ket_syarat"></div>
 
                     <div class="flex justify-around">
                         <PrimaryButtonVue type="button" @click="slideMobil--"
@@ -752,8 +783,8 @@ export default {
             editor: ClassicEditor,
 
             editorConfig: {
-                toolbar: ['bold', 'italic', '|', 'NumberedList', 'BulletedList',
-                ],
+                // toolbar: ['bold', 'italic', '|', 'NumberedList', 'BulletedList',
+                // ],
 
             }
         };

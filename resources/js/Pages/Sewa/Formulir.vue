@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayoutVue from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, usePage, useForm } from '@inertiajs/inertia-vue3';
+import { Head, Link, usePage, useForm , useRemember} from '@inertiajs/inertia-vue3';
 import { defineProps, computed, onMounted, ref } from 'vue';
 import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
 import TextInputVue from '@/Components/TextInput.vue';
@@ -89,7 +89,6 @@ const FormPDF = useForm({
     list_pengiriman: data.formulir.list_pengiriman,
     metode_bayar: data.formulir.metode_bayar,
 })
-
 
 const date = new Date();
 const today = `${date.getUTCDate()} ${parseMonth(date.getMonth())}, ${date.getFullYear()}`
