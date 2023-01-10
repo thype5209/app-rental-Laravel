@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use ZipArchive;
 use Carbon\Carbon;
 use App\Models\Sewa;
 use Inertia\Inertia;
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdateSewaRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request as FacadesRequest;
-use ZipArchive;
 
 class SewaController extends Controller
 {
@@ -203,6 +203,9 @@ class SewaController extends Controller
     {
         $data = Sewa::find($id);
         $exp = explode(',', $data->nopol);
+        if(Storage::disk('public')->exists($data->pdf_url)){
+            Storage::disk('public')->delete($data->pdf_url);
+        }
         Mobil::whereIn('nopol', $exp)->update(['status' => '2']);
         $data->delete();
     }

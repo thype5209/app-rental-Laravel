@@ -211,7 +211,7 @@
                     <td class="border border-black"> {{ $data->panjar }} </td>
                     <td class="border border-black"> {{ $data->sisa }}</td>
                     <td class="border border-black">
-                       @if ($data->sisa !== null)
+                       @if ($data->lunas === '1')
                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />

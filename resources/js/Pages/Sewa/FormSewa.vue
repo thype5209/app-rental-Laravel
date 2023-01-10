@@ -28,27 +28,7 @@ const props = defineProps({
     },
     errors: Object
 });
-// if (props.data.req != null && props.data.length > 0) {
-//     const DataKembali = props.data.req.FormPDF;
-//     dataInputSewa.nik = DataKembali.nik;
-//     dataInputSewa.nama = DataKembali.nama;
-//     dataInputSewa.tempat_lahir = DataKembali.tempat_lahir;
-//     dataInputSewa.tgl_lahir = DataKembali.tgl_lahir;
-//     dataInputSewa.alamat = DataKembali.alamat;
-//     dataInputSewa.pekerjaan = DataKembali.pekerjaan;
-//     dataInputSewa.sosial = DataKembali.sosial;
-//     dataInputSewa.unit = DataKembali.unit;
-//     dataInputSewa.no_hp = DataKembali.no_hp;
-//     dataInputSewa.no_hp_lain = DataKembali.no_hp_lain;
-//     dataInputSewa.nilaisewahari = DataKembali.nilaisewahari;
-//     dataInputSewa.nilaisewabulan = DataKembali.nilaisewabulan;
-//     dataInputSewa.tujuan = DataKembali.tujuan;
-//     dataInputSewa.lama_sewa = DataKembali.lama_sew;
-//     dataInputSewa.jaminan = DataKembali.jaminan;
-//     dataInputSewa.panjar = DataKembali.panjar;
-//     dataInputSewa.sisa = DataKembali.sisa;
-//     dataInputSewa.lunas = DataKembali.lunas;
-// }
+
 
 const FOTOKTP = ref(null);
 const Form = useForm({
@@ -292,7 +272,6 @@ function arraySum(array = []) {
 
 
 const slideMobil = ref(1);
-const slidebayar = ref(false);
 const jumlahPanjar = ref(0);
 const BayarLunas = ref(1);
 watch(BayarLunas, value=>{
@@ -747,14 +726,13 @@ watch(jumlahMobil, value => {
 import AuthenticatedLayoutVue from "../../Layouts/AuthenticatedLayout.vue";
 import axios from "axios";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import CKEditor from '@ckeditor/ckeditor5-vue';
-
+import ckeditor from '@ckeditor/ckeditor5-vue';
 
 export default {
     name: "FormPinjamVue",
     components: {
         AuthenticatedLayoutVue,
-        ckeditor: CKEditor.component,
+        ckeditor: ckeditor.component,
     },
     data() {
         return {
@@ -762,13 +740,10 @@ export default {
 
             editorConfig: {
                 toolbar: ['bold', 'italic', '|', 'NumberedList', 'BulletedList',
-                    // { name: 'paragraph', items: [ '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'] },
-                    // { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
                 ],
 
             }
         };
     },
-    beforeMount: function () { }
 };
 </script>

@@ -256,7 +256,7 @@ class LaporanController extends Controller
             'harga' => implode(',', $this->parseStringToNumber($request->nilaisewahari)),
             'harga_bulan' => implode(',', $this->parseStringToNumber($request->nilaisewabulan)),
             'nik' => $request->nik,
-            'sopir_id' => implode(',', $request->sopir_id),
+            'sopir_id' => $request->sopir_id != null ? implode(',', $request->sopir_id) : '',
             'tujuan' => $request->tujuan,
             'jaminan' => $request->jaminan,
             // Penanggung Jawab Bersal Dari Data User ID
@@ -282,7 +282,9 @@ class LaporanController extends Controller
         Mobil::whereIn('id', $request->mobil_id)->update([
             'status' => '1',
         ]);
-        Sopir::whereIn('id', $request->sopir_id)->update(['status' => '2']);
+        if($request->sopir_id != null){
+            Sopir::whereIn('id', $request->sopir_id)->update(['status' => '2']);
+        }
     }
     public function parseStringToNumber($string_array)
     {
