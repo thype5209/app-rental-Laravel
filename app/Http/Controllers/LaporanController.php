@@ -206,7 +206,7 @@ class LaporanController extends Controller
 
         // Tanggal
         $carbon = $this->today();
-        $mobil = Mobil::whereIn('id', $req->mobil_id)->first();
+        $mobil = Mobil::whereIn('id', $req->mobil_id)->latest()->first();
         // Melakukan Load Data PDF
         $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
         return $pdf->stream();
