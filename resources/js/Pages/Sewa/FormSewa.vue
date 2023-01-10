@@ -77,9 +77,9 @@ const Form = useForm({
     lama_sewa: "2",
     tujuan: "Makassar",
     jaminan: "KTP",
-    panjar: '',
-    sisa: '',
-    lunas: true,
+    panjar: '20000',
+    sisa: '10000',
+    lunas: false,
     metode_bayar: 'Transfer',
     list_pengiriman: null,
     ket_syarat: `<div class="">
@@ -205,10 +205,11 @@ function getTanggal(event) {
     var diff = diff_date(tgl_pengajuan, tgl_kembali);
     Form.lama_sewa = diff;
 }
-
+const jmlSopir = ref(1);
 function SelectSopir(event) {
-    Form.sopir_id = event.target.value;
+    Form.sopir_id.push(event.target.value);
 }
+
 
 // Fungsi Cari Pengguna Dengan Nik
 const SearchNIK = ref('')
@@ -455,9 +456,10 @@ watch(jumlahMobil, value => {
                             <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sosial" />
                         </div>
                     </div>
-                    <div class="-mx-3 md:flex mb-6" v-if="Form.jenis_sewa == 'Kunci'">
-                        <div class="w-full px-3">
-                            <InputLabel
+                    <div class="-mx-3 md:flex mb-6 items-center" v-if="Form.jenis_sewa == 'Kunci'" >
+                        <div class="w-full px-3" >
+                            <div v-for="jml in jmlSopir">
+                                <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Nama Supir</InputLabel>
                             <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
@@ -469,7 +471,10 @@ watch(jumlahMobil, value => {
                                 </option>
                             </SelectVUe>
                             <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                            </div>
                         </div>
+                        <PrimaryButtonVue type="button" v-if="jmlSopir > 1" class="bg-red-500 text-lg hover:bg-red-600" @click="jmlSopir--">X</PrimaryButtonVue>
+                        <PrimaryButtonVue type="button"  class="bg-default-dark text-lg hover:bg-default-dark" @click="jmlSopir++">+</PrimaryButtonVue>
                     </div>
                     <div class="mx-auto mb-3">
                         <PrimaryButtonVue type="button" class="bg-default-blue hover:bg-blue-600" @click="returnslide">

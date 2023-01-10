@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\Sewa;
 use Inertia\Inertia;
 use App\Models\Mobil;
+use App\Models\Sopir;
 use App\Models\Pengguna;
 use App\Models\WaktuSewa;
 use App\Exports\SewaExport;
@@ -38,10 +39,14 @@ class LaporanController extends Controller
      */
     public function saveSewaCetak(Request $request)
     {
-        $sewa = Sewa::where('kode', $request->kode)->with(['waktusewa', 'pengguna', 'user'])->first();
+        $sewa = Sewa::where('kode', $request->kode)->with(['waktusewa', 'pengguna', 'user', 'sopir'])->first();
+        $sopir_id = explode(',', $sewa->sopir_id);
+        $sopir = Sopir::whereIn('id', $sopir_id)->get();
+        // dd($sewa->sopir_id);
         return Inertia::render('Laporan/CetakSewaSave', [
             'pdf' => $request->pdf,
             'sewa' => $sewa,
+            'sopir'=> $sopir,
         ]);
     }
 
@@ -93,7 +98,7 @@ class LaporanController extends Controller
             // Simpan File PDF Ke Public Storage
             Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
 
-            return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF]);
+            return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF])->with('success', 'Berhasil Disimpan SPK=' . $kode);
         }
     }
 
@@ -254,7 +259,7 @@ class LaporanController extends Controller
             'harga' => implode(',', $this->parseStringToNumber($request->nilaisewahari)),
             'harga_bulan' => implode(',', $this->parseStringToNumber($request->nilaisewabulan)),
             'nik' => $request->nik,
-            'sopir_id' => $request->sopir_id,
+            'sopir_id' => implode(',', $request->sopir_id),
             'tujuan' => $request->tujuan,
             'jaminan' => $request->jaminan,
             // Penanggung Jawab Bersal Dari Data User ID
@@ -280,6 +285,7 @@ class LaporanController extends Controller
         Mobil::whereIn('id', $request->mobil_id)->update([
             'status' => '1',
         ]);
+        Sopir::whereIn('id', $request->sopir_id)->update(['status' => '2']);
     }
     public function parseStringToNumber($string_array)
     {

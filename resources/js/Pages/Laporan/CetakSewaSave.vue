@@ -12,6 +12,10 @@ const data = defineProps({
     sewa: {
         type: Object,
         default: () => ({})
+    },
+    sopir: {
+        type: Object,
+        default: () => ({})
     }
 })
 var jenis_sewa = null;
@@ -20,11 +24,20 @@ if(data.sewa.jenis_sewa === 'Lepas'){
 }else if(data.sewa.jenis_sewa === 'Kunci'){
     jenis_sewa = 'Dengan Driver'
 }
+const namaSopir = ref('');
+onMounted(()=>{
+})
+if(data.sopir.length > 0){
+    for (let index = 0; index < data.sopir.length; index++) {
+        namaSopir.value += data.sopir[index].nama + ', ';
+    }
+}
+console.log(namaSopir.value)
 const myinput = window.location.origin + '/storage/' + data.pdf;
 const myinputwa = `PEMAKAIAN DENGAN ${ jenis_sewa }
 No. SPK :${ data.sewa.kode }
 Nama pemake : ${ data.sewa.pengguna.nama }
-Nama driver : ${ data.sewa.sopir_id !== null ? data.sewa.sopir.nama: '--' }
+Nama driver : ${ data.sopir.length > 0 ? namaSopir.value : '--' }
 Jenis mobil : ${ data.sewa.unit }
 No. Plat : ${ data.sewa.nopol }
 Tgl Mulai-jam : ${ data.sewa.waktusewa.tgl_sewa }/${ data.sewa.waktusewa.jam_sewa } WITA

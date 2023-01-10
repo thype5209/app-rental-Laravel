@@ -11,5 +11,5 @@ class Sopir extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table = 'sopirs';
-    protected $fillable = ['nik','nama','alamat','no_hp','no_hp_lain','pekerjaan'];
+    protected $fillable = ['nik','nama','alamat','no_hp','no_hp_lain','pekerjaan', 'status'];
 }

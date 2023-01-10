@@ -31,7 +31,7 @@ class Sewa extends Model
     }
     public function sopir()
     {
-        return $this->hasOne(Sopir::class, 'id', 'sopir_id');
+        return $this->hasMany(Sopir::class, 'id', 'sopir_id');
     }
 
     public function scopeFilter($query, array $filters)

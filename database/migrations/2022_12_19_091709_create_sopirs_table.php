@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nama',100);
             $table->string('alamat',100);
             $table->string('no_hp',30);
+            $table->enum('status',['1','2'])->default('1')->comment('1 = aktif; 2 = nonaktif;');
             $table->softDeletes();
             $table->timestamps();
         });
