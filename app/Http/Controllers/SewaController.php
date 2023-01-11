@@ -91,6 +91,7 @@ class SewaController extends Controller
      */
     public function create()
     {
+        $mobil = Mobil::where('status', '=', '2')->get();
 
         $pengguna = Pengguna::all();
         $sopir = Sopir::all();
