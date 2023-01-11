@@ -29,7 +29,12 @@ const props = defineProps({
     errors: Object
 });
 
-
+const rupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR"
+            }).format(number);
+        }
 const slideMobil = ref(1);
 const jumlahPanjar = ref(0);
 const BayarLunas = ref(1);
@@ -774,7 +779,7 @@ const syaratKet = ref(``);
                                     }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.status }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
-                                        reduceArray(item.sisa, 1, item.denda)
+                                        reduceArray(item.sisa, item.waktusewa.lama_sewa, item.denda)
                                     }} </td>
                                 </tr>
                             </table>

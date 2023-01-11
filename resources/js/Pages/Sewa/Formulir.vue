@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayoutVue from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, usePage, useForm , useRemember} from '@inertiajs/inertia-vue3';
+import { Head, Link, usePage, useForm, useRemember } from '@inertiajs/inertia-vue3';
 import { defineProps, computed, onMounted, ref } from 'vue';
 import PrimaryButtonVue from '@/Components/PrimaryButton.vue';
 import TextInputVue from '@/Components/TextInput.vue';
@@ -139,11 +139,14 @@ function parseMonth(value) {
     }
     return msg;
 }
-
+const loading = ref(false);
 function cetakDanSave() {
     FormPDF.post(route('Laporan.saveSewa'), {
         preserveState: false,
         replace: false,
+        onBefore: () => {
+            loading.value = true
+        },
         onSuccess: () => {
             window.location.href = '/Laporan/CetakSewa?pdf=SewaPDF/' + data.kode + "-" + FormPDF.tgl_sewa + '.pdf&&kode=' + data.kode;
             FormPDF.reset();
@@ -151,13 +154,51 @@ function cetakDanSave() {
     });
 }
 const jumlahMobil = FormPDF.nopol.length;
+
 </script>
+
+
+<style>
+/**
+  * Duo
+  *
+  * @author jh3y - jhey.dev
+*/
+.duo:before {
+    height: 50px;
+    width: 50px;
+    content: '';
+    display: block;
+    -webkit-animation: spin .5s infinite linear;
+            animation: spin .5s infinite linear;
+    border-width: 6px;
+    border-style: solid;
+    border-bottom-color: #ffa500;
+    border-top-color: #ffa500;
+    border-left-color: var(--secondary);
+    border-radius: 100%;
+    border-right-color: var(--secondary); }
+
+  @-webkit-keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg); } }
+
+  @keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg); } }
+</style>
 
 <template>
 
     <Head title="Formulir Sewa Mobil" />
     <AuthenticatedLayoutVue class="bg-gray-200">
-
+        <transition leave-active-class="duration-200" >
+            <div v-show="loading" class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50 bg-default-dark flex justify-center items-center text-white" scroll-region>
+                <div class="duo "></div>
+            </div>
+        </transition>
         <PrimaryButtonVue>
             <Link :href="route('Sewa.create')" :data="{ FormPDF }">Kembali</Link>
         </PrimaryButtonVue>
@@ -189,7 +230,8 @@ const jumlahMobil = FormPDF.nopol.length;
                 <table class="table w-full bg-white mb-5">
                     <tr class=" p-0 m-0">
                         <td colspan="4" class="text-center flex flex-col justify-center  ">
-                            <span class="text-center font-bold underline text-black">SURAT PERNYATAAN SEWA KENDARAAN</span>
+                            <span class="text-center font-bold underline text-black">SURAT PERNYATAAN SEWA
+                                KENDARAAN</span>
                             <span class="font-semibold text-black text-center">No: {{ data.kode }}</span>
                         </td>
                     </tr>
@@ -201,13 +243,13 @@ const jumlahMobil = FormPDF.nopol.length;
 
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black">NIK</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik" v-model="FormPDF.nik"
-                                class="border-none text-xs p-0 m-0"></td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik"
+                                v-model="FormPDF.nik" class="border-none text-xs p-0 m-0"></td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black">Nama</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nama" v-model="FormPDF.nama"
-                                class="border-none text-xs p-0 m-0 capitalize"></td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nama"
+                                v-model="FormPDF.nama" class="border-none text-xs p-0 m-0 capitalize"></td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black">Tempat/Tanggal Lahir</td>
@@ -224,13 +266,13 @@ const jumlahMobil = FormPDF.nopol.length;
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black">Alamat</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik" v-model="FormPDF.alamat"
-                                class="border-none text-xs p-0 m-0 w-max max-w-max "></td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik"
+                                v-model="FormPDF.alamat" class="border-none text-xs p-0 m-0 w-max max-w-max "></td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black">No. HP</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik" v-model="FormPDF.no_hp"
-                                class="border-none text-xs p-0 m-0 w-max max-w-max "> </td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik"
+                                v-model="FormPDF.no_hp" class="border-none text-xs p-0 m-0 w-max max-w-max "> </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black">No. HP Kerabat Lain</td>
@@ -239,11 +281,12 @@ const jumlahMobil = FormPDF.nopol.length;
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black">Sosial Media</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik" v-model="FormPDF.sosial"
-                                class="border-none text-xs p-0 m-0 w-max max-w-max " /> </td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black">: <input type="text" name="nik"
+                                v-model="FormPDF.sosial" class="border-none text-xs p-0 m-0 w-max max-w-max " /> </td>
                     </tr>
                 </table>
-                <p class="w-full text-justify font-bold mb-3 text-black">Dengan ini menyatakan bahwa pihak rental menitipkan
+                <p class="w-full text-justify font-bold mb-3 text-black">Dengan ini menyatakan bahwa pihak rental
+                    menitipkan
                     kendaraan
                     kepada saya dengan spesipikasi kendaraan sebagai berikut.</p>
 
@@ -301,18 +344,24 @@ const jumlahMobil = FormPDF.nopol.length;
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Jumlah Hari</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 text-black"><span class="font-bold">:</span> {{ FormPDF.lama_sewa }}
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black"><span class="font-bold">:</span> {{
+                            FormPDF.lama_sewa
+                        }}
                             Hari
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Tujuan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 text-black "><span class="font-bold">:</span> {{ FormPDF.tujuan }}
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black "><span class="font-bold">:</span> {{
+                            FormPDF.tujuan
+                        }}
                         </td>
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Jaminan</td>
-                        <td class=" whitespace-nowrap mb-0 p-0 text-black "><span class="font-bold">:</span> {{ FormPDF.jaminan }}
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black "><span class="font-bold">:</span> {{
+                            FormPDF.jaminan
+                        }}
                         </td>
                     </tr>
                 </table>
@@ -331,10 +380,10 @@ const jumlahMobil = FormPDF.nopol.length;
                         <td class="border border-black"> {{ FormPDF.panjar }} </td>
                         <td class="border border-black"> {{ FormPDF.sisa }}</td>
                         <td class="border border-black">
-                            <span v-if="FormPDF.lunas == '1'" class="text-lg text-black" >
+                            <span v-if="FormPDF.lunas == '1'" class="text-lg text-black">
                                 Lunas
                             </span>
-                            <span v-if="FormPDF.lunas == '3'" class="text-lg text-black" >
+                            <span v-if="FormPDF.lunas == '3'" class="text-lg text-black">
                                 Belum Lunas
                             </span>
                         </td>

@@ -22,16 +22,16 @@ class PenggunaController extends Controller
     public function index()
     {
         return Inertia::render('Pengguna/Pengguna', [
-            'pengguna' => Pengguna::query()->with(['sewa', 'sewa.waktusewa'])->when(Request::input('search'), function($query,$search){
-                $query->where('nama', 'like', '%'. $search .'%')
-                    ->orWhere('nik', 'like', '%'. $search .'%')
-                    ->orWhere('alamat', 'like', '%'. $search .'%')
-                    ->orWhere('no_hp', 'like', '%'. $search .'%')
-                    ->orWhere('no_hp_lain', 'like', '%'. $search .'%')
-                    ->orWhere('tempat_lahir', 'like', '%'. $search .'%')
-                    ->orWhere('tgl_lahir', 'like', '%'. $search .'%');
-            })->orderBy('nama','asc')->paginate(10) ?? null,
-            'filter'=> Request::input('search', ''),
+            'pengguna' => Pengguna::query()->with(['sewa', 'sewa.waktusewa'])->when(Request::input('search'), function ($query, $search) {
+                $query->where('nama', 'like', '%' . $search . '%')
+                    ->orWhere('nik', 'like', '%' . $search . '%')
+                    ->orWhere('alamat', 'like', '%' . $search . '%')
+                    ->orWhere('no_hp', 'like', '%' . $search . '%')
+                    ->orWhere('no_hp_lain', 'like', '%' . $search . '%')
+                    ->orWhere('tempat_lahir', 'like', '%' . $search . '%')
+                    ->orWhere('tgl_lahir', 'like', '%' . $search . '%');
+            })->orderBy('nama', 'asc')->paginate(10) ?? null,
+            'filter' => Request::input('search', ''),
         ]);
     }
     public function cariNIK()
@@ -42,13 +42,13 @@ class PenggunaController extends Controller
     public function GetID($id)
     {
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
-            $query->whereIn('status_bayar', ['2','3','4']);
+            $query->whereIn('status_bayar', ['2', '3', '4']);
         })
-        ->where('id', $id)
-        ->get();
+            ->where('id', $id)
+            ->get();
         if ($pengguna->count() > 0) {
             $resp = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
-                $query->whereIn('status_bayar', ['2','3','4']);
+                $query->whereIn('status_bayar', ['2', '3', '4']);
             })->find($id);
             $code = true;
         } else {
@@ -89,12 +89,12 @@ class PenggunaController extends Controller
      * @param  \App\Models\Pengguna  $pengguna
      * @return \Illuminate\Http\Response
      */
-    public function show(Pengguna $pengguna,$id)
+    public function show(Pengguna $pengguna, $id)
     {
-// dd(Pengguna::find($id));
+        // dd(Pengguna::find($id));
         return Inertia::render('Pengguna/RiwayatPengguna', [
-            'riwayat'=> $pengguna->with(['sewa', 'sewa.waktusewa'])->find($id),
-            'pengguna'=> Pengguna::find($id),
+            'riwayat' => $pengguna->with(['sewa', 'sewa.waktusewa'])->find($id),
+            'pengguna' => Pengguna::find($id),
         ]);
     }
 
