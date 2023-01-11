@@ -47,7 +47,6 @@ class UserController extends Controller
     {
         return Inertia::render('User/Index', [
             'user' => User::with(['roles'])
-                ->where('id', "!=",'1')
                 ->paginate(10),
             'can' => [
                 'create' => Auth::user()->can('user create'),
