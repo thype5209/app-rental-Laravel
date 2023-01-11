@@ -125,9 +125,7 @@ class MobilController extends Controller
     public function riwayat(Mobil $mobil, $id)
     {
         return Inertia::render('Mobil/RiwayatMobil', [
-            'riwayat' => Sewa::whereHas('mobil',function($query)use($id){
-                $query->where('id', $id);
-            })
+            'riwayat' => Sewa::where('nopol', $mobil->find($id)->nopol)
             ->with(['waktusewa', 'mobil','user','pengguna'])
             ->where('status', '=', 'Selesai')
             ->paginate(10),
