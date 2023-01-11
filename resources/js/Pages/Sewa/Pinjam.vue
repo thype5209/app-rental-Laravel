@@ -24,6 +24,12 @@ const status = defineProps({
     },
     page: Object.toString(),
 });
+const rupiah = (number) => {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR"
+    }).format(number);
+}
 const deleteForm = useForm();
 function destroy(id) {
     if (confirm("Are you sure you want to Delete")) {
@@ -168,7 +174,7 @@ function reduceArray(array = [], lamasewa = 1, denda = 0) {
     var sisa = array.split(',');
     var harga = sisa.reduce((el, b) => el + b);
     var total = (parseInt(harga) * lamasewa) + parseInt(denda);
-    return Number(total).toLocaleString();
+    return rupiah(total);
 }
 function statusBayar(value) {
     var hasil = null;

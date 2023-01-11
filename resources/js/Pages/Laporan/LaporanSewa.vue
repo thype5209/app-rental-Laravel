@@ -7,7 +7,7 @@
             <!-- Date -->
 
             <div>
-                <form @submit.prevent="submit" class="flex items-center max-w-max gap-5 w-full py-3 ml-3">
+                <form @submit.prevent="submit" class="flex flex-col md:flex-row items-center max-w-max gap-5 w-full py-3 ml-3">
                     <div class=" flex justify-center items-center gap-5">
                         <InputLabelVue for="simple-search" class=" whitespace-nowrap">Tanggal Awal </InputLabelVue>
                         <div class="relative w-full">
@@ -43,45 +43,9 @@
                     <PrimaryButtonVue>Cari</PrimaryButtonVue>
                 </form>
             </div>
-            <div class="ml-5">
 
-                <div class="inline-flex rounded-md shadow-sm" role="group">
-                    <!-- <button type="button" @click="centangFile"
-                        class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-                        <svg aria-hidden="true" class="mr-2 w-4 h-4 fill-current" fill="currentColor"
-                            viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        Centang File
-                    </button> -->
-                    <button type="button" @click="DeleteAll('Hapus Semua')"
-                        class="inline-flex bg-red-500 text-white items-center py-2 px-4 text-sm font-medium  rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                            </path>
-                        </svg>
-                        Hapus Semua
-                    </button>
-
-                </div>
-
-            </div>
             <div class="ml-5 py-3" v-if="cetak">
                 <div class="inline-flex rounded-md shadow-sm" role="group">
-                    <!-- <button type="button" @click="cetakPDF"
-                        class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24"
-                            viewBox="0 0 24 24">
-                            <path
-                                d="M13.172,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8.828c0-0.53-0.211-1.039-0.586-1.414l-4.828-4.828 C14.211,2.211,13.702,2,13.172,2z M15,18H9c-0.552,0-1-0.448-1-1v0c0-0.552,0.448-1,1-1h6c0.552,0,1,0.448,1,1v0 C16,17.552,15.552,18,15,18z M15,14H9c-0.552,0-1-0.448-1-1v0c0-0.552,0.448-1,1-1h6c0.552,0,1,0.448,1,1v0 C16,13.552,15.552,14,15,14z M13,9V3.5L18.5,9H13z">
-                            </path>
-                        </svg>
-                        PDF
-                    </button> -->
                     <button type="button" @click="cetakEXCEL"
                         class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-l-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" class='w-5 h-5' viewBox="0 0 48 48">
@@ -117,7 +81,16 @@
                         </svg>
                         Downloads File PDF dan Hapus
                     </button>
-
+                    <button type="button" @click="DeleteAll('Hapus Semua')"
+                    class="inline-flex bg-red-500 text-white items-center py-2 px-4 text-sm font-medium  rounded-r-md border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                        </path>
+                    </svg>
+                    Hapus Semua
+                </button>
                 </div>
 
             </div>
@@ -132,13 +105,11 @@
                         <thead>
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
-                                <th scope="col" class="p-4" @click="centangFileAll">
+                                <!-- <th scope="col" class="p-4" @click="centangFileAll">
                                     <div class="flex items-center">
-                                        <input id="checkbox-all-search" type="checkbox"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                        Mo.
                                     </div>
-                                </th>
+                                </th> -->
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">No.</th>
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">Kode</th>
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">NIK</th>
@@ -147,21 +118,21 @@
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">Tanggal Sewa</th>
                                 <th class="p-1.5 text-xs whitespace-nowrap border text-center">Tanggal Kembali</th>
                                 <th class="p-1 text-[0.67rem] whitespace-pre border">Penanggung Jawab</th>
-                                <th class="p-1 text-[0.67rem] whitespace-pre border">Denda</th>
-                                <th class="p-1.5 text-xs whitespace-nowrap border text-center">Status</th>
+                                <th class="p-1 text-[0.67rem] whitespace-pre border">Total</th>
+                                <!-- <th class="p-1.5 text-xs whitespace-nowrap border text-center">Status</th> -->
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr v-for="(mobil, index) in data.sewa" :key="mobil" :index="index"
                                 class="text-gray-700 dark:text-gray-400">
-                                <td class="p-4 w-4">
+                                <!-- <td class="p-4 w-4">
                                     <div class="flex items-center">
                                         <input id="checkbox-table-search-1" name="mycheckboxes" type="checkbox"
                                             v-model="valueCheck" :value="mobil.id"
                                             class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                         <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
                                     </div>
-                                </td>
+                                </td> -->
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{ (index + 1)}}</td>
 
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">{{mobil.kode}}</td>
@@ -181,13 +152,13 @@
                                 </td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
                                     {{ mobil.user.name }}</td>
-                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">Rp.
-                                    {{ Number(mobil.denda).toLocaleString() }}</td>
+                                <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border">
+                                    {{ rupiah(mobil.total) }}</td>
 
-                                <td class="md:px-4 md:py-3 px-2 py-2 text-xs border">
+                                <!-- <td class="md:px-4 md:py-3 px-2 py-2 text-xs border">
                                     <span
                                         class="px-2 py-1 font-semibold cursor-pointer leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">{{mobil.status}}</span>
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>
@@ -212,7 +183,12 @@ const data = defineProps({
         default: () => ({})
     }
 })
-
+const rupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR"
+            }).format(number);
+        }
 const formDate = useForm({
     min: '',
     max: ''
@@ -243,9 +219,7 @@ function cetakEXCEL(e) {
         .get(route('Laporan.CetakEXCEL', { min: formDate.min, max: formDate.max }), config)
         .then(response => {
             // console.log(response)
-            const url = window.URL.createObjectURL(new Blob([response.data], {
-                type: 'application/vnd.ms-excel'
-            }));
+            const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'file.xlsx');

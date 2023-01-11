@@ -16,7 +16,9 @@
                 <tr>
                     <td colspan="2"
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
-                        <a :href="`/storage/${sewa.pdf_url}`" class="text-blue-500 after:text-red-500" target="_blank">Link PDF</a></td>
+                        <a :href="`/storage/${sewa.pdf_url}`" class="text-blue-500 after:text-red-500"
+                            target="_blank">Link PDF</a>
+                    </td>
                 </tr>
                 <tr>
                     <td
@@ -32,7 +34,7 @@
                         Harga Sewa</td>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
-                        Rp. {{ reduceArray(sewa.harga) }}</td>
+                         {{ reduceArray(sewa.harga) }}</td>
                 </tr>
                 <tr>
                     <td
@@ -41,7 +43,7 @@
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
                         {{ sewa.unit }}/{{ sewa.nopol }}/{{
-                                sewa.tahun
+                            sewa.tahun
                         }} </td>
                 </tr>
                 <tr>
@@ -121,7 +123,7 @@
                         Jumlah Bayar</td>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
-                        Rp. {{ reduceArray(sewa.harga,sewa.waktusewa.lama_sewa ) }} </td>
+                         {{ reduceArray(sewa.harga,sewa.waktusewa.lama_sewa ) }} </td>
                 </tr>
                 <tr>
                     <td
@@ -129,7 +131,7 @@
                         Denda</td>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
-                        Rp. {{ reduceArray(sewa.denda) }} </td>
+                         {{ rupiah(sewa.denda) }} </td>
                 </tr>
                 <tr>
                     <td
@@ -137,7 +139,7 @@
                         Panjar</td>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
-                        Rp. {{ Number(sewa.panjar) }} </td>
+                         {{ rupiah(sewa.panjar) }} </td>
                 </tr>
                 <tr>
                     <td
@@ -145,7 +147,7 @@
                         Sisa Pembayaran</td>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
-                        Rp. {{ Number(sewa.sisa).toLocaleString() }} </td>
+                         {{ rupiah(sewa.sisa) }} </td>
                 </tr>
                 <tr>
                     <td
@@ -153,7 +155,7 @@
                         Total Bayar</td>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
-                        Rp. {{ reduceArray(sewa.harga , sewa.waktusewa.lama_sewa, sewa.denda) }} </td>
+                         {{ rupiah(Number(sewa.total)) }} </td>
                 </tr>
                 <tr>
                     <td
@@ -181,14 +183,29 @@ export default {
         Link,
         PrimaryButtonVue
     },
-    setup(){
-        function reduceArray(array = [], lamasewa = 1, denda = 0) {
-            var sisa = array.split(',');
-            var harga = sisa.reduce((el, b) => Number(el) + Number(b));
-            var total = (parseInt(harga) * lamasewa) + parseInt(denda);
-            return Number(total).toLocaleString();
+    setup() {
+        const rupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR"
+            }).format(number);
         }
-        return {reduceArray}
+        function reduceArray(array = [], lamasewa = 1, denda = 0) {
+            var sisa = array.split(/\,|\./);
+            var harga = sisa.reduce((el, b) => {
+               return Number(el) + Number(b);
+            });
+            var total = (parseInt(harga) * lamasewa) + parseInt(denda);
+            return rupiah(total);
+        }
+
+
+        // const money = new Array('200,000', '30.000', '20,000');
+        // const mony = '200,000.00';
+        // const reg = new RegExp('/\,|./');
+        // console.log(reduceArray(mony))
+
+        return { reduceArray, rupiah }
     },
     props: {
         sewa: {
@@ -196,14 +213,14 @@ export default {
             default: () => ({})
         },
     },
-    mounted(){
+    mounted() {
 
     },
     methods: {
         back() {
             window.history.back();
         },
-        statusBayar(value){
+        statusBayar(value) {
             var hasil = null;
             switch (value) {
                 case '1' || 1:

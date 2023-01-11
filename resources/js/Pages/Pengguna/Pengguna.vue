@@ -64,10 +64,9 @@
                             <td class="px-4 py-3 text-xs border">
                                 <ul class="space-y-1 max-w-md list-none list-inside text-gray-500 dark:text-gray-400">
                                     <li v-for=" item in user.sewa " :key="item">
-                                        <span
-                                            v-if="item.status_bayar == '3' || item.status_bayar == '2' || item.status_bayar == '4'"
-                                            class="font-semibold text-gray-900 dark:text-white">Rp. {{
-                                                reduceArray(item.sisa, 1,item.denda)
+                                        <span v-if="item.status_bayar == '3' || item.status_bayar == '2' || item.status_bayar == '4'"
+                                            class="font-semibold text-gray-900 dark:text-white">{{
+                                                reduceArray(item.sisa, item.waktusewa.lama_sewa,item.denda)
                                             }}</span>
                                         <span v-else class="font-semibold text-gray-900 dark:text-white">Rp.
                                             ------</span>
@@ -113,13 +112,19 @@ export default {
         Link
     },
     setup() {
+        const rupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR"
+            }).format(number);
+        }
         function reduceArray(array = [], lamasewa = 1, denda = 0) {
             var sisa = array.split(',');
             var harga = sisa.reduce((el, b) => Number(el) + Number(b));
             var total = (parseInt(harga) * lamasewa) + parseInt(denda);
-            return Number(total).toLocaleString();
+            return rupiah(total);
         }
-        return { reduceArray }
+        return { reduceArray,rupiah }
     },
     data() {
         return {

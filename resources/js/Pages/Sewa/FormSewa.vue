@@ -35,7 +35,7 @@ const jumlahPanjar = ref(0);
 const BayarLunas = ref(1);
 const FOTOKTP = ref(null);
 const jumlahMobil = ref(1);
-
+const jenisSewa = ref('Lepas');
 const Form = useForm({
     jenis_sewa: 'Lepas',
     foto_ktp: null,
@@ -64,10 +64,18 @@ const Form = useForm({
     jaminan: "KTP",
     panjar: '20000',
     sisa: '10000',
-    lunas: '',
+    lunas: 'Lunas',
     metode_bayar: 'Transfer',
     list_pengiriman: null,
-    ket_syarat: `<h3>Ket.</h3>
+    ket_syarat: ``,
+});
+
+
+
+watch(jenisSewa, value=>{
+    Form.jenis_sewa = value;
+    if(value == 'Lepas'){
+        Form.ket_syarat = `<h3>Ket.</h3>
             <ul>
                 <li>Apabila penyewa akan memperpanjang sewa kendaraan maka harus di
                     konfirmasi
@@ -93,10 +101,11 @@ const Form = useForm({
                     di bengkel.</li>
                 <li>Penyewa bersedia dituntut pidana apabila melanggar poin-poin diatas</li>
 
-            </ul>`,
-});
-
-
+            </ul>`
+    }else if(value == 'Kunci'){
+        Form.ket_syarat = ``;
+    }
+})
 // console.log(props)
 onMounted(()=>{
     if (props.data != null) {
@@ -372,11 +381,11 @@ const syaratKet = ref(``);
                         </Link>
                     </div>
                     <nav class="flex justify-center gap-4 pb-5 py-5">
-                        <PrimaryButtonVue @click="Form.jenis_sewa = 'Lepas'" type="button"
-                            v-bind:class="Form.jenis_sewa == 'Lepas' ? TabActive : TabNonActive">Lepas Kunci
+                        <PrimaryButtonVue @click="jenisSewa = 'Lepas'" type="button"
+                            v-bind:class="jenisSewa == 'Lepas' ? TabActive : TabNonActive">Lepas Kunci
                         </PrimaryButtonVue>
-                        <PrimaryButtonVue @click="Form.jenis_sewa = 'Kunci'" type="button"
-                            v-bind:class="Form.jenis_sewa == 'Kunci' ? TabActive : TabNonActive">Dengan Driver
+                        <PrimaryButtonVue @click="jenisSewa = 'Kunci'" type="button"
+                            v-bind:class="jenisSewa == 'Kunci' ? TabActive : TabNonActive">Dengan Driver
                         </PrimaryButtonVue>
                     </nav>
 
