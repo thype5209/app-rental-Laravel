@@ -123,6 +123,7 @@ function CloseFlash() {
 
 // Modal
 var ModalPerpanjang = ref(false);
+const tglKembali = ref(null);
 
 const PerpanjangForm = useForm({
     tgl_sewa: null,
@@ -137,6 +138,7 @@ function isOpenTgl(dataID) {
         return id == dataID;
     });
     PerpanjangForm.tgl_sewa = data.waktusewa.tgl_sewa;
+    tglKembali.value = data.waktusewa.tgl_kembali;
     PerpanjangForm.tgl_kembali = data.waktusewa.tgl_kembali;
     PerpanjangForm.jam_kembali = data.waktusewa.jam_kembali;
     PerpanjangForm.lama_sewa = data.waktusewa.lama_sewa;
@@ -147,6 +149,10 @@ function isOpenTgl(dataID) {
 function isCloseTgl() {
     ModalPerpanjang.value = false;
 }
+watch(tglKembali, value=>{
+    PerpanjangForm.tgl_kembali = value;
+    PerpanjangForm.lama_sewa = lamaSewa(PerpanjangForm.tgl_sewa, value)
+})
 function submitTGL() {
     PerpanjangForm.put(route("Sewa.updateTanggal", PerpanjangForm.sewaid), {
         onFinish: () => {
@@ -434,7 +440,7 @@ function statusBayar(value) {
                 </div>
             </Modal>
             <!-- Modal Perpanjang -->
-            <Modal v-bind:show="ModalPerpanjang" @close="isClose()" :max-width="`md`">
+            <Modal v-bind:show="ModalPerpanjang" @close="isCloseTgl()" :max-width="`md`">
                 <div class="relative w-full h-full max-w-md md:h-auto">
                     <!-- Modal content -->
                     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -467,7 +473,7 @@ function statusBayar(value) {
                                 <div>
                                     <InputLabelVue for="email">Tanggal Kembali</InputLabelVue>
                                     <TextInputVue type="date" name="tgl_kembali" id="tgl_kembali"
-                                        v-model="PerpanjangForm.tgl_kembali" />
+                                        v-model="tglKembali" />
                                 </div>
                                 <div>
                                     <InputLabelVue for="email">Jam Kembali</InputLabelVue>
