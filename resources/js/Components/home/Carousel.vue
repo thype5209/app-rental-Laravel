@@ -29,9 +29,9 @@ function sendWA(){
                         </div>
                         <button type="button" @click="sendWA()"
                             class="w-full text-white bg-default-yellow hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm p-1.5 md:px-5 md:py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-default-yellow dark:focus:ring-yellow-600 transition-colors">Sewa Mobil</button>
-                        <div class="text-xs md:text-sm font-medium text-gray-500 dark:text-gray-300">
+                        <!-- <div class="text-xs md:text-sm font-medium text-gray-500 dark:text-gray-300">
                             Status Sewa? <a href="#" class="text-default-yellow hover:underline">Harga Sewa</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </slide>

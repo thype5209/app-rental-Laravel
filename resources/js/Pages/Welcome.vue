@@ -2,8 +2,13 @@
 import CardMobil from '@/Components/home/CardMobil.vue'
 import CarouselVue from '@/Components/home/Carousel.vue';
 import { Link, Head } from '@inertiajs/inertia-vue3';
-import { defineProps } from 'vue';
-//
+import { defineProps, onMounted } from 'vue';
+//import { onMounted } from "vue";
+import AOS from "aos";
+
+onMounted(() => {
+    AOS.init();
+})
 var scrol = window.scrollY;
 const ActiveNav = "sm:fixed z-10 bg-default-dark w-full  md:w-[80%] md:h-20 top-10 text-white rounded-b-md transition-all";
 const NonActiveNav = "sm:fixed z-10 bg-default-dark w-full md:w-[80%] md:h-20 top-0 text-white rounded-b-md transition-all";
@@ -102,9 +107,9 @@ const data = defineProps({
                         <ul class="flex flex-row gap-10">
                             <li><a href="#home">Home</a></li>
                             <li>
-                                <a href="#about">About</a>
+                                <a href="#about">Tentang Kami</a>
                             </li>
-                            <li><a href="#mobil">Mobil</a></li>
+                            <li><a href="#mobil">Jenis Mobil</a></li>
                         </ul>
                         <div>
                             <Link :href="route('login')"
@@ -117,19 +122,21 @@ const data = defineProps({
             </div>
         </div>
 
-        <div id="home" class="relative w-full h-full flex flex-col justify-center items-center">
-            <div class="carousel w-full md:w-[28rem] max-w-2xl bg-default-dark px-3 py-5 rounded-md">
-                <img :src="`/img/logo.png`" />
-                <h3 class="text-default-blue shadow-inner text-base md:text-5xl font-extrabold whitespace-nowrap">CV. <span
-                        class="font-bold text-white">Jasa</span><span class="text-default-blue font-bold">|</span><span
-                        class="text-white font-bold text-base md:text-4xl uppercase">Saudagar</span>
-                </h3>
+        <div id="home" class="relative w-full h-full md:flex flex-row justify-center items-center gap-4 bg-default-dark md:bg-transparent">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 bg-default-dark px-10 rounded-xl " data-aos="zoom-in-up">
+                <div class="carousel w-full md:w-[28rem] max-w-2xl bg-default-dark px-3 py-5 rounded-md">
+                    <img :src="`/img/logo.png`" />
+                    <h3 class="text-default-blue shadow-inner text-base md:text-5xl font-extrabold whitespace-nowrap">CV. <span
+                            class="font-bold text-white">Jasa</span><span class="text-default-blue font-bold">|</span><span
+                            class="text-white font-bold text-base md:text-4xl uppercase">Saudagar</span>
+                    </h3>
 
-            </div>
-            <div class=" max-w-xl text-justify font-semibold leading-6 drop-shadow-sm" >
-                <p class=" drop-shadow-md shadow-black text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veniam culpa dolorum fugiat obcaecati,
-                    maiores cumque repellendus corporis alias maxime aliquid magnam soluta quod, cum dicta qui facere
-                    earum voluptas molestias.</p>
+                </div>
+                <div class=" max-w-md text-justify font-semibold leading-6 drop-shadow-sm" >
+                    <p class=" drop-shadow-md shadow-black text-white text-sm">
+                        "Jadikan perjalanan Anda berikutnya nyaman dan bebas stres dengan <span class="text-default-yellow font-bold">Jasa Saudagar</span> Rental. Kami menawarkan berbagai macam kendaraan, dari pilihan ekonomis hingga mewah, semuanya dengan harga yang tidak ada duanya. Baik Anda bepergian untuk bisnis atau liburan, kami memiliki mobil yang sempurna untuk Anda. Anda. Dan dengan layanan pelanggan terbaik kami dan Bantuan Pinggir Jalan 24/7, Anda dapat merasa tenang mengetahui bahwa kami mendukung Anda. Pesan sekarang dan biarkan kami yang mengemudi."
+                    </p>
+                </div>
             </div>
         </div>
     </div>
