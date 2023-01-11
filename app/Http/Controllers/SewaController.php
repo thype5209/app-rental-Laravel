@@ -91,10 +91,7 @@ class SewaController extends Controller
      */
     public function create()
     {
-        $mobil = Mobil::where('status', '=', '2')->get();
-        if ($mobil->count() < 1) {
-            return Redirect::back()->with('error', 'Maaf Kendaraan Yang Tersedia Kosong atau Dalam Perbaikan');
-        }
+
         $pengguna = Pengguna::all();
         $sopir = Sopir::all();
         return Inertia::render('Sewa/FormSewa', [
