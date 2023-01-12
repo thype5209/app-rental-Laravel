@@ -52,7 +52,7 @@ class UserController extends Controller
                 'create' => Auth::user()->can('user create'),
                 'edit' => Auth::user()->can('user edit'),
                 'delete' => Auth::user()->can('user delete'),
-            ]
+            ],
         ]);
     }
     public function create()
@@ -64,6 +64,8 @@ class UserController extends Controller
                 'delete' => Auth::user()->can('user delete'),
             ],
             'role'=> Role::query()->orderBy('name', 'asc')->get(),
+            'formdata'=> Request::input('formCEK')
+
         ]);
     }
 
@@ -111,6 +113,8 @@ class UserController extends Controller
                 'delete' => Auth::user()->can('user delete'),
             ],
             'role'=> Role::query()->orderBy('name', 'asc')->get(),
+            'formdata'=> Request::input('formCEK')
+
         ]);
     }
 
@@ -123,9 +127,9 @@ class UserController extends Controller
      */
     public function update(User $user, $id)
     {
-        Request::validate([
+       $validate =  Request::validate([
             'nama' => 'required|string',
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
             'password' => 'nullable',
             'role'=> 'required'
         ]);
@@ -133,11 +137,20 @@ class UserController extends Controller
         // DB::table('model_has_roles')->create([
         //     'model_id'=> $id,
         // ]);
-        $user->find($id)->update([
-            'name' => Request::input('nama'),
-            'email' => Request::input('email'),
-            'password' => bcrypt(Request::input('password')) ?? null,
-        ]);
+        // dd($user);
+        if(Request::input('password') == null){
+            $user->find($id)->update([
+                'name' => Request::input('nama'),
+                'email' => Request::input('email'),
+                'password'=> $user->find($id)->password,
+            ]);
+        }else{
+            $user->find($id)->update([
+                'name' => Request::input('nama'),
+                'email' => Request::input('email'),
+                'password' => bcrypt(Request::input('password', $user->find($id)->password)),
+            ]);
+        }
         $user->find($id)->assignRole(['name'=>Request::input('role')]);
 
         return Redirect::route('User.index')->with('success', ' Berhasil Di Edit!!!!');

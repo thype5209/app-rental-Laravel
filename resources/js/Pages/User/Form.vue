@@ -11,6 +11,7 @@ import SelectVue from '@/Components/Select.vue';
 const data = defineProps({
     user: Object,
     role: Object,
+    formdata: Boolean,
 })
 console.log(data.user);
 const UserForm = useForm({
@@ -53,7 +54,7 @@ function submit() {
             <ModalVue :show="true">
                 <form @submit.prevent="submit">
                     <div class="flex flex-col -mb-8  p-8">
-                        <div class="flex flex-col justify-center">
+                        <div class="flex flex-col justify-center" >
                             <InputLabelVue>Nama</InputLabelVue>
                             <TextInputVue v-model="UserForm.nama" placeholder="Name" />
                             <InputErrorVue :message="UserForm.errors.nama" />
@@ -63,7 +64,7 @@ function submit() {
                             <TextInputVue v-model="UserForm.email" placeholder="email" />
                             <InputErrorVue :message="UserForm.errors.email" />
                         </div>
-                        <div class="flex flex-col justify-center">
+                        <div class="flex flex-col justify-center" v-show="data.formdata">
                             <InputLabelVue>Password</InputLabelVue>
                             <TextInputVue v-model="UserForm.password" placeholder="..." />
                             <p v-if="data.user != null" class="text-xs text-gray-400">Kosongkan Jika Tidak Ingin Di Ubah</p>

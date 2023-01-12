@@ -61,7 +61,7 @@ const props = defineProps({
                                     class="py-4 px-6"
                                 >
                                     <div type="justify-start lg:justify-end" no-wrap>
-                                        <Link :href="route('User.edit', {id: users.id})">
+                                        <Link :href="route('User.edit', {id: users.id})"  :data="{formCEK: false}">
                                             <PrimaryButton class="ml-4 bg-default-blue px-2 py-1 rounded text-white cursor-pointer" v-if="can.edit">
                                                 Edit
                                             </PrimaryButton>
@@ -69,6 +69,11 @@ const props = defineProps({
                                         <Link :href="route('User.destroy', {id: users.id})">
                                             <PrimaryButton class="ml-4 bg-red-500 px-2 py-1 rounded text-white cursor-pointer" v-if="can.delete">
                                                 Delete
+                                            </PrimaryButton>
+                                        </Link>
+                                        <Link :href="route('User.edit', {id: users.id})" :data="{formCEK: true}">
+                                            <PrimaryButton class="ml-4 bg-red-500 px-2 py-1 rounded text-white cursor-pointer" v-if="can.delete">
+                                                Ganti Sandi
                                             </PrimaryButton>
                                         </Link>
                                     </div>
