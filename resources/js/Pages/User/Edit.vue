@@ -14,11 +14,11 @@ const data = defineProps({
     formdata: String,
 })
 const UserForm = useForm({
-    nama: null ,
-    email: null ,
-    password: null ,
-    role: null,
-    can: null ,
+    nama: data.user == null ? '' : data.user.name,
+    email: data.user == null ? '' : data.user.email,
+    password: data.user == null ? '' : data.user.password,
+    role: data.user == null ? '' : data.user.roles[0].name,
+    can: data.user == null ? '' : data.user.role,
 })
 
 const role = ref(null);
@@ -53,23 +53,23 @@ function submit() {
             <ModalVue :show="true">
                 <form @submit.prevent="submit">
                     <div class="flex flex-col -mb-8  p-8">
-                        <div class="flex flex-col justify-center" >
+                        <div class="flex flex-col justify-center" v-show="data.formdata === 'false'" >
                             <InputLabelVue>Nama</InputLabelVue>
                             <TextInputVue v-model="UserForm.nama" placeholder="Name" />
                             <InputErrorVue :message="UserForm.errors.nama" />
                         </div>
-                        <div class="flex flex-col justify-center">
+                        <div class="flex flex-col justify-center" v-show="data.formdata === 'false'">
                             <InputLabelVue>email</InputLabelVue>
                             <TextInputVue v-model="UserForm.email" placeholder="email" />
                             <InputErrorVue :message="UserForm.errors.email" />
                         </div>
-                        <div class="flex flex-col justify-center" >
+                        <div class="flex flex-col justify-center" v-show="data.formdata === 'true'">
                             <InputLabelVue>Password</InputLabelVue>
                             <TextInputVue v-model="UserForm.password" placeholder="..." />
                             <p v-if="data.user != null" class="text-xs text-gray-400">Kosongkan Jika Tidak Ingin Di Ubah</p>
                             <InputErrorVue :message="UserForm.errors.password" />
                         </div>
-                        <div class="flex flex-col justify-center">
+                        <div class="flex flex-col justify-center" v-show="data.formdata === 'false'">
                             <InputLabelVue>role</InputLabelVue>
                             <span>{{role}}</span>
                             <SelectVue  @change="chageRole($event)" v-model="UserForm.role">

@@ -64,7 +64,7 @@ class UserController extends Controller
                 'delete' => Auth::user()->can('user delete'),
             ],
             'role'=> Role::query()->orderBy('name', 'asc')->get(),
-            'formdata'=> Request::input('formCEK')
+            'formdata'=> 'true',
 
         ]);
     }
@@ -105,7 +105,7 @@ class UserController extends Controller
     }
     public function edit(User $user, $id)
     {
-        return Inertia::render('User/Form', [
+        return Inertia::render('User/Edit', [
             'user'=> $user->with(['roles'])->find($id),
             'can' => [
                 'create' => Auth::user()->can('user create'),
@@ -146,8 +146,6 @@ class UserController extends Controller
             ]);
         }else{
             $user->find($id)->update([
-                'name' => Request::input('nama'),
-                'email' => Request::input('email'),
                 'password' => bcrypt(Request::input('password', $user->find($id)->password)),
             ]);
         }
