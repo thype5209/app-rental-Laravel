@@ -160,8 +160,8 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(User $user, $id)
     {
-        //
+        $user->find($id)->delete();
     }
 }
