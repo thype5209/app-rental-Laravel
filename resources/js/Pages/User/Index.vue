@@ -66,7 +66,7 @@ const props = defineProps({
                                                 Edit
                                             </PrimaryButton>
                                         </Link>
-                                        <Link :href="route('User.destroy',{id: users.id})" method="delete" :data="{id: users.id}" as="button">
+                                        <Link :href="route('User.destroy',{id: users.id})" method="delete" :data="{id: users.id}" as="button" v-if="users.id !== 1">
                                             <PrimaryButton class="ml-4 bg-red-500 px-2 py-1 rounded text-white cursor-pointer" v-if="can.delete">
                                                 Delete
                                             </PrimaryButton>
