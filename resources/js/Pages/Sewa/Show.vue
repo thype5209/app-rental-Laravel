@@ -31,6 +31,17 @@
                 <tr>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap">
+                        Sopir </td>
+                    <td v-if="sewa.sopir != null"
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
+                        {{ sewa.sopir.nama }}</td>
+                    <td v-else
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
+                        --------</td>
+                </tr>
+                <tr>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap">
                         Kode Sewa</td>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">

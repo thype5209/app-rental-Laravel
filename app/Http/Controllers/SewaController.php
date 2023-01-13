@@ -171,7 +171,7 @@ class SewaController extends Controller
     public function show(Sewa $sewa, $id)
     {
         return Inertia::render('Sewa/Show', [
-            'sewa' => $sewa->with(['pengguna', 'waktusewa', 'user'])->find($id)
+            'sewa' => $sewa->with(['pengguna', 'waktusewa', 'user','sopir'])->find($id)
         ]);
     }
 
