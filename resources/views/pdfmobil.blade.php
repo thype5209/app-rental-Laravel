@@ -27,7 +27,7 @@
         <tr>
             <td class="text-left font-bold" colspan="2">&nbsp;</td>
             <td class="text-left font-bold" colspan="1">TANGGAL</td>
-            <td class="text-left font-bold" colspan="1">: {{ $tgl }}</td>
+            <td class="text-left font-bold" colspan="1">: {{ $data->tgl_file }}</td>
         </tr>
     </table>
 
