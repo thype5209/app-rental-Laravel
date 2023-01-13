@@ -72,7 +72,7 @@ const props = defineProps({
                                             </PrimaryButton>
                                         </Link>
                                         <Link :href="route('User.edit', {id: users.id})" :data="{formCEK: true}" >
-                                            <PrimaryButton class="ml-4 bg-red-500 px-2 py-1 rounded text-white cursor-pointer" v-if="users.id === $page.props.auth.user.id">
+                                            <PrimaryButton class="ml-4 bg-red-500 px-2 py-1 rounded text-white cursor-pointer" v-if="users.id === $page.props.auth.user.id || $page.props.auth.user.roles[0].name === 'super-admin'">
                                                 Ganti Sandi
                                             </PrimaryButton>
                                         </Link>
