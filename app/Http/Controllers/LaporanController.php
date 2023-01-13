@@ -271,7 +271,7 @@ class LaporanController extends Controller
     public function createSopir($request){
         $sopir = Sopir::where('nik', $request->sopir_nik)->get();
         // dd($request->all());
-        if($sopir->count() < 1){
+        if($sopir->count() < 1 && $request->sopir_nik != null && $request->sopir_alamat != null &&$request->sopir_no_hp != null){
             Sopir::create([
                 'nama'=> $request->nama_sopir,
                 'nik'=> $request->sopir_nik,

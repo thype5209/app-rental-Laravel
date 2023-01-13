@@ -74,15 +74,21 @@ class MobilController extends Controller
             'harga' => ['required', 'numeric'],
             'nopol' => ['required', 'string'],
         ]);
-        $nama1 = "fotoMobil/" . $request->unit . '-' . $request->foto1->getClientOriginalName();
-        $nama2 = "fotoMobil/" . $request->unit . '-' . $request->foto2->getClientOriginalName();
-        $nama3 = "fotoMobil/" . $request->unit . '-' . $request->foto3->getClientOriginalName();
-        $nama4 = "fotoMobil/" . $request->unit . '-' . $request->foto4->getClientOriginalName();
+        $nama1 = null;
+        $nama2 = null;
+        $nama3 = null;
+        $nama4 = null;
+        if ($request->foto1 != null && $request->foto2 && $request->foto3 && $request->foto4) {
+            $nama1 = "fotoMobil/" . $request->unit . '-' . $request->foto1->getClientOriginalName();
+            $nama2 = "fotoMobil/" . $request->unit . '-' . $request->foto2->getClientOriginalName();
+            $nama3 = "fotoMobil/" . $request->unit . '-' . $request->foto3->getClientOriginalName();
+            $nama4 = "fotoMobil/" . $request->unit . '-' . $request->foto4->getClientOriginalName();
 
-        $request->foto1->storeAs('public', $nama1);
-        $request->foto2->storeAs('public', $nama2);
-        $request->foto3->storeAs('public', $nama3);
-        $request->foto4->storeAs('public', $nama4);
+            $request->foto1->storeAs('public', $nama1);
+            $request->foto2->storeAs('public', $nama2);
+            $request->foto3->storeAs('public', $nama3);
+            $request->foto4->storeAs('public', $nama4);
+        }
         Mobil::create([
             'unit' => $request->unit,
             'harga' => $request->harga,
@@ -126,9 +132,9 @@ class MobilController extends Controller
     {
         return Inertia::render('Mobil/RiwayatMobil', [
             'riwayat' => Sewa::where('nopol', $mobil->find($id)->nopol)
-            ->with(['waktusewa', 'mobil','user','pengguna'])
-            ->where('status', '=', 'Selesai')
-            ->paginate(10),
+                ->with(['waktusewa', 'mobil', 'user', 'pengguna'])
+                ->where('status', '=', 'Selesai')
+                ->paginate(10),
             'id' => $id,
         ]);
     }

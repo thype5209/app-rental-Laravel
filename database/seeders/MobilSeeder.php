@@ -17,20 +17,20 @@ class MobilSeeder extends Seeder
      */
     public function run()
     {
-        Mobil::factory(10)
-        ->has(Sewa::factory()
-            ->count(1)
-            ->state(function (array $attributes, Mobil $mobil) {
-                return [
-                    'nopol' => $mobil->nopol,
-                    'unit' => $mobil->unit,
-                    'tahun' => $mobil->tahun,
-                    'harga' => $mobil->harga,
-                ];
-            })->has(WaktuSewa::factory()->state(function (array $attributes, Sewa $sewa) {
-                return [
-                    'sewa_id' => $sewa->id,
-                ];
-            })))->create();
+        Mobil::factory(10)->create();
+        // ->has(Sewa::factory()
+        //     ->count(1)
+        //     ->state(function (array $attributes, Mobil $mobil) {
+        //         return [
+        //             'nopol' => $mobil->nopol,
+        //             'unit' => $mobil->unit,
+        //             'tahun' => $mobil->tahun,
+        //             'harga' => $mobil->harga,
+        //         ];
+        //     })->has(WaktuSewa::factory()->state(function (array $attributes, Sewa $sewa) {
+        //         return [
+        //             'sewa_id' => $sewa->id,
+        //         ];
+        //     })))->create();
     }
 }

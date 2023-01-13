@@ -155,7 +155,7 @@
                             <td class=" whitespace-nowrap mb-0 px-3">Nilai Sewa </td>
                             <td>
                                 <span class=" whitespace-nowrap mb-0 "><span class="font-normal">:</span> Rp.
-                                    {{ $data->nilaisewahari[$i] }} /Per Hari</span>
+                                    {{  number_format($string->parseToNumber($data->nilaisewahari[$i])) }} /Per Hari</span>
                             </td>
                         </tr>
                         <tr class=" p-0 m-0">
@@ -167,7 +167,7 @@
                             <td class=" whitespace-nowrap mb-0 ">Total Sewa </td>
                             <td>
                                 <span class=" whitespace-nowrap mb-0 px-3"><span class="font-normal">:</span> Rp.
-                                    {{ $string->parseToNumber($data->nilaisewahari[$i]) * intval($data->lama_sewa) }}</span>
+                                    {{ number_format($string->parseToNumber($data->nilaisewahari[$i]) * intval($data->lama_sewa)) }}</span>
                             </td>
                         </tr>
                         <tr class=" p-0 m-0">
@@ -205,7 +205,7 @@
                     </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0">Total Bayar </td>
-                        <td class=" whitespace-nowrap mb-0 p-0"> : {{ $data->total }}
+                        <td class=" whitespace-nowrap mb-0 p-0"> :Rp. {{ $data->total }}
                         </td>
                     </tr>
 
