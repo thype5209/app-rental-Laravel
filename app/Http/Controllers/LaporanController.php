@@ -40,12 +40,12 @@ class LaporanController extends Controller
     public function saveSewaCetak(Request $request)
     {
         $sewa = Sewa::where('kode', $request->kode)->with(['waktusewa', 'pengguna', 'user', 'sopir'])->first();
-        if($sewa == null){
+        if ($sewa == null) {
             $sewa = Sewa::with(['waktusewa', 'pengguna', 'user', 'sopir'])->latest()->first();
         }
         // dd($sewa);
         $sopir_id = [];
-        if($sewa->sopir_id != null || $sewa->sopir_id != ''){
+        if ($sewa->sopir_id != null || $sewa->sopir_id != '') {
             $sopir_id = explode(',', $sewa->sopir_id);
         }
         $sopir = Sopir::whereIn('id', $sopir_id)->get();
@@ -53,7 +53,7 @@ class LaporanController extends Controller
         return Inertia::render('Laporan/CetakSewaSave', [
             'pdf' => $sewa->pdf_url,
             'sewa' => $sewa,
-            'sopir'=> $sopir,
+            'sopir' => $sopir,
         ]);
     }
 
@@ -105,7 +105,7 @@ class LaporanController extends Controller
             // Simpan File PDF Ke Public Storage
             Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
 
-            return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF, 'kode'=> $kode])->with('success', 'Berhasil Disimpan SPK=' . $kode);
+            return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF, 'kode' => $kode])->with('success', 'Berhasil Disimpan SPK=' . $kode);
         }
     }
 
@@ -181,7 +181,33 @@ class LaporanController extends Controller
             'tgl_kembali' => '2022-12-10',
             'jam_sewa' => '00:00',
             'jam_kembali' => '00:00',
-            'ket_syarat' => '00:00',
+            'ket_syarat' => '<h3>Ket.</h3>
+            <ul>
+                <li>Apabila penyewa akan memperpanjang sewa kendaraan maka harus di
+                    konfirmasi
+                    ke pihak rental.</li>
+                <li>Jika penyewa terlamabat mengembalikan mobil dalam waktu yang di
+                    tentukan
+                    maka akan di kenakan biaya over time 10% per jam darai harga sewa per harinya</li>
+                <li>Apa bila pemakain sewa kendaraan tidak sesuai dengan Tujuan penyewa
+                    yang di
+                    tentukan penyewa, maka akan di kenakan biaya tambahan sesuai dengan zona-zona yang berlaku.
+                </li>
+            </ul>
+            <h3>Penyewa bersedia menyanggupi syarat dan ketentuan penyewa kendaraan di bawah
+                ini
+                :.</h3>
+            <ul>
+                <li>Bertanggung jawab segala kerusakan, kehilangan kendaraan atau bagian-bagiannya</li>
+                <li>Kendaraan tersebut tidak dapat digadaikan atau merubah bentuk aslinya</li>
+                <li>Pemilik tidak bertanggung jawab atas kegiatan operasionalpenyewa kendaraan</li>
+                <li>Penyewa tidak di benarkan membawa kendaraan selain tujuan diatas</li>
+                <li>Melunasi sewa mobil dan segala bentuk tagihan jika terjadi kerusakan dan biaya kerugian
+                    selama
+                    di bengkel.</li>
+                <li>Penyewa bersedia dituntut pidana apabila melanggar poin-poin diatas</li>
+
+            </ul>',
             'lama_sewa' => '10',
             'tujuan' => 'Bulukumba',
             'jaminan' => 'KTP',
@@ -194,6 +220,7 @@ class LaporanController extends Controller
             'tahun' => ['2022', '2021'],
             'panjar' => '0',
             'sisa' => '0',
+            'total' => '0',
 
         ];
         $req = (object) $data;
@@ -206,9 +233,10 @@ class LaporanController extends Controller
 
         // Tanggal
         $carbon = $this->today();
-        $mobil = Mobil::whereIn('nopol', $req->nopol)->latest()->first();
+
         // Melakukan Load Data PDF
-        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
+        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode]);
+        $pdf->setOption("isPhpEnabled", true);
         return $pdf->stream();
     }
     /**
@@ -257,7 +285,6 @@ class LaporanController extends Controller
      */
     public function sewaCreate($request, $kode, $pdf_url)
     {
-        $status_bayar = $request->lunas;
         $sewa = Sewa::create([
             'jenis_sewa' => $request->jenis_sewa,
             'kode' => $kode,
@@ -277,7 +304,7 @@ class LaporanController extends Controller
             'status' => 'Sewa',
             'sisa' => abs($request->sisa),
             'panjar' => abs($request->panjar),
-            'status_bayar' => $status_bayar,
+            'status_bayar' => $request->lunas,
             'metode_bayar' => $request->metode_bayar,
             'list_pengiriman' => $request->list_pengiriman,
             'total' => intval(array_sum($this->parseStringToNumber($request->nilaisewahari))) * intval($request->lama_sewa),
@@ -293,7 +320,7 @@ class LaporanController extends Controller
         Mobil::whereIn('id', $request->mobil_id)->update([
             'status' => '1',
         ]);
-        if($request->sopir_id != null){
+        if ($request->sopir_id != null) {
             Sopir::whereIn('id', $request->sopir_id)->update(['status' => '2']);
         }
     }
@@ -302,7 +329,7 @@ class LaporanController extends Controller
         $nilai = null;
         foreach ($string_array as $item) {
             $tambah_arr = null;
-            if (strpos($item, ',') !== false) {
+            if (strpos($item, ',') !== false || strpos($item, '.') !== false) {
                 $hasil = explode(',', $item);
                 for ($i = 0; $i < count($hasil); $i++) {
                     $tambah_arr .= $hasil[$i];
@@ -312,6 +339,23 @@ class LaporanController extends Controller
 
                 $nilai[] = $item;
             }
+        }
+        return $nilai;
+    }
+    public function parseToNumber($item)
+    {
+        $nilai = null;
+
+        $tambah_arr = null;
+        if (strpos($item, ',') !== false || strpos($item, '.') !== false) {
+            $hasil = explode(',', $item);
+            for ($i = 0; $i < count($hasil); $i++) {
+                $tambah_arr .= $hasil[$i];
+            }
+            $nilai = $tambah_arr;
+        } else {
+
+            $nilai = $item;
         }
         return $nilai;
     }
@@ -330,7 +374,7 @@ class LaporanController extends Controller
         if (Storage::disk('public')->exists('PdfFile/PDFExport.pdf')) {
             Storage::disk('public')->delete('PdfFile/PDFExport.pdf');
         }
-
+        $pdf->set_option("isPhpEnabled", true);
         $pdf = PDF::loadView('cetak-pdf', ['data' => $data]);
         Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
         return response()->download($filePATH);

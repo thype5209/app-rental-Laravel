@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('panjar',30)->nullable();
             $table->string('total',30);
             $table->string('metode_bayar',30);
-            $table->string('list_pengiriman',100);
+            $table->string('list_pengiriman',100)->nullable();
             $table->enum('status_bayar',['1','2','3', '4'])->comment('1 = Lunas, 2 = Denda, 3=belum lunas, 4= menunggak Pembayaran');
 
             $table->timestamps();

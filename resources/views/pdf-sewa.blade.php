@@ -21,6 +21,15 @@
         padding-right: 4rem;
     }
 
+    .ket_syarat {
+        text-align: left;
+    }
+
+    .ket_syarat ul {
+        list-style: disc;
+        margin-left: 30px;
+    }
+
     .border {
         border: 1px solid #000;
     }
@@ -49,7 +58,7 @@
 
     .table-header {
         position: relative;
-        left: 7em;
+        left: 6em;
     }
 
     span {
@@ -59,358 +68,237 @@
     .page-break {
         page-break-after: always;
     }
+
+    @page {
+        margin: 20px 30px 40px 50px;
+    }
+    #numberpage:after { content: counter(page, decimal); }
+    /* section.template { position: fixed; right: 0px; bottom: 10px; text-align: center;} */
 </style>
 
 <body>
-    <section class=" md:w-[70%] py-5 px-3 bg-white sm:px-10 md:px-20">
-        <!-- Head -->
-        <div class="w-full header opacity-80 border-b-4 border-black py-3">
-            <table class=" bg-white table  table-header">
-                <tr>
-                    <td class="text-right ">
-                        <img src="{{ public_path('img/logo.png') }}" width="100" height="100" class="w-1/2 "
-                            alt="">
-                    </td>
-                    <td class="text-left  max-w-md">
-                        <ul class="text-left">
-                            <li class="text-orange-500 font-bold text-center">CV. JASA SAUDAGAR</li>
-                            <li class="font-bold text-base text-center">JL. MASJID RAYA No. 72 A Kab. GOWA</li>
-                            <li class=" text-center"><span>Tlp( 0411 )8985984, mobile 0811 4145 999</span></li>
-                            <li class=" text-center">
-                                <span>Email : <a style="color: blue"
-                                        href="mailto:cvjasasaudagar@gmail.com">cvjasasaudagar@gmail.com</a>
-                                </span>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <table class="table w-full bg-white">
-            <tr class=" p-0 m-0">
-                <td colspan="4" class="text-center flex flex-col ">
-                    <u><span class="text-center font-bold underline">SURAT PERNYATAAN SEWA KENDARAAN</span></u><br>
-                    <span class="font-semibold">No. SPK:{{ $kode }}</span>
-                </td>
-            </tr>
-
-        </table>
-        <table class="table w-max sm:w-1/4 md:w-1/3 mb-3">
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nik }}
-                </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Nama</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->nama }}
-                </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Tempat/Tanggal Lahir</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                    {{ $data->tempat_lahir }}/{{ $data->tgl_lahir }} </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Pekerjaan</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:{{ $data->pekerjaan }}
-                </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Alamat</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->alamat }}
-                </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">No. HP</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->no_hp }}
-                </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">No. HP Kerabat Lain</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                    {{ $data->no_hp_lain }}</td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Sosial Media</td>
-                <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {{ $data->sosial }}
-                </td>
-            </tr>
-        </table>
-        <p class="w-full text-justify">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan spesifikasi kendaraan sebagai berikut.</p>
-        @for ($i = 0; $i < count($data->nopol); $i++)
-            <table class="table w-max ml-5 mb-5 h-max text-justify ">
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">Jenis Kendaraan </td>
-                    <td class=" whitespace-nowrap mb-0 p-0"> :
-                        {{ $data->unit[$i] }}
-                    </td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">No. Polisi </td>
-                    <td class=" whitespace-nowrap mb-0 p-0"> :
-                        {{ $data->nopol[$i] }}
-                    </td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">Tahun </td>
-                    <td class=" whitespace-nowrap mb-0 p-0"> :
-                        {{ $data->tahun[$i] }}
-                    </td>
-                </tr>
-                <tr class=" p-0 m-0">
-                    <td class=" whitespace-nowrap mb-0 p-0">Nilai Sewa </td>
-                    <td>
-                        <span class=" whitespace-nowrap mb-0 p-0"><span class="font-normal">:</span> Rp.
-                            {{ $data->nilaisewahari[$i] }} /Per Hari</span>
-                        <span class=" whitespace-nowrap mb-0 p-0"><span class="font-normal">:</span> Rp.
-                            {{ $data->nilaisewabulan[$i] }} /Per Bulan</span>
-
-                    </td>
-                </tr>
-            </table>
-        @endfor
-        <table class="table w-max  mb-5 h-max text-justify ">
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Tanggal/Jam Sewa </td>
-                <td class=" whitespace-nowrap mb-0 p-0"> : {{ $data->tgl_sewa }}/{{ $data->jam_sewa }} WITA
-                </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Tanggal/Jam Kembali </td>
-                <td class=" whitespace-nowrap mb-0 p-0"> : {{ $data->tgl_kembali }}/{{ $data->jam_kembali }} WITA
-                </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Jumlah Hari </td>
-                <td class=" whitespace-nowrap mb-0 p-0"> : {{ $data->lama_sewa }}
-                </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Tujuan </td>
-                <td class=" whitespace-nowrap mb-0 p-0 "> : {{ $data->tujuan }} </td>
-            </tr>
-            <tr class=" p-0 m-0">
-                <td class=" whitespace-nowrap mb-0 p-0">Jaminan </td>
-                <td class=" whitespace-nowrap mb-0 p-0 "> : {{ $data->jaminan }} </td>
-            </tr>
-        </table>
-
-        <!-- Keterangan -->
-        <div>
-            {!! $data->ket_syarat !!}
-        </div>
-        <div class="container mx-auto px-20" style="padding-left: 1rem; padding-right:1rem;">
-            <table class="table mt-3 border w-full">
-                <tr>
-                    <th class="py-1 px-2 capitalize bg-blue-200 border border-black">Panjar</th>
-                    <th class="py-1 px-2 capitalize bg-blue-200 border border-black">Sisa</th>
-                    <th class="py-1 px-2 capitalize bg-blue-200 border border-black">Lunas</th>
-                </tr>
-                <tr>
-                    <td class="border border-black"> {{ $data->panjar }} </td>
-                    <td class="border border-black"> {{ $data->sisa }}</td>
-                    <td class="border border-black">
-                        @php
-                            if ($data->lunas == '1') {
-                                $svg = 'Lunas';
-                            } elseif ($data->lunas == '3') {
-                                $svg = 'Belum Lunas';
-                            }
-                        @endphp
-                        {{ $svg }}
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <!-- TTD -->
-        <table class="table w-full mt-10 ">
-            <tr>
-                <td colspan="3" class="text-right"> Makassar, {{ $tgl }}</td>
-            </tr>
-            <tr>
-                <td class="text-center">Direktur CV. JASA SAUDAGAR <br> Diketahui</td>
-
-                <td>&nbsp;</td>
-
-                <td class="text-center">YANG MEMBUAT PERNYATAAN</td>
-            </tr>
-            <tr>
-                <td class="text-center">&nbsp;</td>
-
-                <td>&nbsp;</td>
-
-                <td class="text-center">&nbsp;</td>
-            </tr>
-            <tr>
-                <td class="text-center">&nbsp;</td>
-
-                <td>&nbsp;</td>
-
-                <td class="text-center">&nbsp;</td>
-            </tr>
-            <tr>
-                <td class="text-center h-10 "><span
-                        class="border-b-2 border-black">(..................................)</span></td>
-                <td class="text-center h-10 "><span
-                        class="border-b-2 border-black">(..................................)</span></td>
-                <td class="text-center h-10 "><span
-                        class="border-b-2 border-black">(..................................)</span></td>
-            </tr>
-            <tr>
-                <td class="text-center">Yang Menyerahkan Kendaraan</td>
-
-                <td class="text-center">Saksi</td>
-
-                <td class="text-center">Penyewa</td>
-            </tr>
-        </table>
-    </section>
+    <section class="template">
+        <main class="page">
+            <section class=" top-0 pb-5 ">
+                <!-- Head -->
+                @include('kop', ['kode' => $kode])
 
 
-    @if ($data->jenis_sewa == 'Lepas')
+                <table class="table w-max sm:w-1/4 md:w-1/3 mb-3">
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Lampiran</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                           <span id="numberpage"></span>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table w-max sm:w-1/4 md:w-1/3 mb-1">
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">NIK</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                            {{ $data->nik }}
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Nama</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                            {{ $data->nama }}
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Tempat/Tanggal Lahir</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                            {{ $data->tempat_lahir }}/{{ $data->tgl_lahir }} </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Pekerjaan</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:{{ $data->pekerjaan }}
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Alamat</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                            {{ $data->alamat }}
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">No. HP</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                            {{ $data->no_hp }}
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">No. HP Kerabat Lain</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                            {{ $data->no_hp_lain }}</td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Sosial Media</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                            {{ $data->sosial }}
+                        </td>
+                    </tr>
+                </table>
+                @php
+                    $string = new \App\Http\Controllers\LaporanController();
+                @endphp
+                <p class="w-full text-justify">Dengan ini menyatakan bahwa pihak rental menitipkan kendaraan spesifikasi
+                    kendaraan sebagai berikut.</p>
+                <table class="table w-max border-b border-black h-max text-justify ">
+                    @for ($i = 0; $i < count($data->nopol); $i++)
+                        <tr class=" p-0 m-0">
+                            <td class=" whitespace-nowrap mb-0">Jenis Kendaraan </td>
+                            <td class=" whitespace-nowrap mb-0 px-3"> :
+                                {{ $data->unit[$i] }}
+                            </td>
+                            <td class=" whitespace-nowrap mb-0 px-3">Nilai Sewa </td>
+                            <td>
+                                <span class=" whitespace-nowrap mb-0 "><span class="font-normal">:</span> Rp.
+                                    {{ $data->nilaisewahari[$i] }} /Per Hari</span>
+                            </td>
+                        </tr>
+                        <tr class=" p-0 m-0">
+                            <td class=" whitespace-nowrap mb-0">No. Polisi </td>
+                            <td class=" whitespace-nowrap mb-0 px-3"> :
+                                {{ $data->nopol[$i] }}
+                            </td>
+
+                            <td class=" whitespace-nowrap mb-0 ">Total Sewa </td>
+                            <td>
+                                <span class=" whitespace-nowrap mb-0 px-3"><span class="font-normal">:</span> Rp.
+                                    {{ $string->parseToNumber($data->nilaisewahari[$i]) * intval($data->lama_sewa) }}</span>
+                            </td>
+                        </tr>
+                        <tr class=" p-0 m-0">
+                            <td class=" whitespace-nowrap mb-0 ">Tahun </td>
+                            <td class=" whitespace-nowrap mb-0 px-3"> :
+                                {{ $data->tahun[$i] }}
+                            </td>
+                        </tr>
+                    @endfor
+                </table>
+                <table class="table w-max  mb-1 h-max text-justify ">
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Tujuan </td>
+                        <td class=" whitespace-nowrap mb-0 p-0 "> : {{ $data->tujuan }} </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Jaminan </td>
+                        <td class=" whitespace-nowrap mb-0 p-0 "> : {{ $data->jaminan }} </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Tanggal/Jam Sewa </td>
+                        <td class=" whitespace-nowrap mb-0 p-0"> : {{ $data->tgl_sewa }}/{{ $data->jam_sewa }} WITA
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Tanggal/Jam Kembali </td>
+                        <td class=" whitespace-nowrap mb-0 p-0"> : {{ $data->tgl_kembali }}/{{ $data->jam_kembali }}
+                            WITA
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Jumlah Hari </td>
+                        <td class=" whitespace-nowrap mb-0 p-0"> : {{ $data->lama_sewa }}
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0">Total Bayar </td>
+                        <td class=" whitespace-nowrap mb-0 p-0"> : {{ $data->total }}
+                        </td>
+                    </tr>
+
+                </table>
+
+                <!-- Keterangan -->
+                <div class="ket_syarat">
+                    {!! $data->ket_syarat !!}
+                </div>
+                <div class="container mx-auto mb-5 px-20" style="padding-left: 1rem; padding-right:1rem;">
+                    <table class="table mt-3 border w-full">
+                        <tr>
+                            <th class=" capitalize bg-blue-200 border border-black">Panjar</th>
+                            <th class=" capitalize bg-blue-200 border border-black">Sisa</th>
+                            <th class=" capitalize bg-blue-200 border border-black">Lunas</th>
+                        </tr>
+                        <tr>
+                            <td class="border border-black"> {{ $data->panjar }} </td>
+                            <td class="border border-black"> {{ $data->sisa }}</td>
+                            <td class="border border-black">
+                                @php
+                                    if ($data->lunas == '1') {
+                                        $svg = 'Lunas';
+                                    } elseif ($data->lunas == '3') {
+                                        $svg = 'Belum Lunas';
+                                    }
+                                @endphp
+                                {{ $svg }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- TTD -->
+                <table class="table w-full ">
+                    <tr>
+                        <td colspan="3" class="text-right"> Makassar, {{ $tgl }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">Direktur CV. JASA SAUDAGAR <br> Diketahui</td>
+
+                        <td>&nbsp;</td>
+
+                        <td class="text-center">YANG MEMBUAT PERNYATAAN</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">&nbsp;</td>
+
+                        <td>&nbsp;</td>
+
+                        <td class="text-center">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center h-10 "><span
+                                class="border-b-2 border-black">(..................................)</span></td>
+                        <td class="text-center h-10 "><span
+                                class="border-b-2 border-black">(..................................)</span></td>
+                        <td class="text-center h-10 "><span
+                                class="border-b-2 border-black">(..................................)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">Yang Menyerahkan Kendaraan</td>
+
+                        <td class="text-center">Saksi</td>
+
+                        <td class="text-center">Penyewa</td>
+                    </tr>
+                </table>
+            </section>
+        </main>
+        @if ($data->jenis_sewa == 'Lepas')
+        @for ($i = 0; $i < count($data->unit); $i++)
+        <main class="page">
         <div class="page-break"></div>
-        <div class="w-full header opacity-80 border-b-4 border-black py-3">
-            <table class=" bg-white table  table-header">
-                <tr>
-                    <td class="text-right ">
-                        <img src="{{ public_path('img/logo.png') }}" width="100" height="100" class="w-1/2 "
-                            alt="">
-                    </td>
-                    <td class="text-left  max-w-md">
-                        <ul class="text-left">
-                            <li class="text-orange-500 font-bold text-center">CV. JASA SAUDAGAR</li>
-                            <li class="font-bold text-base text-center">JL. MASJID RAYA No. 72 A Kab. GOWA</li>
-                            <li class=" text-center"><span>Tlp( 0411 )8985984, mobile 0811 4145 999</span></li>
-                            <li class=" text-center">
-                                <span>Email : <a style="color: blue"
-                                        href="mailto:cvjasasaudagar@gmail.com">cvjasasaudagar@gmail.com</a>
-                                </span>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <table class="table w-full bg-white">
-            <tr class=" p-0 m-0">
-                <td colspan="4" class="text-right flex flex-col ">
-                    <span class="text-center font-bold underline uppercase">Ceklis Unit & kelengkapan
-                        kendaraan</span><br>
-                </td>
-            </tr>
-        </table>
-        <table class="w-full">
-            <tr>
-                <td class=" text-left font-bold uppercase">Unit Kendaraan :{{ $mobil->unit }}/
-                    {{ $mobil->spesifikasi }}
-                </td>
-                <td class=" text-left font-bold"></td>
-                <td class=" text-left font-bold">
-                    NOPOL
-                </td>
-                <td class=" text-left font-bold">: {{ $mobil->nopol }}</td>
-            </tr>
-            <tr>
-                <td class="text-left font-bold" colspan="2">&nbsp;</td>
-                <td class="text-left font-bold" colspan="1">TANGGAL</td>
-                <td class="text-left font-bold" colspan="1">: {{ $tgl }}</td>
-            </tr>
-        </table>
-        <table class="table w-full border" border="1">
-            <tr>
-                <th class="border text-center" rowspan="2">Jenis Kelengkapan Kendaraan</th>
-                <th class="border text-center" colspan="2">Status</th>
-                <th class="border text-center" rowspan="2">Keterangan</th>
-                <th class="border text-center" colspan="2">Paraf</th>
-            </tr>
-            <tr>
-                <th class=" text-center border">Ada</th>
-                <th class=" text-center border">Tidak Ada</th>
-                <th class=" text-center border">Pemeriksa</th>
-                <th class=" text-center border">Pengguna</th>
-            </tr>
-            <tr>
-                <td class="border">Kunci Roda</td>
-                <td class="border"></td>
-                <td class="border"></td>
-                <td class="border"></td>
-                <td class="border" rowspan="6"></td>
-                <td class="border" rowspan="6"></td>
-            </tr>
-            <tr>
-                <td class="border">Dongkrak</td>
-                <td class="border"></td>
-                <td class="border"></td>
-                <td class="border"></td>
-            </tr>
-            <tr>
-                <td class="border">Kotak P3K</td>
-                <td class="border"></td>
-                <td class="border"></td>
-                <td class="border"></td>
-            </tr>
-            <tr>
-                <td class="border">Seigitiga Pengaman</td>
-                <td class="border"></td>
-                <td class="border"></td>
-                <td class="border"></td>
-            </tr>
-            <tr>
-                <td class="border">Tool Kit</td>
-                <td class="border"></td>
-                <td class="border"></td>
-                <td class="border"></td>
-            </tr>
-            <tr>
-                <td class="border">Ban Cadangan</td>
-                <td class="border"></td>
-                <td class="border"></td>
-                <td class="border"></td>
-            </tr>
-        </table>
+            @include('pdfmobil', ['data' => $data, 'i' => $i, 'kode' => $kode, 'tgl' => $tgl])
+        </main>
+        @endfor
 
-        <table class=" table w-full">
-            <tr>
-                <th class="border text-center">Body Kendaraan</th>
-                <th class="border text-center">Keterangan</th>
-            </tr>
-            @php
-                $namaSide = ['Foto Samping Kanan', 'Foto Samping Kiri', 'Foto Samping Depan', 'Foto Samping Belakang'];
-                $namaF = [$mobil->foto1, $mobil->foto2, $mobil->foto3, $mobil->foto4];
-            @endphp
-            @for ($i = 0; $i < 4; $i++)
-                <tr>
-                    <td class="border-bottom-none" rowspan="6" style="width: 200px;">
-                        <img src="{{ public_path('storage/fotoMobil/' . $namaF[$i]) }}" width="110"
-                            alt="">
-                    </td>
-                    <td class="border"></td>
-                </tr>
-                <tr>
-                    <td class="border"></td>
-                </tr>
-                <tr>
-                    <td class="border"></td>
-                </tr>
-                <tr>
-                    <td class="border"></td>
-                </tr>
-                <tr>
-                    <td class="border"></td>
-                </tr>
-                <tr>
-                    <td class="border"></td>
-                </tr>
-                <tr>
-                    <td class="border-top-none text-center" style="border-top: none !importamt;">{{ $namaSide[$i] }}
-                    </td>
-                    <td class="border"></td>
-                </tr>
-            @endfor
-        </table>
     @endif
+    </section>
+    <script type="text/php">
+        if ( isset($pdf) ) {
+            $pdf->page_script('
+                if ($PAGE_COUNT > 1 && $PAGE_COUNT < 2) {
+                    $font = $fontMetrics->get_font("times-new-roman, Helvetica, sans-serif", "normal");
+                    $size = 11;
+                    $pageText = $PAGE_COUNT;
+                    $y = 120;
+                    $x = 100;
+                    $pdf->text($x, $y, $pageText, $font, $size);
+                }
+            ');
+        }
+        </script>
 </body>
 
 </html>

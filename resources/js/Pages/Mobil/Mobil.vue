@@ -76,7 +76,12 @@ watch(search, (value)=>{
 function cariMobil(event) {
     return event;
 }
-
+const rupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR"
+            }).format(number);
+        }
 function   Status(n) {
             var msg = '';
             switch (parseInt(n)) {
@@ -229,7 +234,7 @@ function   Status(n) {
                                     {{ mobils.nopol }}
                                 </td>
                                 <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-xs">
-                                    {{ mobils.harga }}
+                                    {{ rupiah(mobils.harga) }}
                                 </td>
                                 <td class="md:px-4 md:py-3 px-2 py-1 border border-gray-200 whitespace-nowrap text-xs ">
                                     <button type="button" @click="isOpen(mobils.id)" v-if="can.edit"

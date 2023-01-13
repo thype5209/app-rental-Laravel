@@ -23,6 +23,7 @@ module.exports = {
                 'default-orange': '#E36E07',
             }
         },
+        listStyleType: 'disc'
     },
 
     plugins: [require('@tailwindcss/forms')],

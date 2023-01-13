@@ -29,8 +29,8 @@ function GetMobil(event, jumlahMobil) {
             props.form.unit[jumlahMobil]  = mobil.unit
             props.form.nopol[jumlahMobil]  = mobil.nopol
             props.form.tahun[jumlahMobil]  = mobil.tahun
-            props.form.nilaisewahari[jumlahMobil]  = Number(mobil.harga).toLocaleString()
-            props.form.nilaisewabulan[jumlahMobil]  = Number(mobil.harga * 30).toLocaleString()
+            props.form.nilaisewahari[jumlahMobil]  = Number(mobil.harga)
+            props.form.nilaisewabulan[jumlahMobil]  = Number(mobil.harga * 30)
             props.form.mobil_id[jumlahMobil]  = mobil.id
             arrmobil.push(MobilForm);
             window.localStorage.setItem('mobil_id', arrmobil)

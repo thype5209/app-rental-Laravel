@@ -30,11 +30,11 @@ const props = defineProps({
 });
 
 const rupiah = (number) => {
-            return new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR"
-            }).format(number);
-        }
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR"
+    }).format(number);
+}
 const slideMobil = ref(1);
 const jumlahPanjar = ref(0);
 const BayarLunas = ref(1);
@@ -53,7 +53,7 @@ const Form = useForm({
     no_hp: null,
     no_hp_lain: null,
     pekerjaan: null,
-    sosial: "FB",
+    sosial: "--",
     mobil_id: [],
     unit: [],
     nopol: [],
@@ -67,19 +67,46 @@ const Form = useForm({
     lama_sewa: "",
     tujuan: "",
     jaminan: "",
-    panjar: '',
-    sisa: '',
-    lunas: 'Lunas',
+    panjar: '0',
+    sisa: '0',
+    lunas: '1',
+    total: '0',
     metode_bayar: 'Transfer',
     list_pengiriman: null,
-    ket_syarat: ``,
+    ket_syarat: `<h3>Ket.</h3>
+            <ul>
+                <li>Apabila penyewa akan memperpanjang sewa kendaraan maka harus di
+                    konfirmasi
+                    ke pihak rental.</li>
+                <li>Jika penyewa terlamabat mengembalikan mobil dalam waktu yang di
+                    tentukan
+                    maka akan di kenakan biaya over time 10% per jam darai harga sewa per harinya</li>
+                <li>Apa bila pemakain sewa kendaraan tidak sesuai dengan Tujuan penyewa
+                    yang di
+                    tentukan penyewa, maka akan di kenakan biaya tambahan sesuai dengan zona-zona yang berlaku.
+                </li>
+            </ul>
+            <h3>Penyewa bersedia menyanggupi syarat dan ketentuan penyewa kendaraan di bawah
+                ini
+                :.</h3>
+            <ul>
+                <li>Bertanggung jawab segala kerusakan, kehilangan kendaraan atau bagian-bagiannya</li>
+                <li>Kendaraan tersebut tidak dapat digadaikan atau merubah bentuk aslinya</li>
+                <li>Pemilik tidak bertanggung jawab atas kegiatan operasionalpenyewa kendaraan</li>
+                <li>Penyewa tidak di benarkan membawa kendaraan selain tujuan diatas</li>
+                <li>Melunasi sewa mobil dan segala bentuk tagihan jika terjadi kerusakan dan biaya kerugian
+                    selama
+                    di bengkel.</li>
+                <li>Penyewa bersedia dituntut pidana apabila melanggar poin-poin diatas</li>
+
+            </ul>`,
 });
 
 
 
-watch(jenisSewa, value=>{
+watch(jenisSewa, value => {
     Form.jenis_sewa = value;
-    if(value == 'Lepas'){
+    if (value == 'Lepas') {
         Form.ket_syarat = `<h3>Ket.</h3>
             <ul>
                 <li>Apabila penyewa akan memperpanjang sewa kendaraan maka harus di
@@ -107,44 +134,45 @@ watch(jenisSewa, value=>{
                 <li>Penyewa bersedia dituntut pidana apabila melanggar poin-poin diatas</li>
 
             </ul>`
-    }else if(value == 'Kunci'){
+    } else if (value == 'Kunci') {
         Form.ket_syarat = ``;
     }
 })
 // console.log(props)
-onMounted(()=>{
+onMounted(() => {
     if (props.data != null) {
-    if (props.data.req != null) {
-        if (props.data.req.FormPDF != null) {
-            const DataKembali = props.data.req.FormPDF;
-            Form.jenis_sewa = DataKembali.jenis_sewa;
-            Form.nik = DataKembali.nik;
-            Form.nama = DataKembali.nama;
-            Form.tempat_lahir = DataKembali.tempat_lahir;
-            Form.ket_syarat = DataKembali.ket_syarat;
-            Form.list_pengiriman = DataKembali.list_pengiriman;
-            Form.tgl_lahir = DataKembali.tgl_lahir;
-            Form.alamat = DataKembali.alamat;
-            Form.pekerjaan = DataKembali.pekerjaan;
-            Form.sosial = DataKembali.sosial;
-            Form.no_hp = DataKembali.no_hp;
-            Form.no_hp_lain = DataKembali.no_hp_lain;
-            Form.tujuan = DataKembali.tujuan;
-            Form.lama_sewa = DataKembali.lama_sewa;
-            Form.jam_sewa = DataKembali.jam_sewa;
-            Form.jam_kembali = DataKembali.jam_kembali;
-            Form.jaminan = DataKembali.jaminan;
-            Form.panjar = DataKembali.panjar;
-            Form.sisa = DataKembali.sisa;
-            Form.metode_bayar = DataKembali.metode_bayar;
-            Form.lunas = DataKembali.lunas;
+        if (props.data.req != null) {
+            if (props.data.req.FormPDF != null) {
+                const DataKembali = props.data.req.FormPDF;
+                Form.jenis_sewa = DataKembali.jenis_sewa;
+                Form.nik = DataKembali.nik;
+                Form.nama = DataKembali.nama;
+                Form.tempat_lahir = DataKembali.tempat_lahir;
+                Form.ket_syarat = DataKembali.ket_syarat;
+                Form.list_pengiriman = DataKembali.list_pengiriman;
+                Form.tgl_lahir = DataKembali.tgl_lahir;
+                Form.alamat = DataKembali.alamat;
+                Form.pekerjaan = DataKembali.pekerjaan;
+                Form.sosial = DataKembali.sosial;
+                Form.no_hp = DataKembali.no_hp;
+                Form.no_hp_lain = DataKembali.no_hp_lain;
+                Form.tujuan = DataKembali.tujuan;
+                Form.lama_sewa = DataKembali.lama_sewa;
+                Form.jam_sewa = DataKembali.jam_sewa;
+                Form.jam_kembali = DataKembali.jam_kembali;
+                Form.jaminan = DataKembali.jaminan;
+                Form.panjar = DataKembali.panjar;
+                Form.sisa = DataKembali.sisa;
+                Form.metode_bayar = DataKembali.metode_bayar;
+                Form.lunas = DataKembali.lunas;
+                Form.status_bayar = DataKembali.status_bayar
+                Form.total = DataKembali.total
+                BayarLunas.value = DataKembali.lunas;
+                // jumlahMobil.value = DataKembali.unit.length
 
-            BayarLunas.value = DataKembali.lunas;
-            // jumlahMobil.value = DataKembali.unit.length
-
+            }
         }
     }
-}
 })
 
 var TabActive =
@@ -191,7 +219,6 @@ watch(FOTOKTP, value => {
     if (value != null) {
         reader.readAsDataURL(value);
     }
-    console.log(value)
 })
 
 
@@ -222,12 +249,17 @@ function diff_date(date1, date2) {
     });
     return Difference_In_Days;
 }
+const lamaSewa = ref(0);
+watch(lamaSewa, value=>{
+    Form.lama_sewa = value;
+    Form.total = reduceArray(arraySum(Form.nilaisewahari), value);
+})
 // Cetak Tanggal
 function getTanggal(event) {
     var tgl_pengajuan = new Date(Form.tgl_sewa);
     var tgl_kembali = new Date(event.target.value);
     var diff = diff_date(tgl_pengajuan, tgl_kembali);
-    Form.lama_sewa = diff;
+    lamaSewa.value = Number(diff);
 }
 const jmlSopir = ref(1);
 function SelectSopir(event) {
@@ -284,13 +316,12 @@ watch(SearchNIK, value => {
     })
 })
 // End
-function reduceArray(array, lamasewa = 0) {
+function reduceArray(array, lamasewa = 1) {
     var arrayToString = array.toString();
     var harga = null;
-    if (arrayToString.indexOf(',') > -1) {
-        var sisa = array.split(',');
-        var harga = sisa.reduce((el, b) => Number(el) + '' + Number(b));
-
+    if (arrayToString.indexOf(',') > -1 || arrayToString.indexOf('.') > -1) {
+        var sisa = array.split(/\,|\./);
+        var harga = sisa.reduce((el, b) => el + '' + b);
     } else {
         harga = array;
     }
@@ -300,28 +331,25 @@ function reduceArray(array, lamasewa = 0) {
 }
 function arraySum(array = []) {
     var hasil = null;
-    if (array.length > 1) {
-        hasil = array.reduce((a, b) => {
-            const arrA = a.toString();
-            const arrb = b.toString();
-            console.log(a, b)
-            if (arrA.indexOf(',') > -1) {
-                var asisa = arrA.split(',');
-                var aharga = asisa.reduce((el, b) => el + b);
-            } else {
-                var aharga = a;
-            }
-            if (arrb.indexOf(',') > -1) {
-                var bsisa = arrb.split(',');
-                var bharga = bsisa.reduce((el, b) => el + b);
-            } else {
-                var bharga = b;
-            }
-            return Number(Number(aharga) + Number(bharga));
-        });
-    } else {
-        hasil = array.reduce((a, b) => { a + b });
-    }
+    hasil = array.reduce((a, b) => {
+
+        const arrA = a.toString();
+        const arrb = b.toString();
+        if (arrA.indexOf(',') > -1 || arrA.indexOf('.') > -1) {
+            var sisa = arrA.split(/\,|\./);
+            var aharga = sisa.reduce((el, b) => el + '' + b);
+        } else {
+            var aharga = a;
+        }
+        if (arrb.indexOf(',') > -1 || arrb.indexOf('.') > -1) {
+            var sisa = arrb.split(/\,|\./);
+            var bharga = sisa.reduce((el, b) => el + '' + b);
+
+        } else {
+            var bharga = b;
+        }
+        return Number(aharga) + Number(bharga);
+    });
     return hasil;
 }
 
@@ -330,21 +358,18 @@ watch(BayarLunas, value => {
     if (value === 1 || value == '1') {
         jumlahPanjar.value = 0;
         Form.sisa = 0;
-        Form.lunas = value;
-        console.log(value);
-    } else {
-        console.log('err')
     }
+    Form.lunas = value;
+    Form.status_bayar = value;
 })
 watch(jumlahPanjar, value => {
     var total = reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa);
-    var sisa = total.split(',');
+    var sisa = total.split(/\,|\./);
     var harga = sisa.reduce((el, b) => el + b);
     const stringValue = value.toLocaleString();
-    console.log(stringValue)
-    var totalvalue= reduceArray(stringValue)
-    if (stringValue.indexOf(',') > -1) {
-        var sisa = stringValue.split(',');
+    var totalvalue = reduceArray(stringValue)
+    if (stringValue.indexOf(/\,|\./) > -1) {
+        var sisa = stringValue.split(/\,|\./);
         totalvalue = sisa.reduce((el, b) => Number(el) + '' + Number(b));
 
     } else {
@@ -360,7 +385,9 @@ watch(jumlahMobil, value => {
 
 // Watch Syarat Dan Keterangan
 const syaratKet = ref(``);
-
+// const harga = ['10,000', '10,000'];
+// console.log(arraySum(harga));
+// console.log(reduceArray(arraySum(harga),2))
 </script>
 
 <template>
@@ -551,8 +578,8 @@ const syaratKet = ref(``);
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Lama Sewa</InputLabel>
-                            <TextInput id="grid-last-name" type="text" placeholder="...." readonly
-                                v-model="Form.lama_sewa" />
+                            <TextInput id="grid-last-name" type="text" placeholder="...." required
+                                v-model="lamaSewa" />
                             <!-- <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p> -->
                         </div>
                     </div>
@@ -661,7 +688,7 @@ const syaratKet = ref(``);
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Total</InputLabel>
                             <TextInput id="grid-first-name" type="text" placeholder="0000" readonly required
-                                :value="reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa)" />
+                                :value="Form.total = reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa)"  />
                             <p v-if="errors.lunas" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
 
@@ -716,7 +743,9 @@ const syaratKet = ref(``);
                     <div class="absolute left-1/2 px-4 bg-white -translate-x-1/2 ">Keterangan Dan Syarat Sewa</div>
                 </div>
                 <div class="bg-gray-200 shadow-md rounded md:px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == 4">
-                    <ckeditor :editor="editor" v-model="Form.ket_syarat" :config="editorConfig"></ckeditor>
+                    <div class="w-full px-3">
+                        <ckeditor :editor="editor" v-model="Form.ket_syarat" :config="editorConfig"></ckeditor>
+                    </div>
                     <!-- <div v-html="Form.ket_syarat"></div> -->
 
                     <div class="flex justify-around">
@@ -815,3 +844,4 @@ export default {
     },
 };
 </script>
+

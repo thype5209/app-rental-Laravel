@@ -46,6 +46,8 @@ class SewaFactory extends Factory
             'sisa'=> '0',
             'total'=> '0',
             'status_bayar'=> '1',
+            'metode_bayar'=> '1',
+            'list_pengiriman'=> 'nn',
         ];
     }
 }

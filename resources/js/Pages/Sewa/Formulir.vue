@@ -88,6 +88,7 @@ const FormPDF = useForm({
     ket_syarat: data.formulir.ket_syarat,
     list_pengiriman: data.formulir.list_pengiriman,
     metode_bayar: data.formulir.metode_bayar,
+    total: data.formulir.total,
 })
 
 const date = new Date();
@@ -154,7 +155,19 @@ function cetakDanSave() {
     });
 }
 const jumlahMobil = FormPDF.nopol.length;
+function reduceArray(array, lamasewa = 1) {
+    var arrayToString = array.toString();
+    var harga = null;
+    if (arrayToString.indexOf(',') > -1 || arrayToString.indexOf('.') > -1) {
+        var sisa = array.split(/\,|\./);
+        var harga = sisa.reduce((el, b) => el + '' + b);
+    } else {
+        harga = array;
+    }
+    var total = (parseInt(harga) * lamasewa);
 
+    return Number(total).toLocaleString();
+}
 </script>
 
 
@@ -319,15 +332,29 @@ const jumlahMobil = FormPDF.nopol.length;
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{
                                     FormPDF.nilaisewahari[index]
                                 }}/Per Hari</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Total Sewa</td>
+                        <td>
+                            <ul class="list-none flex flex-row gap-4">
                                 <li class=" whitespace-nowrap mb-0 p-0"><span class="font-bold">:</span> Rp. {{
-                                    FormPDF.nilaisewabulan[index]
-                                }}/Per Bulan</li>
+                                    reduceArray(FormPDF.nilaisewahari[index] , FormPDF.lama_sewa)
+                                }}</li>
                             </ul>
                         </td>
                     </tr>
 
                 </table>
                 <table class="table w-max sm:w-1/4 md:w-1/2 mb-5 h-max text-justify ">
+                    <tr class=" p-0 m-0">
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Total Bayar</td>
+                        <td class=" whitespace-nowrap mb-0 p-0 text-black"><span class="font-bold">:</span> Rp. {{
+                            reduceArray(FormPDF.total)
+                        }}
+                        </td>
+                    </tr>
                     <tr class=" p-0 m-0">
                         <td class=" whitespace-nowrap mb-0 p-0 text-black font-bold">Tanggal/Jam Sewa</td>
                         <td class=" whitespace-nowrap mb-0 p-0 text-black"><span class="font-bold">:</span> {{
@@ -367,7 +394,7 @@ const jumlahMobil = FormPDF.nopol.length;
                 </table>
 
                 <!-- Keterangan -->
-                <div class="text-black" v-html="FormPDF.ket_syarat">
+                <div class="text-black ket_syarat" v-html="FormPDF.ket_syarat">
                 </div>
                 <!-- Panjar -->
                 <table class="table ml-10 mt-5 border">
@@ -433,5 +460,9 @@ const jumlahMobil = FormPDF.nopol.length;
 <style>
 section * {
     font-size: 12px;
+}
+.ket_syarat ul{
+    list-style: disc;
+    margin-left: 30px;
 }
 </style>
