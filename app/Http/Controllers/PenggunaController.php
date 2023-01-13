@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Pengguna;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-use Inertia\Inertia;
 
 class PenggunaController extends Controller
 {
@@ -32,6 +33,11 @@ class PenggunaController extends Controller
                     ->orWhere('tgl_lahir', 'like', '%' . $search . '%');
             })->orderBy('nama', 'asc')->paginate(10) ?? null,
             'filter' => Request::input('search', ''),
+            'can'=>[
+                'create' => Auth::user()->can('user create'),
+                'edit' => Auth::user()->can('user edit'),
+                'delete' => Auth::user()->can('user delete'),
+            ],
         ]);
     }
     public function cariNIK()
@@ -127,8 +133,8 @@ class PenggunaController extends Controller
      * @param  \App\Models\Pengguna  $pengguna
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pengguna $pengguna)
+    public function destroy(Pengguna $pengguna, $id)
     {
-        //
+        $pengguna->find($id)->delete();
     }
 }

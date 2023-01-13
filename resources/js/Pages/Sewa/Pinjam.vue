@@ -308,7 +308,7 @@ function statusBayar(value) {
                                     }}</td>
                                 <td class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap"
                                     v-else>
-                                    Sopir</td>
+                                    {{ mobil.nik }}</td>
                                 <td
                                     class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     {{
