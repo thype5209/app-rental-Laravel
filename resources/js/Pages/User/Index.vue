@@ -30,11 +30,6 @@ const props = defineProps({
                             <Link :href="route('User.create')"  class="px-4 py-2 cursor-pointer bg-default-blue uppercase text-white rounded focus:outline-none flex items-center"><span class="iconify mr-1" data-icon="gridicons:create" data-inline="false"></span> Tambah Pengguna</Link>
                         </div>
                     </div>
-                    <span>{{$page.props.auth.user.id}}</span>
-                    <span>{{ can.edit }}</span>
-                    <div>
-                        {{ $page.props.auth.user.id }}
-                    </div>
                 </div>
             </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-2">
@@ -62,7 +57,7 @@ const props = defineProps({
                                     </span>
                                 </td>
                                 <td
-                                    v-if="can.edit || can.delete"
+
                                     class="py-4 px-6"
                                 >
                                     <div type="justify-start lg:justify-end" no-wrap>
