@@ -30,6 +30,11 @@ const props = defineProps({
                             <Link :href="route('User.create')"  class="px-4 py-2 cursor-pointer bg-default-blue uppercase text-white rounded focus:outline-none flex items-center"><span class="iconify mr-1" data-icon="gridicons:create" data-inline="false"></span> Tambah Pengguna</Link>
                         </div>
                     </div>
+                    <span>{{$page.props.auth.user.id}}</span>
+                    <span>{{ can.edit }}</span>
+                    <div>
+                        {{ $page.props.auth.user.id }}
+                    </div>
                 </div>
             </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-2">
@@ -66,13 +71,13 @@ const props = defineProps({
                                                 Edit
                                             </PrimaryButton>
                                         </Link>
-                                        <Link :href="route('User.destroy',{id: users.id})" method="delete" :data="{id: users.id}" as="button" v-if="users.id !== 1">
+                                        <Link :href="route('User.destroy',{id: users.id})" method="delete" :data="{id: users.id}" as="button" v-if="users.id !== 1 " >
                                             <PrimaryButton class="ml-4 bg-red-500 px-2 py-1 rounded text-white cursor-pointer" v-if="can.delete">
                                                 Delete
                                             </PrimaryButton>
                                         </Link>
-                                        <Link :href="route('User.edit', {id: users.id})" :data="{formCEK: true}">
-                                            <PrimaryButton class="ml-4 bg-red-500 px-2 py-1 rounded text-white cursor-pointer" v-if="can.delete">
+                                        <Link :href="route('User.edit', {id: users.id})" :data="{formCEK: true}" >
+                                            <PrimaryButton class="ml-4 bg-red-500 px-2 py-1 rounded text-white cursor-pointer" v-if="users.id === $page.props.auth.user.id">
                                                 Ganti Sandi
                                             </PrimaryButton>
                                         </Link>
