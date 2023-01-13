@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('no_hp_lain',30);
             $table->string('tempat_lahir',50);
             $table->date('tgl_lahir');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

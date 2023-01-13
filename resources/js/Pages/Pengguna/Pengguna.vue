@@ -67,7 +67,7 @@
                                         <span
                                             v-if="item.status_bayar == '3' || item.status_bayar == '2' || item.status_bayar == '4'"
                                             class="font-semibold text-gray-900 dark:text-white">{{
-                                                reduceArray(item.sisa, item.waktusewa.lama_sewa, item.denda)
+                                                reduceArray(item.total,1, item.denda)
                                             }}</span>
                                         <span v-else class="font-semibold text-gray-900 dark:text-white">Rp.
                                             ------</span>

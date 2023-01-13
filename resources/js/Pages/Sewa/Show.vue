@@ -72,7 +72,7 @@
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
                         v-if="sewa.pengguna != null">{{ sewa.pengguna.nama }}/{{ sewa.nik }}</td>
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
-                        v-else>{{ sewa.nik }}</td>
+                        v-else>{{ penggunaTrashed.nama }} / {{ penggunaTrashed.nik }} </td>
                 </tr>
                 <tr v-if="sewa.pengguna != null">
                     <td
@@ -80,13 +80,17 @@
                         Alamat Penyewa</td>
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
                         v-if="sewa.pengguna != null">{{ sewa.pengguna.alamat }}</td>
+                    <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
+                        v-else>{{ penggunaTrashed.alamat }}</td>
                 </tr>
-                <tr v-if="sewa.pengguna != null">
+                <tr>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap">
                         Nomor HP Penyewa/Kerabat</td>
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
                         v-if="sewa.pengguna != null">{{ sewa.pengguna.no_hp }} / {{ sewa.pengguna.no_hp_lain }} </td>
+                    <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
+                        v-else>{{ penggunaTrashed.no_hp }} / {{ penggunaTrashed.no_hp_lain }} </td>
                 </tr>
                 <tr>
                     <td
@@ -231,6 +235,7 @@ export default {
             type: Object,
             default: () => ({})
         },
+        penggunaTrashed: Object,
     },
     mounted() {
 

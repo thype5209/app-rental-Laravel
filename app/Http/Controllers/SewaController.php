@@ -171,8 +171,11 @@ class SewaController extends Controller
      */
     public function show(Sewa $sewa, $id)
     {
+        $data = $sewa->with(['pengguna', 'waktusewa', 'user','sopir'])->find($id);
+        $penggunaTrashed = Pengguna::onlyTrashed()->where('nik', $data->nik)->first();
         return Inertia::render('Sewa/Show', [
-            'sewa' => $sewa->with(['pengguna', 'waktusewa', 'user','sopir'])->find($id)
+            'sewa' => $data,
+            'penggunaTrashed'=> $penggunaTrashed
         ]);
     }
 
@@ -214,6 +217,7 @@ class SewaController extends Controller
         }
         Mobil::whereIn('nopol', $exp)->update(['status' => '2']);
         Sopir::where('id', $data->sopir_id)->update(['status'=> '1']);
+        Pengguna::onlyTrashed()->where('nik', $data->nik)->forceDelete();
         $data->delete();
     }
     /**
