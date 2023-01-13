@@ -104,6 +104,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
         Route::controller(SopirController::class)->group(function(){
             Route::get('/', 'index')->name('index');
             Route::get('/Form/Sopir', 'create')->name('create');
+            Route::get('/GetSopir/{id}', 'GetSopir')->name('GetSopir');
             Route::post('/Form/store', 'store')->name('store');
             Route::get('/Form/edit/{id}', 'edit')->name('edit');
             Route::put('/Form/update/{id}', 'update')->name('update');

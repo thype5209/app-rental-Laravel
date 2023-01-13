@@ -120,4 +120,10 @@ class SopirController extends Controller
         $sopir->find($id)->delete();
         return Redirect::route('Sopir.index')->with('success', 'Berhasil Di Hapus!!');
     }
+    public function GetSopir($id)
+    {
+        $mobil = Sopir::find($id);
+
+        return response()->json($mobil);
+    }
 }

@@ -89,6 +89,10 @@ const FormPDF = useForm({
     list_pengiriman: data.formulir.list_pengiriman,
     metode_bayar: data.formulir.metode_bayar,
     total: data.formulir.total,
+    nama_sopir: data.formulir.nama_sopir,
+    sopir_nik: data.formulir.sopir_nik,
+    sopir_alamat: data.formulir.sopir_alamat,
+    sopir_no_hp: data.formulir.sopir_no_hp,
 })
 
 const date = new Date();

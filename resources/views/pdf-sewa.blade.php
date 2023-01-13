@@ -72,7 +72,7 @@
     @page {
         margin: 20px 30px 40px 50px;
     }
-    #numberpage:after { content: counter(page, decimal); }
+    /* #numberpage:after { content: counter(page, decimal); } */
     /* section.template { position: fixed; right: 0px; bottom: 10px; text-align: center;} */
 </style>
 
@@ -86,9 +86,9 @@
 
                 <table class="table w-max sm:w-1/4 md:w-1/3 mb-3">
                     <tr class=" p-0 m-0">
-                        <td class=" whitespace-nowrap mb-0 p-0">Lampiran</td>
+                        <td class=" whitespace-nowrap mb-0 p-0">Lampiran File</td>
                         <td class=" whitespace-nowrap mb-0 p-0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                           <span id="numberpage"></span>
+                           <span id="numberpage">..........</span>
                         </td>
                     </tr>
                 </table>
@@ -285,20 +285,6 @@
 
     @endif
     </section>
-    <script type="text/php">
-        if ( isset($pdf) ) {
-            $pdf->page_script('
-                if ($PAGE_COUNT > 1 && $PAGE_COUNT < 2) {
-                    $font = $fontMetrics->get_font("times-new-roman, Helvetica, sans-serif", "normal");
-                    $size = 11;
-                    $pageText = $PAGE_COUNT;
-                    $y = 120;
-                    $x = 100;
-                    $pdf->text($x, $y, $pageText, $font, $size);
-                }
-            ');
-        }
-        </script>
 </body>
 
 </html>

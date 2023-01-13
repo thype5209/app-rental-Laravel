@@ -23,6 +23,14 @@
                 <tr>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap">
+                        Penanggung Jawab </td>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">
+                        {{ sewa.user.name }}</td>
+                </tr>
+                <tr>
+                    <td
+                        class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap">
                         Kode Sewa</td>
                     <td
                         class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold">

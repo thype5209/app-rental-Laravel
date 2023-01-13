@@ -96,16 +96,6 @@ function GetMobil(event, jumlahMobil) {
                 Masukkan Hanya Angka
             </p>
         </div>
-        <div class="md:w-1/2 px-3">
-            <InputLabel
-                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                for="grid-last-name">Nilai Sewa/Bulan</InputLabel>
-            <TextInput id="grid-last-name" type="text"  placeholder="0000"
-                v-model="props.form.nilaisewabulan[jumlahMobil]" />
-            <p  class="text-red text-xs italic text-gray-500">
-                Masukkan Hanya Angka
-            </p>
-        </div>
     </div>
     <hr class="my-2 h-px bg-gray-800 border-0 " />
 

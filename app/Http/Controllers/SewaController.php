@@ -171,7 +171,7 @@ class SewaController extends Controller
     public function show(Sewa $sewa, $id)
     {
         return Inertia::render('Sewa/Show', [
-            'sewa' => $sewa->with(['pengguna', 'waktusewa'])->find($id)
+            'sewa' => $sewa->with(['pengguna', 'waktusewa', 'user'])->find($id)
         ]);
     }
 
@@ -212,6 +212,7 @@ class SewaController extends Controller
             Storage::disk('public')->delete($data->pdf_url);
         }
         Mobil::whereIn('nopol', $exp)->update(['status' => '2']);
+        Sopir::where('id', $data->sopir_id)->update(['status'=> '1']);
         $data->delete();
     }
     /**
@@ -336,6 +337,7 @@ class SewaController extends Controller
                 Mobil::whereIn('nopol',  $exp)->update([
                     'status' => $request->status == 'Selesai' ? '2' : '1',
                 ]);
+                Sopir::where('id', $sewa->sopir_id)->update(['status'=> '1']);
             }
             return Redirect::back()->with('success', "Status Sewa " . $sewa->kode . " Berhasil Diganti ");
         } catch (Exception $e) {

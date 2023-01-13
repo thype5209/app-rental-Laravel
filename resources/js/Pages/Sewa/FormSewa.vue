@@ -44,7 +44,7 @@ const jenisSewa = ref('Lepas');
 const Form = useForm({
     jenis_sewa: 'Lepas',
     foto_ktp: null,
-    sopir_id: [],
+    sopir_id: '',
     nik: null,
     nama: null,
     tempat_lahir: null,
@@ -100,6 +100,11 @@ const Form = useForm({
                 <li>Penyewa bersedia dituntut pidana apabila melanggar poin-poin diatas</li>
 
             </ul>`,
+    tgl_file: '',
+    nama_sopir: '',
+    sopir_nik: '',
+    sopir_alamat: 'alamat',
+    sopir_no_hp: '',
 });
 
 
@@ -184,17 +189,16 @@ Form.jenis_sewa = ref("Lepas");
 
 
 // Fungsi Cari Mobil Dengan Select ID
-function GetMobil(event) {
+function GetSopir(event) {
     axios
-        .get("/Mobil/GetIDMobil/" + event.target.value)
+        .get("/Sopir/GetSopir/" + event)
         .then(function (response) {
-            const mobil = response.data;
-            Form.unit = mobil.unit;
-            Form.nopol = mobil.nopol;
-            Form.tahun = mobil.tahun;
-            Form.nilaisewahari = Number(mobil.harga).toLocaleString();
-            Form.nilaisewabulan = Number(mobil.harga * 30).toLocaleString();
-            Form.mobil_id = mobil.id;
+            const sopir = response.data;
+            Form.nama_sopir = sopir.nama;
+            Form.sopir_nik = sopir.nik;
+            Form.sopir_no_hp = sopir.no_hp;
+            Form.sopir_alamat = sopir.alamat;
+            Form.sopir_id = sopir.id;
         })
         .catch(errors => console.log(errors));
 }
@@ -250,7 +254,7 @@ function diff_date(date1, date2) {
     return Difference_In_Days;
 }
 const lamaSewa = ref(0);
-watch(lamaSewa, value=>{
+watch(lamaSewa, value => {
     Form.lama_sewa = value;
     Form.total = reduceArray(arraySum(Form.nilaisewahari), value);
 })
@@ -263,7 +267,9 @@ function getTanggal(event) {
 }
 const jmlSopir = ref(1);
 function SelectSopir(event) {
-    Form.sopir_id.push(event.target.value);
+    Form.sopir_id = event.target.value;
+    GetSopir(event.target.value);
+
 }
 
 
@@ -517,25 +523,50 @@ const syaratKet = ref(``);
                     </div>
                     <div class="-mx-3 md:flex mb-6 items-center" v-if="Form.jenis_sewa == 'Kunci'">
                         <div class="w-full px-3">
-                            <div v-for="jml in jmlSopir">
-                                <InputLabel
-                                    class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                    for="grid-first-name">Nama Supir</InputLabel>
-                                <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
-                                    id="mobil_id" for="grid-first-name" @change="SelectSopir($event)"
-                                    v-model="Form.sopir_id">
-                                    <option value="">---</option>
-                                    <option v-for="sopir in props.sopir" :key="sopir.id" :value="sopir.id">
-                                        Nama= {{ sopir.nama }} | Nik= {{ sopir.nik }} | No.HP= {{ sopir.no_hp }}
-                                    </option>
-                                </SelectVUe>
-                                <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                            <InputLabel
+                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                for="grid-first-name">Pilih Supir</InputLabel>
+                            <SelectVUe class="block uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                id="mobil_id" for="grid-first-name" @change="SelectSopir($event)"
+                                v-model="Form.sopir_id">
+                                <option value="">---</option>
+                                <option v-for="sopir in props.sopir" :key="sopir.id" :value="sopir.id">
+                                    Nama= {{ sopir.nama }} | Nik= {{ sopir.nik }} | No.HP= {{ sopir.no_hp }}
+                                </option>
+                            </SelectVUe>
+                            <p v-if="errors.mobil_id" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+
+
+                            <!-- Sopir Form -->
+                            <div class="-mx-3 md:flex mb-6">
+                                <div class="md:w-1/2 px-3 mb-4 md:mb-0">
+                                    <InputLabel
+                                        class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                        for="grid-first-name">Nama Sopir</InputLabel>
+                                    <TextInput id="grid-first-name" type="tel" placeholder="+62" v-model="Form.nama_sopir" />
+                                    <p v-if="errors.no_hp" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                                </div>
+                                <div class="md:w-1/2 px-3 mb-4">
+                                    <InputLabel
+                                        class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                        for="grid-last-name">Nomor HP Sopir</InputLabel>
+                                    <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sopir_no_hp" />
+                                    <p v-if="errors.no_hp_lain" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                                </div>
+                                <div class="md:w-1/2 px-3 mb-4">
+                                    <InputLabel
+                                        class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                        for="grid-last-name">NIK</InputLabel>
+                                    <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sopir_nik" />
+                                </div>
+                                <div class="md:w-1/2 px-3 mb-4">
+                                    <InputLabel
+                                        class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                        for="grid-last-name">Alamat Sopir</InputLabel>
+                                    <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sopir_alamat" />
+                                </div>
                             </div>
                         </div>
-                        <PrimaryButtonVue type="button" v-if="jmlSopir > 1" class="bg-red-500 text-lg hover:bg-red-600"
-                            @click="jmlSopir--">X</PrimaryButtonVue>
-                        <PrimaryButtonVue type="button" class="bg-default-dark text-lg hover:bg-default-dark"
-                            @click="jmlSopir++">+</PrimaryButtonVue>
                     </div>
                     <div class="mx-auto mb-3">
                         <PrimaryButtonVue type="button" class="bg-default-blue hover:bg-blue-600" @click="slideMobil++">
@@ -578,8 +609,7 @@ const syaratKet = ref(``);
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Lama Sewa</InputLabel>
-                            <TextInput id="grid-last-name" type="text" placeholder="...." required
-                                v-model="lamaSewa" />
+                            <TextInput id="grid-last-name" type="text" placeholder="...." required v-model="lamaSewa" />
                             <!-- <p v-if="1 < 2" class="text-red text-xs italic text-red-500">Mohon Di Isi</p> -->
                         </div>
                     </div>
@@ -688,7 +718,7 @@ const syaratKet = ref(``);
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Total</InputLabel>
                             <TextInput id="grid-first-name" type="text" placeholder="0000" readonly required
-                                :value="Form.total = reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa)"  />
+                                :value="Form.total = reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa)" />
                             <p v-if="errors.lunas" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
 

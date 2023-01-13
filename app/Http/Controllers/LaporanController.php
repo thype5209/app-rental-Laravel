@@ -44,11 +44,7 @@ class LaporanController extends Controller
             $sewa = Sewa::with(['waktusewa', 'pengguna', 'user', 'sopir'])->latest()->first();
         }
         // dd($sewa);
-        $sopir_id = [];
-        if ($sewa->sopir_id != null || $sewa->sopir_id != '') {
-            $sopir_id = explode(',', $sewa->sopir_id);
-        }
-        $sopir = Sopir::whereIn('id', $sopir_id)->get();
+        $sopir = Sopir::where('id', $sewa->sopir_id)->get();
         // dd($sewa->sopir_id);
         return Inertia::render('Laporan/CetakSewaSave', [
             'pdf' => $sewa->pdf_url,
@@ -94,6 +90,7 @@ class LaporanController extends Controller
             $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
             //buat pengguna
             $this->createPengguna($req);
+            $this->createSopir($req);
             $this->sewaCreate($req, $kode, $namaPDF);
 
             // Tanggal
@@ -271,6 +268,18 @@ class LaporanController extends Controller
             }
         }
     }
+    public function createSopir($request){
+        $sopir = Sopir::where('nik', $request->sopir_nik)->get();
+        // dd($request->all());
+        if($sopir->count() < 1){
+            Sopir::create([
+                'nama'=> $request->nama_sopir,
+                'nik'=> $request->sopir_nik,
+                'alamat'=> $request->sopir_alamat,
+                'no_hp'=> $request->sopir_no_hp,
+            ]);
+        }
+    }
 
 
     /**
@@ -294,7 +303,7 @@ class LaporanController extends Controller
             'harga' => implode(',', $this->parseStringToNumber($request->nilaisewahari)),
             'harga_bulan' => implode(',', $this->parseStringToNumber($request->nilaisewabulan)),
             'nik' => $request->nik,
-            'sopir_id' => $request->sopir_id != null ? implode(',', $request->sopir_id) : '',
+            'sopir_id' => $request->sopir_id ,
             'tujuan' => $request->tujuan,
             'jaminan' => $request->jaminan,
             // Penanggung Jawab Bersal Dari Data User ID
@@ -321,7 +330,7 @@ class LaporanController extends Controller
             'status' => '1',
         ]);
         if ($request->sopir_id != null) {
-            Sopir::whereIn('id', $request->sopir_id)->update(['status' => '2']);
+            Sopir::where('id', $request->sopir_id)->update(['status' => '2']);
         }
     }
     public function parseStringToNumber($string_array)
