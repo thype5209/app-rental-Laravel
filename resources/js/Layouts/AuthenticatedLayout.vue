@@ -53,7 +53,7 @@ onMounted(() => {
                     </span>
                 </div>
                 <div class="flex justify-between items-center h-14 bg-gray-700 dark:bg-gray-800 header-right">
-                    <div
+                    <!-- <div
                         class="bg-white rounded flex items-center w-full max-w-xl mr-4 p-2 shadow-sm border border-gray-200">
                         <button class="outline-none focus:outline-none">
                             <svg class="w-5 text-gray-600 h-5 cursor-pointer" fill="none" stroke-linecap="round"
@@ -63,7 +63,7 @@ onMounted(() => {
                         </button>
                         <input type="search" name="" id="" placeholder="Search" :value="$page.props.auth.user.name"
                             class="w-full pl-3 text-sm text-black outline-none focus:outline-none bg-transparent" />
-                    </div>
+                    </div> -->
                     <ul class="flex items-center">
 
                         <li>
