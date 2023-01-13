@@ -241,7 +241,7 @@
                 <!-- TTD -->
                 <table class="table w-full ">
                     <tr>
-                        <td colspan="3" class="text-right"> Makassar, {{ $tgl }}</td>
+                        <td colspan="3" class="text-right">{{ $data->tgl_file }}</td>
                     </tr>
                     <tr>
                         <td class="text-center">Direktur CV. JASA SAUDAGAR <br> Diketahui</td>

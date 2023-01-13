@@ -133,6 +133,7 @@ class SewaController extends Controller
             'metode_bayar' => 'required',
             'list_pengiriman' => 'string|nullable',
             'lunas' => 'required',
+            'tgl_file' => 'required',
             'panjar' => $request->lunas == 1 ? 'nullable': 'required',
             'sisa' => $request->lunas == 1 ? 'nullable': 'required',
             'jaminan' => 'string|nullable',

@@ -93,6 +93,7 @@ const FormPDF = useForm({
     sopir_nik: data.formulir.sopir_nik,
     sopir_alamat: data.formulir.sopir_alamat,
     sopir_no_hp: data.formulir.sopir_no_hp,
+    tgl_file: data.formulir.tgl_file,
 })
 
 const date = new Date();
@@ -423,7 +424,7 @@ function reduceArray(array, lamasewa = 1) {
                 <!-- TTD -->
                 <table class="table w-full mt-10 ">
                     <tr>
-                        <td colspan="3" class="text-black text-right"> Makassar, {{ today }}</td>
+                        <td colspan="3" class="text-black text-right">{{FormPDF.tgl_file}}</td>
                     </tr>
                     <tr>
                         <td class="text-black text-center">Direktur CV. JASA SAUDAGAR</td>

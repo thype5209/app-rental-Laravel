@@ -34,7 +34,7 @@ if (data.sopir.length > 0) {
 }
 console.log(namaSopir.value)
 const myinput = window.location.origin + '/storage/' + data.pdf;
-const myinputwa = `PEMAKAIAN DENGAN ${jenis_sewa}
+const myinputwa = `PEMAKAIAN ${jenis_sewa}
 No. SPK :${data.sewa.kode}
 Nama Penyewa : ${data.sewa.pengguna.nama}
 Nama driver : ${data.sopir.length > 0 ? namaSopir.value : '--'}

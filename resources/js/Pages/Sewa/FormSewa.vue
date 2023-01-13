@@ -773,10 +773,15 @@ const syaratKet = ref(``);
                     <div class="absolute left-1/2 px-4 bg-white -translate-x-1/2 ">Keterangan Dan Syarat Sewa</div>
                 </div>
                 <div class="bg-gray-200 shadow-md rounded md:px-8 pt-6 mb-4 flex flex-col my-2" v-if="slideMobil == 4">
-                    <div class="w-full px-3">
+                    <div class="w-full px-3 mb-5">
                         <ckeditor :editor="editor" v-model="Form.ket_syarat" :config="editorConfig"></ckeditor>
                     </div>
-                    <!-- <div v-html="Form.ket_syarat"></div> -->
+                    <p class=" font-semibold text-gray-900  text-sm lowercase">Isi Kolom Untuk Tanggal File</p>
+                    <TextInput type="text" v-model="Form.tgl_file"
+                        placeholder="Isikan Keterangan Pengambilan" required />
+                    <p v-if="errors.tgl_file" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                    <p v-else class="text-red text-xs italic text-red-500">contoh: Makassar, 12 Januari 2023</p>
+
 
                     <div class="flex justify-around">
                         <PrimaryButtonVue type="button" @click="slideMobil--"
