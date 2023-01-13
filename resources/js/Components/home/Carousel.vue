@@ -9,7 +9,7 @@ const data = defineProps({
 })
 console.log(data.mobil)
 function sendWA(){
-    const wa = "https://api.whatsapp.com/send?phone=6281524269051&text=Saya%20tertarik%20untuk%20membeli%20produk%20ini%20segera";
+    const wa = "https://api.whatsapp.com/send?phone=6282177733329&text=Saya%20tertarik%20untuk%20membeli%20produk%20ini%20segera";
     window.location.href = wa;
 }
 </script>
