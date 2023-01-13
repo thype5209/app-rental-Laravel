@@ -210,7 +210,7 @@ class LaporanController extends Controller
             'jaminan' => 'KTP',
             'lunas' => '1',
             'mobil_id' => ['1', '2'],
-            'nilaisewahari' => ['20000', '30,000'],
+            'nilaisewahari' => ['20.000', '30,000'],
             'nilaisewabulan' => ['90000', '800000'],
             'unit' => ['avanza', 'Jaguar'],
             'nopol' => ['NK 0012', 'DD JSK 99'],
@@ -218,6 +218,7 @@ class LaporanController extends Controller
             'panjar' => '0',
             'sisa' => '0',
             'total' => '0',
+            'tgl_file' => 'makassar, 19 januari 2022',
 
         ];
         $req = (object) $data;
@@ -354,10 +355,14 @@ class LaporanController extends Controller
     public function parseToNumber($item)
     {
         $nilai = null;
-
         $tambah_arr = null;
         if (strpos($item, ',') !== false || strpos($item, '.') !== false) {
-            $hasil = explode(',', $item);
+            if(strpos($item, ',') !== false){
+                $hasil = explode(',', $item);
+            }
+            if(strpos($item, '.') !== false){
+                $hasil = explode('.', $item);
+            }
             for ($i = 0; $i < count($hasil); $i++) {
                 $tambah_arr .= $hasil[$i];
             }

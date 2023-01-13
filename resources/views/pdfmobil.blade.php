@@ -1,13 +1,17 @@
 <div>
-    @include('kop', ['kode' => $kode])
-    <table class="table w-full bg-white">
-        <tr class=" p-0 m-0">
-            <td colspan="4" class="text-right flex flex-col ">
-                <span class="text-center font-bold underline uppercase">Ceklis Unit & kelengkapan
-                    kendaraan</span><br>
+    <table class=" bg-white  w-full mb-5">
+        <tr>
+            <td class="text-left ">
+                <img src="{{ public_path('img/logo.png') }}" width="150" height="150" class="w-1/2 " alt="">
+            </td>
+            <td class="text-right  max-w-md uppercase">
+                <span class="text-center font-bold underline text-lg">
+                    CEKLIST UNIT DAN KELENGKAPAN KENDARAAN
+                </span>
             </td>
         </tr>
     </table>
+
 
     <table class="w-full">
         <tr>
@@ -39,8 +43,8 @@
         @endphp
         @for ($i = 0; $i < count($foto); $i++)
             <tr>
-                <td class="border-bottom-none text-center" rowspan="6" style="width: 200px;heigth:200px">
-                    <img src="{{ public_path('pdfimage/' . $foto[$i]) }}" width="150" height="150" alt="">
+                <td class="border-bottom-none text-center" rowspan="6" style="width: 200px;height:110px;">
+                    <img src="{{ public_path('pdfimage/' . $foto[$i]) }}"  style="height: 110px;width:80%;" alt="">
                 </td>
                 <td class="border"></td>
             </tr>

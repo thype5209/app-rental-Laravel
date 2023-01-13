@@ -23,8 +23,9 @@
 <table class="table w-full bg-white">
     <tr class=" p-0 m-0">
         <td colspan="4" class="text-center flex flex-col ">
-            <u><span class="text-center font-bold underline">SURAT PERNYATAAN SEWA
-                    KENDARAAN</span></u><br>
+            <u><span class="text-center font-bold underline">
+            SURAT PERNYATAAN SEWA KENDARAAN
+            </span></u><br>
             <span class="font-semibold">No. SPK:{{ $kode }}</span>
         </td>
     </tr>

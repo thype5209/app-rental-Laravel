@@ -111,6 +111,7 @@ const Form = useForm({
 
 watch(jenisSewa, value => {
     Form.jenis_sewa = value;
+
     if (value == 'Lepas') {
         Form.ket_syarat = `<h3>Ket.</h3>
             <ul>
@@ -138,9 +139,15 @@ watch(jenisSewa, value => {
                     di bengkel.</li>
                 <li>Penyewa bersedia dituntut pidana apabila melanggar poin-poin diatas</li>
 
-            </ul>`
+            </ul>`;
+            Form.sopir_id = '';
+            Form.nama_sopir = '';
+            Form.sopir_nik = '';
+            Form.sopir_alamat = '';
+            Form.sopir_no_hp = '';
     } else if (value == 'Kunci') {
         Form.ket_syarat = ``;
+
     }
 })
 // console.log(props)
@@ -518,7 +525,7 @@ const syaratKet = ref(``);
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Sosial</InputLabel>
-                            <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sosial" />
+                            <TextInput id="grid-last-name" type="text" placeholder="FB" v-model="Form.sosial" />
                         </div>
                     </div>
                     <div class="-mx-3 md:flex mb-6 items-center" v-if="Form.jenis_sewa == 'Kunci'">
@@ -543,27 +550,27 @@ const syaratKet = ref(``);
                                     <InputLabel
                                         class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                         for="grid-first-name">Nama Sopir</InputLabel>
-                                    <TextInput id="grid-first-name" type="tel" placeholder="+62" v-model="Form.nama_sopir" />
+                                    <TextInput id="grid-first-name" type="text" placeholder="......" v-model="Form.nama_sopir" />
                                     <p v-if="errors.no_hp" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                                 </div>
                                 <div class="md:w-1/2 px-3 mb-4">
                                     <InputLabel
                                         class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                         for="grid-last-name">Nomor HP Sopir</InputLabel>
-                                    <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sopir_no_hp" />
+                                    <TextInput id="grid-last-name" type="tel" placeholder="....." v-model="Form.sopir_no_hp" />
                                     <p v-if="errors.no_hp_lain" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                                 </div>
                                 <div class="md:w-1/2 px-3 mb-4">
                                     <InputLabel
                                         class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                         for="grid-last-name">NIK</InputLabel>
-                                    <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sopir_nik" />
+                                    <TextInput id="grid-last-name" type="number" placeholder="........" v-model="Form.sopir_nik" />
                                 </div>
                                 <div class="md:w-1/2 px-3 mb-4">
                                     <InputLabel
                                         class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                         for="grid-last-name">Alamat Sopir</InputLabel>
-                                    <TextInput id="grid-last-name" type="tel" placeholder="+62" v-model="Form.sopir_alamat" />
+                                    <TextInput id="grid-last-name" type="text" placeholder="alamat......" v-model="Form.sopir_alamat" />
                                 </div>
                             </div>
                         </div>

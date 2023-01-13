@@ -81,7 +81,7 @@
         <main class="page">
             <section class=" top-0 pb-5 ">
                 <!-- Head -->
-                @include('kop', ['kode' => $kode])
+                @include('kop', ['kode' => $kode, 'txtKop'=> true])
 
 
                 <table class="table w-max sm:w-1/4 md:w-1/3 mb-3">
@@ -279,7 +279,7 @@
         @for ($i = 0; $i < count($data->unit); $i++)
         <main class="page">
         <div class="page-break"></div>
-            @include('pdfmobil', ['data' => $data, 'i' => $i, 'kode' => $kode, 'tgl' => $tgl])
+            @include('pdfmobil', ['data' => $data, 'i' => $i, 'kode' => $kode, 'tgl' => $tgl, 'txtKop'=> false])
         </main>
         @endfor
 
