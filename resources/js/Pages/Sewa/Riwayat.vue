@@ -200,7 +200,6 @@ function statusBayar(value){
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">No.</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Kode</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">NIK</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Nama Penyewa</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">No. Polisi</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Tanggal Sewa</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Tanggal Kembali</th>
@@ -220,13 +219,7 @@ function statusBayar(value){
                                 {{ mobil.kode }}
                             </td>
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
-                                <span v-if="mobil.nik != null">{{ mobil.nik }}</span>
-                                <span v-else>Kunci</span>
-                            </td>
-                            <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm whitespace-nowrap">
-                                <span v-if="mobil.pengguna != null">{{ mobil.pengguna.nama }}</span>
-                                <span v-else-if="mobil.sopir_id != null">sopir</span>
-                                <span v-else>Data Penyewa Terhapus</span>
+                                <span >{{ mobil.nik }}</span>
                             </td>
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
                                 {{ mobil.nopol }}
