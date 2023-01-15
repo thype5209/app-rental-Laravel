@@ -124,7 +124,6 @@ class SewaController extends Controller
             'nopol' => 'required',
             'tahun' => 'required',
             'nilaisewahari' => 'required',
-            'nilaisewabulan' => 'required',
             'tgl_sewa' => 'required|date',
             'tgl_kembali' => 'required|date',
             'lama_sewa' => 'required',

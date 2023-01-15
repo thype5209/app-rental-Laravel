@@ -17,10 +17,7 @@ class MobilController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:mobil list', ['only' => ['index', 'show']]);
-        $this->middleware('can:mobil create', ['only' => ['create', 'store']]);
-        $this->middleware('can:mobil edit', ['only' => ['edit', 'update']]);
-        $this->middleware('can:mobil delete', ['only' => ['destroy']]);
+
     }
     /**
      * Display a listing of the resource.
