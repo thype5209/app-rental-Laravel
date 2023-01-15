@@ -91,7 +91,7 @@ class SewaController extends Controller
      */
     public function create()
     {
-        $mobil = Mobil::where('status', '=', '2')->get();
+        $mobil = Mobil::all();
 
         $pengguna = Pengguna::all();
         $sopir = Sopir::all();
@@ -143,11 +143,6 @@ class SewaController extends Controller
         })
             ->where('nik', $request->nik)
             ->get();
-        $mobil = Mobil::where('nopol', '=', $request->nopol)->where('status', '1')->get();
-        // dd($pengguna->count(), $mobil->count());
-        if ($mobil->count() > 0) {
-            return Redirect::route('Sewa.index')->with('error', 'Maaf Kendaraan Sedang Disewa');
-        }
         if ($pengguna->count() > 0) {
             return Redirect::route('Sewa.index')->with('error', 'Tunggakan Pembayaran Belum Lunas');
         }

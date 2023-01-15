@@ -77,33 +77,27 @@ class LaporanController extends Controller
     public function saveSewa(Request $request)
     {
         // dd($request->all());
+        $req = $request;
+        // Panggil Fungsi Kode
+        $kode = $this->kodeSewa();
+        $path =  'SewaPDF/';
+        $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
+        //buat pengguna
+        $this->createPengguna($req);
+        $this->createSopir($req);
+        $this->sewaCreate($req, $kode, $namaPDF);
 
-        // CekMobil
-        $mobil = Sewa::where('nopol', $request->nopol)->whereIn('status', ['Sewa', 'Telat'])->get();
-        if ($mobil->count() > 0) {
-            return Redirect::route('Sewa.index')->with('error', 'Mobil Dalam Penyewaan');
-        } else {
-            $req = $request;
-            // Panggil Fungsi Kode
-            $kode = $this->kodeSewa();
-            $path =  'SewaPDF/';
-            $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
-            //buat pengguna
-            $this->createPengguna($req);
-            $this->createSopir($req);
-            $this->sewaCreate($req, $kode, $namaPDF);
+        // Tanggal
+        $carbon = $this->today();
+        // Melakukan Load Data PDF
+        $mobil = Mobil::where('nopol', $req->nopol)->first();
 
-            // Tanggal
-            $carbon = $this->today();
-            // Melakukan Load Data PDF
-            $mobil = Mobil::where('nopol', $req->nopol)->first();
+        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
+        // Simpan File PDF Ke Public Storage
+        Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
 
-            $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
-            // Simpan File PDF Ke Public Storage
-            Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
+        return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF, 'kode' => $kode])->with('success', 'Berhasil Disimpan SPK=' . $kode);
 
-            return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF, 'kode' => $kode])->with('success', 'Berhasil Disimpan SPK=' . $kode);
-        }
     }
 
 
