@@ -42,7 +42,9 @@ class PenggunaController extends Controller
     }
     public function cariNIK()
     {
-        $pengguna = Pengguna::where('nik', 'like', '%' .  Request::input('search') . '%')->get();
+        $pengguna = Pengguna::where('nik', 'like', '%' .  Request::input('search') . '%')
+        ->orWhere('nama', 'like', '%' .  Request::input('search') . '%')
+        ->get();
         return json_encode($pengguna);
     }
     public function GetID($id)
