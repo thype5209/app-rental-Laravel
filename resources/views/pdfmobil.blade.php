@@ -85,7 +85,7 @@
             <th class=" text-center border">Tidak Ada</th>
         </tr>
         <tr>
-            <td class="border">Kunci Roda</td>
+            <td class="border">STNK</td>
             <td class="border"></td>
             <td class="border"></td>
             <td class="border"></td>
@@ -110,7 +110,7 @@
             <td class="border">Posisi Jarum BBM</td>
         </tr>
         <tr>
-            <td class="border">Tool Kit</td>
+            <td class="border">Kunci Roda</td>
             <td class="border"></td>
             <td class="border"></td>
             <td class="border"></td>
