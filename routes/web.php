@@ -100,6 +100,8 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::get('/GetID{id}', 'GetID')->name('GetID');
             Route::get('/Edit/{id}', 'edit')->name('edit');
             Route::put('/update/{id}', 'update')->name('update');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/create', 'create')->name('create');
             Route::get('/Detail/Pengguna/{id}', 'show')->name('show');
             Route::delete('/Pengguna/destroy/{id}', 'destroy')->name('destroy');
         });

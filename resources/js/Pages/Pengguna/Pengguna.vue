@@ -1,21 +1,41 @@
 <template>
     <AuthenticatedLayout>
         <div class="w-full overflow-hidden rounded-lg shadow-lg">
-            <div class="flex items-center max-w-sm py-3 ml-5">
-                <label for="simple-search" class="sr-only">Search</label>
-                <div class="relative w-full">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
-                            viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <input type="text" id="simple-search" v-model="search"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search" required>
+
+            <div class="bg-gray-200 w-full">
+                <div v-if="$page.props.flash.success"
+                    class=" flex flex-row justify-between p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                    role="alert">
+                    <span class="font-medium">{{ $page.props.flash.success }}</span>
+
                 </div>
+                <div v-if="$page.props.flash.error"
+                    class=" flex flex-row justify-between p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+                    role="alert">
+                    <span class="font-medium">{{ $page.props.flash.error }}</span>
+
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-between py-3 ml-5">
+                <div class="flex">
+                    <label for="simple-search" class="sr-only">Search</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <input type="text" id="simple-search" v-model="search"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-1.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Search" required>
+                    </div>
+                </div>
+                <PrimaryButtonVue type="button">
+                    <Link :href="route('Pengguna.create')">Tambah</Link>
+                </PrimaryButtonVue>
             </div>
             <div class="w-full overflow-x-auto">
                 <table class="w-full whitespace-no-wrap">
@@ -90,8 +110,10 @@
                                         </svg>
                                     </button>
                                     </Link>
-                                    <button class=" bg-green-600 text-white px-2 py-1 rounded-md ml-2 font-semibold" v-if="can.edit">
-                                        <Link :href="route('Pengguna.edit', [{ id: user.id }])" :data="{ id: user.nama }">
+                                    <button class=" bg-green-600 text-white px-2 py-1 rounded-md ml-2 font-semibold"
+                                        v-if="can.edit">
+                                        <Link :href="route('Pengguna.edit', [{ id: user.id }])"
+                                            :data="{ id: user.nama }">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-5 h-5 font-semibold">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -125,12 +147,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import PaginationVue from '@/Components/Pagination.vue';
 import { useForm, Link } from '@inertiajs/inertia-vue3';
+import PrimaryButtonVue from '@/Components/PrimaryButton.vue'
 export default {
     name: 'PenggunaVue',
     components: {
         AuthenticatedLayout,
         PaginationVue,
-        Link
+        Link,
+        PrimaryButtonVue,
     },
     setup() {
         const rupiah = (number) => {
