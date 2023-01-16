@@ -56,6 +56,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::put('/Update/{id}', 'update')->name('update');
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::get('/GetIDMobil/{id}', 'GetIDMobil')->name('GetIDMobil');
+            Route::get('/cariMobil/{search}', 'cariMobil')->name('cariMobil');
             Route::get('/riwayat/{id}', 'riwayat')->name('riwayat');
         });
     });
@@ -97,6 +98,8 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/NIK', 'CariNIK')->name('CariNIK');
             Route::get('/GetID{id}', 'GetID')->name('GetID');
+            Route::get('/Edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
             Route::get('/Detail/Pengguna/{id}', 'show')->name('show');
             Route::delete('/Pengguna/destroy/{id}', 'destroy')->name('destroy');
         });

@@ -331,17 +331,19 @@ class LaporanController extends Controller
     public function parseStringToNumber($string_array)
     {
         $nilai = null;
-        foreach ($string_array as $item) {
-            $tambah_arr = null;
-            if (strpos($item, ',') !== false || strpos($item, '.') !== false) {
-                $hasil = explode(',', $item);
-                for ($i = 0; $i < count($hasil); $i++) {
-                    $tambah_arr .= $hasil[$i];
-                }
-                $nilai[] = $tambah_arr;
-            } else {
+        if($string_array != []){
+            foreach ($string_array as $item) {
+                $tambah_arr = null;
+                if (strpos($item, ',') !== false || strpos($item, '.') !== false) {
+                    $hasil = explode(',', $item);
+                    for ($i = 0; $i < count($hasil); $i++) {
+                        $tambah_arr .= $hasil[$i];
+                    }
+                    $nilai[] = $tambah_arr;
+                } else {
 
-                $nilai[] = $item;
+                    $nilai[] = $item;
+                }
             }
         }
         return $nilai;

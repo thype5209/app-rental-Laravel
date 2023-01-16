@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Pengguna;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -112,9 +113,11 @@ class PenggunaController extends Controller
      * @param  \App\Models\Pengguna  $pengguna
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pengguna $pengguna)
+    public function edit(Pengguna $pengguna, $id)
     {
-        //
+        return Inertia::render('Pengguna/Edit', [
+            'pengguna'=> $pengguna->find($id),
+        ]);
     }
 
     /**
@@ -124,9 +127,36 @@ class PenggunaController extends Controller
      * @param  \App\Models\Pengguna  $pengguna
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pengguna $pengguna)
+    public function update(Request $request, Pengguna $pengguna,$id)
     {
-        //
+        Request::validate([
+            'nik'=> 'numeric|required',
+            'nama'=> 'required|string',
+            'no_hp'=> 'string|required',
+            'no_hp_lain'=> 'string|required',
+            'alamat'=> 'string|required',
+            'pekerjaan'=> 'string|required',
+            'tempat_lahir'=> 'string|required',
+            'tgl_lahir'=> 'required|date',
+        ]);
+        $data = $pengguna->find($id);
+        $image = $data->foto_ktp;
+        if(Request::input('foto_ktp') != null){
+            $image = Request::input('nik'). '.' .  Request::input('foto_ktp');
+            $request->file('foto_ktp')->storeAs('public/FotoKTP', $image);
+        }
+        $pengguna->find($id)->update([
+            'foto_ktp'=> $image,
+            'nik'=> Request::input('nik'),
+            'nama'=> Request::input('nama'),
+            'no_hp'=> Request::input('no_hp'),
+            'no_hp_lain'=> Request::input('no_hp_lain'),
+            'alamat'=> Request::input('alamat'),
+            'pekerjaan'=> Request::input('pekerjaan'),
+            'tempat_lahir'=> Request::input('tempat_lahir'),
+            'tgl_lahir'=> Request::input('tgl_lahir'),
+        ]);
+        return Redirect::route('Pengguna.index')->with('success',' Berhasil Di Edit');
     }
 
     /**

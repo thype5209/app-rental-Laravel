@@ -233,4 +233,9 @@ class MobilController extends Controller
 
         return response()->json($mobil);
     }
+    public function cariMobil($search)
+    {
+        $mobil = Mobil::where('nopol', 'like', '%'. $search .'%')->get();
+        return response()->json($mobil);
+    }
 }
