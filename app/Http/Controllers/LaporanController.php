@@ -297,7 +297,7 @@ class LaporanController extends Controller
             'unit' => implode(',', $request->unit),
             'tahun' => implode(',', $request->tahun),
             'harga' => implode(',', $this->parseStringToNumber($request->nilaisewahari)),
-            'harga_bulan' => null,
+
             'nik' => $request->nik,
             'sopir_id' => $request->sopir_id,
             'tujuan' => $request->tujuan,
