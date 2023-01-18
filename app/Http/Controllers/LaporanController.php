@@ -296,7 +296,7 @@ class LaporanController extends Controller
             'unit' => implode(',', $request->unit),
             'tahun' => implode(',', $request->tahun),
             'harga' => implode(',', $this->parseStringToNumber($request->nilaisewahari)),
-            'harga_bulan' => implode(',', $this->parseStringToNumber($request->nilaisewabulan)),
+            'harga_bulan' => null,
             'nik' => $request->nik,
             'sopir_id' => $request->sopir_id ,
             'tujuan' => $request->tujuan,
@@ -321,17 +321,19 @@ class LaporanController extends Controller
             'jam_kembali' => $request->jam_kembali,
             'lama_sewa' => $request->lama_sewa,
         ]);
-        Mobil::whereIn('id', $request->mobil_id)->update([
-            'status' => '1',
-        ]);
+        if($request->mobil_id != null){
+            Mobil::whereIn('id', $request->mobil_id)->update([
+                'status' => '1',
+            ]);
+        }
         if ($request->sopir_id != null) {
             Sopir::where('id', $request->sopir_id)->update(['status' => '2']);
         }
     }
     public function parseStringToNumber($string_array)
     {
-        $nilai = null;
-        if($string_array != []){
+        $nilai = $string_array;
+        if($string_array != [] || $string_array != null){
             foreach ($string_array as $item) {
                 $tambah_arr = null;
                 if (strpos($item, ',') !== false || strpos($item, '.') !== false) {
