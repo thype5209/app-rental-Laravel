@@ -97,7 +97,6 @@ class LaporanController extends Controller
         Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
 
         return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF, 'kode' => $kode])->with('success', 'Berhasil Disimpan SPK=' . $kode);
-
     }
 
 
@@ -204,7 +203,7 @@ class LaporanController extends Controller
             'jaminan' => 'KTP',
             'lunas' => '1',
             'mobil_id' => ['1', '2'],
-            'nilaisewahari' => ['20.000', '30,000'],
+            'nilaisewahari' => ['20000', '30000'],
             'nilaisewabulan' => ['90000', '800000'],
             'unit' => ['avanza', 'Jaguar'],
             'nopol' => ['NK 0012', 'DD JSK 99'],
@@ -217,7 +216,8 @@ class LaporanController extends Controller
         ];
         $req = (object) $data;
         // Panggil Fungsi Kode
-        $cek = intval(array_sum($req->nilaisewahari)) * intval($req->lama_sewa);
+        $cek = intval(array_sum($this->parseStringToNumber($req->nilaisewahari))) * $req->lama_sewa;
+        dd($cek);
         $kode = $this->kodeSewa();
         $path =  'SewaPDF/';
         $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
@@ -263,15 +263,16 @@ class LaporanController extends Controller
             }
         }
     }
-    public function createSopir($request){
+    public function createSopir($request)
+    {
         $sopir = Sopir::where('nik', $request->sopir_nik)->get();
         // dd($request->all());
-        if($sopir->count() < 1 && $request->sopir_nik != null && $request->sopir_alamat != null &&$request->sopir_no_hp != null){
+        if ($sopir->count() < 1 && $request->sopir_nik != null && $request->sopir_alamat != null && $request->sopir_no_hp != null) {
             Sopir::create([
-                'nama'=> $request->nama_sopir,
-                'nik'=> $request->sopir_nik,
-                'alamat'=> $request->sopir_alamat,
-                'no_hp'=> $request->sopir_no_hp,
+                'nama' => $request->nama_sopir,
+                'nik' => $request->sopir_nik,
+                'alamat' => $request->sopir_alamat,
+                'no_hp' => $request->sopir_no_hp,
             ]);
         }
     }
@@ -298,7 +299,7 @@ class LaporanController extends Controller
             'harga' => implode(',', $this->parseStringToNumber($request->nilaisewahari)),
             'harga_bulan' => null,
             'nik' => $request->nik,
-            'sopir_id' => $request->sopir_id ,
+            'sopir_id' => $request->sopir_id,
             'tujuan' => $request->tujuan,
             'jaminan' => $request->jaminan,
             // Penanggung Jawab Bersal Dari Data User ID
@@ -321,7 +322,7 @@ class LaporanController extends Controller
             'jam_kembali' => $request->jam_kembali,
             'lama_sewa' => $request->lama_sewa,
         ]);
-        if($request->mobil_id != null){
+        if ($request->mobil_id != null) {
             Mobil::whereIn('id', $request->mobil_id)->update([
                 'status' => '1',
             ]);
@@ -332,12 +333,17 @@ class LaporanController extends Controller
     }
     public function parseStringToNumber($string_array)
     {
-        $nilai = $string_array;
-        if($string_array != [] || $string_array != null){
+        $nilai = null;
+        if ($string_array != [] || $string_array != null) {
             foreach ($string_array as $item) {
                 $tambah_arr = null;
-                if (strpos($item, ',') !== false || strpos($item, '.') !== false) {
-                    $hasil = explode(',', $item);
+                if (strpos($item, ',') !== false ||  strpos($item, '.') !== false) {
+                    if (strpos($item, '.') !== false) {
+                        $hasil = explode('.', $item);
+                    }
+                    if (strpos($item, ',') !== false) {
+                        $hasil = explode(',', $item);
+                    }
                     for ($i = 0; $i < count($hasil); $i++) {
                         $tambah_arr .= $hasil[$i];
                     }
@@ -347,6 +353,8 @@ class LaporanController extends Controller
                     $nilai[] = $item;
                 }
             }
+        }else{
+            $nilai = $string_array;
         }
         return $nilai;
     }
@@ -355,10 +363,10 @@ class LaporanController extends Controller
         $nilai = null;
         $tambah_arr = null;
         if (strpos($item, ',') !== false || strpos($item, '.') !== false) {
-            if(strpos($item, ',') !== false){
+            if (strpos($item, ',') !== false) {
                 $hasil = explode(',', $item);
             }
-            if(strpos($item, '.') !== false){
+            if (strpos($item, '.') !== false) {
                 $hasil = explode('.', $item);
             }
             for ($i = 0; $i < count($hasil); $i++) {
