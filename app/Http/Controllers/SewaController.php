@@ -130,7 +130,7 @@ class SewaController extends Controller
             'tujuan' => 'required',
             // 'status_bayar' => 'required',
             'metode_bayar' => 'required',
-            'list_pengiriman' => 'string|nullable',
+            'list_pengiriman' => 'string|nullable|max:100',
             'lunas' => 'required',
             'tgl_file' => 'required',
             'panjar' => $request->lunas == 1 ? 'nullable': 'required',
