@@ -133,8 +133,8 @@ class SewaController extends Controller
             'list_pengiriman' => 'string|nullable|max:100',
             'lunas' => 'required',
             'tgl_file' => 'required',
-            'panjar' => $request->lunas == 1 ? 'nullable': 'required',
-            'sisa' => $request->lunas == 1 ? 'nullable': 'required',
+            'panjar' => $request->lunas == 1 ? 'nullable' : 'required',
+            'sisa' => $request->lunas == 1 ? 'nullable' : 'required',
             'jaminan' => 'string|nullable',
         ]);
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
@@ -165,11 +165,11 @@ class SewaController extends Controller
      */
     public function show(Sewa $sewa, $id)
     {
-        $data = $sewa->with(['pengguna', 'waktusewa', 'user','sopir'])->find($id);
+        $data = $sewa->with(['pengguna', 'waktusewa', 'user', 'sopir'])->find($id);
         $penggunaTrashed = Pengguna::onlyTrashed()->where('nik', $data->nik)->first();
         return Inertia::render('Sewa/Show', [
             'sewa' => $data,
-            'penggunaTrashed'=> $penggunaTrashed
+            'penggunaTrashed' => $penggunaTrashed
         ]);
     }
 
@@ -179,9 +179,11 @@ class SewaController extends Controller
      * @param  \App\Models\Sewa  $sewa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Sewa $sewa)
+    public function edit(Sewa $sewa, $id)
     {
-        //
+        return Inertia::render('Sewa/Edit', [
+            'sewa' => $sewa->with(['waktusewa', 'sopir', 'pengguna'])->find($id),
+        ]);
     }
 
     /**
@@ -191,9 +193,53 @@ class SewaController extends Controller
      * @param  \App\Models\Sewa  $sewa
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSewaRequest $request, Sewa $sewa)
+    public function update(Request $request, Sewa $sewa, $id)
     {
-        //
+
+        $valid =  $this->validate($request, [
+            'nopol' => ['required'],
+            'nik' => ['required'],
+            'jenis_sewa' => ['required'],
+            'unit' => ['required'],
+            'tahun' => ['required'],
+            'harga' => ['required', 'max:100'],
+            'sopir_id' => ['nullable'],
+            'tujuan' => ['required', 'max:100'],
+            'jaminan' => ['required', 'max:100'],
+            'tgl_sewa' => ['required', 'date'],
+            'jam_sewa' => ['required'],
+            'jam_kembali' => ['required'],
+            'tgl_kembali' => ['required', 'date'],
+            'lama_sewa' => ['required', 'numeric'],
+            'total' => ['required', 'string', 'max:50'],
+            'metode_bayar' => ['required'],
+            'list_pengiriman' => ['required', 'max:100'],
+        ]);
+        Sewa::find($id)->update([
+            'nik' => $request->nik,
+            'jenis_sewa' => $request->jenis_sewa,
+            'nopol' => implode(',',$request->nopol),
+            'unit' => implode(',',$request->unit),
+            'tahun' => implode(',',$request->tahun),
+            'harga' => implode(',',$request->harga),
+            'sopir_id' => $request->sopir_id,
+            'tujuan' => $request->tujuan,
+            'jaminan' => $request->jaminan,
+            'panjar'=> $request->panjar,
+            'sisa'=> $request->sisa,
+            'total' => $request->total,
+            'metode_bayar' => $request->metode_bayar,
+            'list_pengiriman' => $request->list_pengiriman,
+        ]);
+        WaktuSewa::where('sewa_id', $id)->update([
+            'tgl_sewa' => $request->tgl_sewa,
+            'jam_sewa' => $request->jam_sewa,
+            'jam_kembali' => $request->jam_kembali,
+            'tgl_kembali' => $request->tgl_kembali,
+            'lama_sewa' => $request->lama_sewa,
+        ]);
+
+        // return Redirect::route('Laporan.saveSewa', $request->all());
     }
 
     /**
@@ -210,7 +256,7 @@ class SewaController extends Controller
             Storage::disk('public')->delete($data->pdf_url);
         }
         Mobil::whereIn('nopol', $exp)->update(['status' => '2']);
-        Sopir::where('id', $data->sopir_id)->update(['status'=> '1']);
+        Sopir::where('id', $data->sopir_id)->update(['status' => '1']);
         Pengguna::onlyTrashed()->where('nik', $data->nik)->forceDelete();
         $data->delete();
     }
@@ -292,6 +338,7 @@ class SewaController extends Controller
             $waktu_sekarang = Carbon::now();
             $diff = $waktu_sekarang->diffInHours($waktu_kembali);
             $nilai_denda = $total_denda * $diff;
+
             $sub_total = (intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)) + $item->denda;
             // dd($this->reduceArray($item->harga),(intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)), $item->kode, $item->waktusewa->lama_sewa, $item->denda, $sub_total);
             // dd($nilai_denda);
@@ -336,12 +383,11 @@ class SewaController extends Controller
                 Mobil::whereIn('nopol',  $exp)->update([
                     'status' => $request->status == 'Selesai' ? '2' : '1',
                 ]);
-                Sopir::where('id', $sewa->sopir_id)->update(['status'=> '1']);
+                Sopir::where('id', $sewa->sopir_id)->update(['status' => '1']);
             }
             return Redirect::back()->with('success', "Status Sewa " . $sewa->kode . " Berhasil Diganti ");
         } catch (Exception $e) {
             return Redirect::back()->with('error', $e->getMessage());
-
         }
 
         // Synchronously
