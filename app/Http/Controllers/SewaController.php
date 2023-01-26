@@ -212,6 +212,7 @@ class SewaController extends Controller
             'lama_sewa' => ['required', 'numeric'],
             'total' => ['required', 'string', 'max:50'],
             'metode_bayar' => ['required'],
+            'nilai_denda' => ['required', 'numeric', 'max:10'],
             'list_pengiriman' => ['required', 'max:100'],
         ]);
         // Sewa::find($id)->update([
