@@ -215,31 +215,31 @@ class SewaController extends Controller
             'metode_bayar' => ['required'],
             'list_pengiriman' => ['required', 'max:100'],
         ]);
-        Sewa::find($id)->update([
-            'nik' => $request->nik,
-            'jenis_sewa' => $request->jenis_sewa,
-            'nopol' => implode(',',$request->nopol),
-            'unit' => implode(',',$request->unit),
-            'tahun' => implode(',',$request->tahun),
-            'harga' => implode(',',$request->harga),
-            'sopir_id' => $request->sopir_id,
-            'tujuan' => $request->tujuan,
-            'jaminan' => $request->jaminan,
-            'panjar'=> $request->panjar,
-            'sisa'=> $request->sisa,
-            'total' => $request->total,
-            'metode_bayar' => $request->metode_bayar,
-            'list_pengiriman' => $request->list_pengiriman,
-        ]);
-        WaktuSewa::where('sewa_id', $id)->update([
-            'tgl_sewa' => $request->tgl_sewa,
-            'jam_sewa' => $request->jam_sewa,
-            'jam_kembali' => $request->jam_kembali,
-            'tgl_kembali' => $request->tgl_kembali,
-            'lama_sewa' => $request->lama_sewa,
-        ]);
+        // Sewa::find($id)->update([
+        //     'nik' => $request->nik,
+        //     'jenis_sewa' => $request->jenis_sewa,
+        //     'nopol' => implode(',',$request->nopol),
+        //     'unit' => implode(',',$request->unit),
+        //     'tahun' => implode(',',$request->tahun),
+        //     'harga' => implode(',',$request->harga),
+        //     'sopir_id' => $request->sopir_id,
+        //     'tujuan' => $request->tujuan,
+        //     'jaminan' => $request->jaminan,
+        //     'panjar'=> $request->panjar,
+        //     'sisa'=> $request->sisa,
+        //     'total' => $request->total,
+        //     'metode_bayar' => $request->metode_bayar,
+        //     'list_pengiriman' => $request->list_pengiriman,
+        // ]);
+        // WaktuSewa::where('sewa_id', $id)->update([
+        //     'tgl_sewa' => $request->tgl_sewa,
+        //     'jam_sewa' => $request->jam_sewa,
+        //     'jam_kembali' => $request->jam_kembali,
+        //     'tgl_kembali' => $request->tgl_kembali,
+        //     'lama_sewa' => $request->lama_sewa,
+        // ]);
 
-        // return Redirect::route('Laporan.saveSewa', $request->all());
+        return Redirect::route('Laporan.UpdateSewa', ['id'=> $id]);
     }
 
     /**
@@ -331,6 +331,9 @@ class SewaController extends Controller
         })->whereNotIn('status',  ['Selesai'])->get();
         $denda = 0.10;
         foreach ($sewa as $item) {
+            if($item->nilai_denda !== null){
+                $denda = $item->nilai_denda;
+            }
             $total_denda = abs($this->reduceArray($item->harga) * $denda);
             // dd($total_denda);
             $jam_sewa = $item->waktusewa->jam_sewa;

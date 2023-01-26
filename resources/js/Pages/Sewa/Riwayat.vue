@@ -209,7 +209,7 @@ function statusBayar(value){
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                        <tr v-for="(mobil, index) in status.sewa.data" :key="mobil" :index="index"
+                        <tr v-for="(mobil, index) in status.sewa.data" :key="mobil.id" :index="index"
                             class="text-gray-700 dark:text-gray-400">
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
                                 {{ (status.sewa.current_page - 1) * status.sewa.per_page + index + 1}}
@@ -218,8 +218,11 @@ function statusBayar(value){
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
                                 {{ mobil.kode }}
                             </td>
-                            <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
+                            <td v-if="mobil.pengguna ==null" class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
                                 <span >{{ mobil.nik }}</span>
+                            </td>
+                            <td v-else class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
+                                <span >{{ mobil.pengguna.nama }}</span>
                             </td>
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
                                 {{ mobil.nopol }}

@@ -70,6 +70,7 @@ const Form = useForm({
     panjar: '0',
     sisa: '0',
     lunas: '1',
+    nilai_denda: '1',
     total: '0',
     metode_bayar: 'Transfer',
     list_pengiriman: null,
@@ -703,7 +704,7 @@ const syaratKet = ref(``);
                         </ul>
 
                     </div>
-                    <div class="-mx-3 sm:flex mb-6">
+                    <div class="-mx-3 sm:flex  mb-6">
                         <div class="sm:w-1/3 px-3">
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
@@ -727,6 +728,15 @@ const syaratKet = ref(``);
                             <TextInput id="grid-first-name" type="text" placeholder="0000" readonly required
                                 :value="Form.total = reduceArray(arraySum(Form.nilaisewahari), Form.lama_sewa)" />
                             <p v-if="errors.lunas" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
+                        </div>
+                        <div class="sm:w-1/2 px-3">
+                            <InputLabel
+                                class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
+                                for="grid-last-name">Nilai Denda</InputLabel>
+                            <TextInput id="grid-first-name" type="number" placeholder="10" readonly required
+                                :v-model="Form.nilai_denda" />
+                            <p  class="text-red text-xs italic text-gray-300">Hanya angka dalam persen</p>
+                            <p v-if="errors.nilai_denda" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
 
                     </div>

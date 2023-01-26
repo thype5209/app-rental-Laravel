@@ -88,6 +88,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/CetakSewa', 'saveSewaCetak')->name('saveSewaDanCetak');
             Route::post('/saveSewa', 'saveSewa')->name('saveSewa');
+            Route::put('/UpdateSewa/{id}', 'UpdateSewa')->name('UpdateSewa');
             Route::get('/TESTdata', 'TESTdata')->name('TESTdata');
 
         });

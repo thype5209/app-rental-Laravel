@@ -101,6 +101,42 @@ class LaporanController extends Controller
 
 
     /**
+     * UpdateSewa
+     * update sewa dengan inject pdf ulang
+     * @param  mixed $request
+     * @param  mixed $id
+     * @return void
+     */
+    public function UpdateSewa(Request $request, $id)
+    {
+        $req =  $request;
+        // dd($req);
+        // Panggil Fungsi Kode
+        $kode = $this->kodeSewa();
+        $path =  'SewaPDF/';
+        $namaPDF = $path . $kode . '-'  . $req->tgl_sewa . '.pdf';
+        //buat pengguna
+        $this->createPengguna($req);
+        $this->createSopir($req);
+        $this->sewaUpdate($req, $kode, $namaPDF, $id);
+        $sewa = Sewa::find($id);
+        if(Storage::disk('public')->exists($sewa->pdf_url)){
+            Storage::disk('public')->delete($sewa->pdf_url);
+        }
+        // Tanggal
+        $carbon = $this->today();
+        // Melakukan Load Data PDF
+        $mobil = Mobil::where('nopol', $req->nopol)->first();
+
+        $pdf = Pdf::loadView('pdf-sewa', ['data' => $req, 'tgl' => $carbon, 'kode' => $kode, 'mobil' => $mobil]);
+        // Simpan File PDF Ke Public Storage
+        Storage::put('public/' . $namaPDF, $pdf->download()->getOriginalContent());
+
+        return Redirect::route('Laporan.saveSewaDanCetak', ['pdf' => $namaPDF, 'kode' => $kode])->with('success', 'Berhasil Disimpan SPK=' . $kode);
+    }
+
+
+    /**
      * today
      *  Fungis Membuat Tanggal Bahasa Indonesia
      * @return void
@@ -241,7 +277,7 @@ class LaporanController extends Controller
     {
         $pengguna = Pengguna::where('nik', $request->nik)->get();
         $nama_ktp = null;
-        if ($request->file('foto_ktp') != null) {
+        if ($request->foto_ktp != null) {
             $nama_ktp = $request->nik . '.' .  $request->foto_ktp->getClientOriginalName();
             $request->file('foto_ktp')->storeAs('public/FotoKTP', $nama_ktp);
         }
@@ -277,7 +313,50 @@ class LaporanController extends Controller
         }
     }
 
+    public function sewaUpdate($request, $kode, $pdf_url, $id)
+    {
+        $sewa = Sewa::where('id', $id)->update([
+            'jenis_sewa' => $request->jenis_sewa,
+            'kode' => $kode,
+            'nopol' => implode(',', $request->nopol),
+            'unit' => implode(',', $request->unit),
+            'tahun' => implode(',', $request->tahun),
+            'harga' => implode(',', $this->parseStringToNumber($request->nilaisewahari)),
 
+            'nik' => $request->nik,
+            'sopir_id' => $request->sopir_id,
+            'tujuan' => $request->tujuan,
+            'jaminan' => $request->jaminan,
+            // Penanggung Jawab Bersal Dari Data User ID
+            'penanggung_jawab' => Auth::user()->id,
+            'pdf_url' => $pdf_url,
+            'denda' => '0',
+            'status' => 'Sewa',
+            'sisa' => abs($request->sisa),
+            'panjar' => abs($request->panjar),
+            'status_bayar' => $request->lunas,
+            'metode_bayar' => $request->metode_bayar,
+            'list_pengiriman' => $request->list_pengiriman,
+            'ket_syarat' => $request->ket_syarat,
+            'nilai_denda' => $request->nilai_denda,
+            'total' => intval(array_sum($this->parseStringToNumber($request->nilaisewahari))) * intval($request->lama_sewa),
+        ]);
+        WaktuSewa::where('sewa_id', $id)->update([
+            'tgl_sewa' => $request->tgl_sewa,
+            'jam_sewa' => $request->jam_sewa,
+            'tgl_kembali' => $request->tgl_kembali,
+            'jam_kembali' => $request->jam_kembali,
+            'lama_sewa' => $request->lama_sewa,
+        ]);
+        if ($request->mobil_id != null) {
+            Mobil::whereIn('id', $request->mobil_id)->update([
+                'status' => '1',
+            ]);
+        }
+        if ($request->sopir_id != null) {
+            Sopir::where('id', $request->sopir_id)->update(['status' => '2']);
+        }
+    }
     /**
      * sewaCreate
      *  Request Memanggil Data Dari POST yang Berada Pada Form Formulir
@@ -312,6 +391,8 @@ class LaporanController extends Controller
             'status_bayar' => $request->lunas,
             'metode_bayar' => $request->metode_bayar,
             'list_pengiriman' => $request->list_pengiriman,
+            'ket_syarat' => $request->ket_syarat,
+            'nilai_denda' => $request->nilai_denda,
             'total' => intval(array_sum($this->parseStringToNumber($request->nilaisewahari))) * intval($request->lama_sewa),
         ]);
         WaktuSewa::create([
