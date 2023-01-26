@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('nopol', 200);
             $table->string('unit', 200);
             $table->string('tahun', 200);
-            $table->string('harga_bulan')->comment('bulan/hari');
             $table->string('harga');
             $table->string('nik', 100);
             $table->string('sopir_id', 100)->nullable();

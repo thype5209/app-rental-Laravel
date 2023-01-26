@@ -11,7 +11,7 @@ class Sewa extends Model
 {
     use HasFactory;
     protected $table = 'sewas';
-    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit', 'sopir_id', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'harga_bulan', 'pdf_url', 'sisa', 'panjar', 'total', 'status_bayar', 'list_pengiriman', 'metode_bayar', 'ket_syarat','nilai_denda'];
+    protected $fillable = ['jenis_sewa', 'kode', 'nopol', 'unit', 'sopir_id', 'tahun', 'nik', 'tujuan', 'jaminan', 'penanggung_jawab', 'harga', 'denda', 'status', 'pdf_url', 'sisa', 'panjar', 'total', 'status_bayar', 'list_pengiriman', 'metode_bayar', 'ket_syarat','nilai_denda'];
 
     public function waktusewa()
     {

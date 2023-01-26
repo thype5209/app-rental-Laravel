@@ -33,7 +33,6 @@ class SewaFactory extends Factory
             'tahun' => function (array $attributes) {
                 return Mobil::find($attributes['nopol'])->tahun;
             },
-            'harga_bulan' => 12000,
             'harga' => 12000,
             'nik' => $pengguna->nik,
             'sopir_id' => $sopir->id,
