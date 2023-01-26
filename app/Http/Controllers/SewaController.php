@@ -11,6 +11,7 @@ use App\Models\Mobil;
 use App\Models\Sopir;
 use App\Models\Pengguna;
 use App\Models\WaktuSewa;
+use App\Models\SewaPengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreSewaRequest;
@@ -36,7 +37,7 @@ class SewaController extends Controller
     public function index()
     {
         return Inertia::render('Sewa/Pinjam', [
-            'sewa' =>  Sewa::with(['pengguna', 'waktusewa', 'user'])
+            'sewa' =>  Sewa::with(['pengguna', 'waktusewa', 'user', 'sewapengguna'])
                 ->when(FacadesRequest::input('status') ?? null, function ($query, $status) {
                     if ($status != 'semua') {
                         $query->orWhere('status', $status);
@@ -66,7 +67,7 @@ class SewaController extends Controller
 
         return Inertia::render('Sewa/Riwayat', [
             'sewa' => Sewa::query()
-                ->with(['pengguna', 'waktusewa'])
+                ->with(['pengguna', 'waktusewa','sewapengguna'])
                 ->orderBy('status', 'asc')
                 ->where('status', 'Selesai')
                 ->filter(FacadesRequest::only('search'))
@@ -113,7 +114,7 @@ class SewaController extends Controller
         // dd($request->all());
         $request->validate([
             'jenis_sewa' => 'required',
-            'nik' => 'required|numeric',
+            'nik' => 'required|numeric|max:30',
             'nama' => 'required|string',
             'tempat_lahir' => 'required|string',
             'tgl_lahir' => 'required|date',
@@ -165,11 +166,9 @@ class SewaController extends Controller
      */
     public function show(Sewa $sewa, $id)
     {
-        $data = $sewa->with(['pengguna', 'waktusewa', 'user', 'sopir'])->find($id);
-        $penggunaTrashed = Pengguna::onlyTrashed()->where('nik', $data->nik)->first();
+        $data = $sewa->with(['pengguna', 'waktusewa', 'user', 'sopir','sewapengguna'])->find($id);
         return Inertia::render('Sewa/Show', [
             'sewa' => $data,
-            'penggunaTrashed' => $penggunaTrashed
         ]);
     }
 
@@ -182,7 +181,7 @@ class SewaController extends Controller
     public function edit(Sewa $sewa, $id)
     {
         return Inertia::render('Sewa/Edit', [
-            'sewa' => $sewa->with(['waktusewa', 'sopir', 'pengguna'])->find($id),
+            'sewa' => $sewa->with(['waktusewa', 'sopir', 'pengguna','sewapengguna'])->find($id),
         ]);
     }
 
@@ -198,7 +197,7 @@ class SewaController extends Controller
 
         $valid =  $this->validate($request, [
             'nopol' => ['required'],
-            'nik' => ['required'],
+            'nik' => ['required', 'max:30'],
             'jenis_sewa' => ['required'],
             'unit' => ['required'],
             'tahun' => ['required'],
@@ -257,7 +256,7 @@ class SewaController extends Controller
         }
         Mobil::whereIn('nopol', $exp)->update(['status' => '2']);
         Sopir::where('id', $data->sopir_id)->update(['status' => '1']);
-        Pengguna::onlyTrashed()->where('nik', $data->nik)->forceDelete();
+        SewaPengguna::where('sewa_id',$id)->delete();
         $data->delete();
     }
     /**

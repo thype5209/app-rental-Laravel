@@ -299,6 +299,7 @@ class LaporanController extends Controller
             }
         }
     }
+
     public function createSopir($request)
     {
         $sopir = Sopir::where('nik', $request->sopir_nik)->get();
@@ -317,7 +318,6 @@ class LaporanController extends Controller
     {
         $sewa = Sewa::where('id', $id)->update([
             'jenis_sewa' => $request->jenis_sewa,
-            'kode' => $kode,
             'nopol' => implode(',', $request->nopol),
             'unit' => implode(',', $request->unit),
             'tahun' => implode(',', $request->tahun),
@@ -403,6 +403,9 @@ class LaporanController extends Controller
             'jam_kembali' => $request->jam_kembali,
             'lama_sewa' => $request->lama_sewa,
         ]);
+
+        $penggunaSewa = new SewaPenggunaController();
+        $penggunaSewa->createPenggunaSewa($request, $sewa->id);
         if ($request->mobil_id != null) {
             Mobil::whereIn('id', $request->mobil_id)->update([
                 'status' => '1',

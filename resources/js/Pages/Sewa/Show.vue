@@ -72,7 +72,9 @@
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
                         v-if="sewa.pengguna != null">{{ sewa.pengguna.nama }}/{{ sewa.nik }}</td>
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
-                        v-else>{{ penggunaTrashed.nama }} / {{ penggunaTrashed.nik }} </td>
+                        v-else-if="sewa.sewapengguna !== null">{{ sewa.sewapengguna.nama }} / {{ sewa.sewapengguna.nik }} </td>
+                    <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
+                        v-else>{{sewa.nik}}</td>
                 </tr>
                 <tr v-if="sewa.pengguna != null">
                     <td
@@ -81,7 +83,9 @@
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
                         v-if="sewa.pengguna != null">{{ sewa.pengguna.alamat }}</td>
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
-                        v-else>{{ penggunaTrashed.alamat }}</td>
+                    v-else-if="sewa.sewapengguna !== null">{{ sewa.sewapengguna.alamat }}</td>
+                    <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
+                        v-else>-------------------</td>
                 </tr>
                 <tr>
                     <td
@@ -90,7 +94,9 @@
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
                         v-if="sewa.pengguna != null">{{ sewa.pengguna.no_hp }} / {{ sewa.pengguna.no_hp_lain }} </td>
                     <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
-                        v-else>{{ penggunaTrashed.no_hp }} / {{ penggunaTrashed.no_hp_lain }} </td>
+                    v-else-if="sewa.sewapengguna !== null">{{ sewa.sewapengguna.no_hp }} / {{ sewa.sewapengguna.no_hp_lain }} </td>
+                    <td class=" border border-gray-200 md:px-3 sm:py-2 p-1 text-default-dark text-sm sm:text-base capitalize whitespace-pre-wrap font-semibold"
+                        v-else>------------------- </td>
                 </tr>
                 <tr>
                     <td
@@ -235,7 +241,6 @@ export default {
             type: Object,
             default: () => ({})
         },
-        penggunaTrashed: Object,
     },
     mounted() {
 

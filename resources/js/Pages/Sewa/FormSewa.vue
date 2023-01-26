@@ -440,7 +440,7 @@ const syaratKet = ref(``);
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-first-name">Pilih Pengguna </InputLabel>
-                            <TextInput id="grid-first-name" type="search" placeholder="Masukkan NIK" class="max-w-md"
+                            <TextInput id="grid-first-name" type="search" placeholder="Masukkan Nik,Nama,pekerjaan,dll" class="max-w-md"
                                 v-model="SearchNIK" />
                             <div v-if="SearchNIK != ''"
                                 class="HasilNik bg-white shadow-lg rounded-md py-1 w-64 absolute box-border">
@@ -733,9 +733,9 @@ const syaratKet = ref(``);
                             <InputLabel
                                 class="block text-black uppercase tracking-wide text-grey-800 text-xs font-bold mb-2"
                                 for="grid-last-name">Nilai Denda</InputLabel>
-                            <TextInput id="grid-first-name" type="number" placeholder="10" readonly required
+                            <TextInput id="grid-first-name" type="number" placeholder="10"  required
                                 :v-model="Form.nilai_denda" />
-                            <p  class="text-red text-xs italic text-gray-300">Hanya angka dalam persen</p>
+                            <p  class="text-red text-xs italic text-gray-400">Hanya angka </p>
                             <p v-if="errors.nilai_denda" class="text-red text-xs italic text-red-500">Mohon Di Isi</p>
                         </div>
 

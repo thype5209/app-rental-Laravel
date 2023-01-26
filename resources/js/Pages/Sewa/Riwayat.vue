@@ -63,35 +63,35 @@ var TabActive = ' py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none
 var TabNonActive = 'text-gray-600 py-4 px-2 md:px-6 block hover:text-blue-500 focus:outline-none';
 
 const StatusBayarForm = useForm()
-function TabClick(value){
+function TabClick(value) {
     StatusBayarForm.get(route("Sewa.riwayat", { statusBayar: value, search: status.search, page: status.page }), {
         preserveState: true,
         preserveScroll: true,
         replace: true,
     });
 }
-function statusBayar(value){
-            var hasil = null;
-            switch (value) {
-                case '1' || 1:
-                    hasil = 'Lunas'
-                    break;
-                case '2' || 2:
-                    hasil = 'Denda'
-                    break;
-                case '3' || 3:
-                    hasil = 'Belum Lunas'
-                    break;
-                case '4' || 4:
-                    hasil = 'Menunggak Pembayaran'
-                    break;
+function statusBayar(value) {
+    var hasil = null;
+    switch (value) {
+        case '1' || 1:
+            hasil = 'Lunas'
+            break;
+        case '2' || 2:
+            hasil = 'Denda'
+            break;
+        case '3' || 3:
+            hasil = 'Belum Lunas'
+            break;
+        case '4' || 4:
+            hasil = 'Menunggak Pembayaran'
+            break;
 
-                default:
-                    hasil = 'error'
-                    break;
-            }
-            return hasil;
-        }
+        default:
+            hasil = 'error'
+            break;
+    }
+    return hasil;
+}
 </script>
 
 
@@ -158,11 +158,14 @@ function statusBayar(value){
         <div
             class="w-full rounded-lg bg-gray-200 flex flex-wrap justify-between flex-col-reverse md:flex-row overflow-auto">
             <nav class="flex flex-row">
-                <button v-on:click="TabClick('semua')" v-bind:class="status.statusBayar == 'semua' ? TabActive : TabNonActive">
+                <button v-on:click="TabClick('semua')"
+                    v-bind:class="status.statusBayar == 'semua' ? TabActive : TabNonActive">
                     Semua
-                </button><button v-on:click="TabClick(3)" v-bind:class="status.statusBayar == '3' ? TabActive : TabNonActive">
+                </button><button v-on:click="TabClick(3)"
+                    v-bind:class="status.statusBayar == '3' ? TabActive : TabNonActive">
                     Belum Lunas
-                </button><button v-on:click="TabClick(1)" v-bind:class="status.statusBayar == '1' ? TabActive : TabNonActive">
+                </button><button v-on:click="TabClick(1)"
+                    v-bind:class="status.statusBayar == '1' ? TabActive : TabNonActive">
                     Lunas
                 </button>
             </nav>
@@ -199,12 +202,13 @@ function statusBayar(value){
                             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b  bg-gray-50">
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">No.</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Kode</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">NIK</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Nama</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">No. Polisi</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Tanggal Sewa</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Tanggal Kembali</th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Status</th>
-                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Status Pembayaran</th>
+                            <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Status Pembayaran
+                            </th>
                             <th class="md:px-4 md:py-3 px-2 py-1 text-xs whitespace-nowrap border">Detail</th>
                         </tr>
                     </thead>
@@ -218,11 +222,14 @@ function statusBayar(value){
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
                                 {{ mobil.kode }}
                             </td>
-                            <td v-if="mobil.pengguna ==null" class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
-                                <span >{{ mobil.nik }}</span>
+                            <td v-if="mobil.pengguna !== null" class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
+                                <span>{{ mobil.pengguna.nama }}</span>
+                            </td>
+                            <td v-else-if="mobil.sewapengguna !== null" class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
+                                <span>{{ mobil.sewapengguna.nama }}</span>
                             </td>
                             <td v-else class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
-                                <span >{{ mobil.pengguna.nama }}</span>
+                                <span>{{ mobil.nik }}</span>
                             </td>
                             <td class="md:px-4 md:py-3 p-1.5 border text-xs md:text-sm">
                                 {{ mobil.nopol }}

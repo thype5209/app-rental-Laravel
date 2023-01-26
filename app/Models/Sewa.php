@@ -21,6 +21,10 @@ class Sewa extends Model
     {
         return $this->hasOne(Pengguna::class, 'nik', 'nik');
     }
+    public function sewapengguna()
+    {
+        return $this->hasOne(SewaPengguna::class, 'nik', 'nik');
+    }
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'penanggung_jawab');

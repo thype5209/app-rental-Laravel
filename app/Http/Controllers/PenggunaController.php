@@ -45,6 +45,9 @@ class PenggunaController extends Controller
     {
         $pengguna = Pengguna::where('nik', 'like', '%' .  Request::input('search') . '%')
         ->orWhere('nama', 'like', '%' .  Request::input('search') . '%')
+        ->orWhere('alamat', 'like', '%' .  Request::input('search') . '%')
+        ->orWhere('pekerjaan', 'like', '%' .  Request::input('search') . '%')
+        ->orWhere('no_hp', 'like', '%' .  Request::input('search') . '%')
         ->get();
         return json_encode($pengguna);
     }
