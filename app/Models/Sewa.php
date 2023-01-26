@@ -44,7 +44,6 @@ class Sewa extends Model
             $query->where('nik', 'like', '%' . $search . '%')
                 ->orWhere('kode', 'like', '%' . $search . '%')
                 ->orWhere('tahun', 'like', '%' . $search . '%')
-                ->orWhere('harga_bulan', 'like', '%' . $search . '%')
                 ->orWhere('harga', 'like', '%' . $search . '%')
                 ->orWhere('penanggung_jawab', 'like', '%' . $search . '%')
                 ->orWhere('tujuan', 'like', '%' . $search . '%')
