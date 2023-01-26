@@ -17,6 +17,6 @@ class PenggunaSeeder extends Seeder
     public function run()
     {
         Sopir::factory(10)->create();
-        Pengguna::factory(10000)->create();
+        Pengguna::factory(10)->create();
     }
 }
