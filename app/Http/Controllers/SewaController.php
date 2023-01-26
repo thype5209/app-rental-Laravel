@@ -114,7 +114,7 @@ class SewaController extends Controller
         // dd($request->all());
         $request->validate([
             'jenis_sewa' => 'required',
-            'nik' => 'required|numeric|max:100',
+            'nik' => 'required|numeric|min:100',
             'nama' => 'required|string',
             'tempat_lahir' => 'required|string',
             'tgl_lahir' => 'required|date',
