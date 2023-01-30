@@ -114,7 +114,7 @@ class SewaController extends Controller
         // dd($request->all());
         $request->validate([
             'jenis_sewa' => 'required',
-            'nik' => 'required|numeric|min:100',
+            'nik' => 'required|numeric|min:30',
             'nama' => 'required|string',
             'tempat_lahir' => 'required|string',
             'tgl_lahir' => 'required|date',
@@ -331,21 +331,21 @@ class SewaController extends Controller
         })->whereNotIn('status',  ['Selesai'])->get();
         $denda = 0.10;
         foreach ($sewa as $item) {
-            if($item->nilai_denda !== null){
-                $denda = $item->nilai_denda;
-            }
-            $total_denda = abs($this->reduceArray($item->harga) * $denda);
+            // if($item->nilai_denda !== null){
+            //     $denda = $item->nilai_denda;
+            // }
+            // $total_denda = abs($this->reduceArray($item->harga) * $denda);
             // dd($total_denda);
-            $jam_sewa = $item->waktusewa->jam_sewa;
+            // $jam_sewa = $item->waktusewa->jam_sewa;
             $waktu_kembali = Carbon::parse($item->waktusewa->tgl_kembali);
             $waktu_sekarang = Carbon::now();
             $diff = $waktu_sekarang->diffInHours($waktu_kembali);
-            $nilai_denda = $total_denda * $diff;
+            // $nilai_denda = $total_denda * $diff;
 
             $sub_total = (intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)) + $item->denda;
             // dd($this->reduceArray($item->harga),(intval($item->waktusewa->lama_sewa)  * $this->reduceArray($item->harga)), $item->kode, $item->waktusewa->lama_sewa, $item->denda, $sub_total);
             // dd($nilai_denda);
-            $item->update(['denda' => $nilai_denda, 'status' => "Telat", 'total' => $sub_total, 'status_bayar' => '3']);
+            $item->update(['denda' => '0', 'status' => "Telat", 'total' => '0', 'status_bayar' => '3']);
             WaktuSewa::where('sewa_id',  $item->id)->update(['telat' => $diff]);
         }
     }

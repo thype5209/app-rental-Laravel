@@ -316,6 +316,7 @@ class LaporanController extends Controller
 
     public function sewaUpdate($request, $kode, $pdf_url, $id)
     {
+        $data = Sewa::find($id);
         $sewa = Sewa::where('id', $id)->update([
             'jenis_sewa' => $request->jenis_sewa,
             'nopol' => implode(',', $request->nopol),
@@ -340,6 +341,7 @@ class LaporanController extends Controller
             'ket_syarat' => $request->ket_syarat,
             'nilai_denda' => $request->nilai_denda,
             'total' => intval(array_sum($this->parseStringToNumber($request->nilaisewahari))) * intval($request->lama_sewa),
+            'status'=> $data->status,
         ]);
         WaktuSewa::where('sewa_id', $id)->update([
             'tgl_sewa' => $request->tgl_sewa,
