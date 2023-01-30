@@ -313,7 +313,7 @@ function submit() {
                             <InputLabel class="capitalize font-semibold">denda </InputLabel>
                         </td>
                         <td class="py-2">
-                            <TextInput type="text" v-model="Form.denda" placeholder="denda" />
+                            <TextInput type="number" v-model="Form.denda" placeholder="denda" />
                             <InputError :message="Form.errors.denda" />
                         </td>
                     </tr>
@@ -322,7 +322,7 @@ function submit() {
                             <InputLabel class="capitalize font-semibold">sisa Pembayaran </InputLabel>
                         </td>
                         <td class="py-2">
-                            <TextInput type="text" v-model="Form.sisa" placeholder="sisa Pembayaran" />
+                            <TextInput type="number" v-model="Form.sisa" placeholder="sisa Pembayaran" />
                             <InputError :message="Form.errors.sisa" />
                         </td>
                     </tr>
@@ -331,7 +331,7 @@ function submit() {
                             <InputLabel class="capitalize font-semibold"> Panjar </InputLabel>
                         </td>
                         <td class="py-2">
-                            <TextInput type="text" v-model="Form.panjar" placeholder=" Panjar" />
+                            <TextInput type="number" v-model="Form.panjar" placeholder=" Panjar" />
                             <InputError :message="Form.errors.panjar" />
                         </td>
                     </tr>
@@ -340,7 +340,7 @@ function submit() {
                             <InputLabel class="capitalize font-semibold">Nilai Denda </InputLabel>
                         </td>
                         <td class="py-2">
-                            <TextInput type="text" v-model="Form.nilai_denda" placeholder="Nilai Denda" />
+                            <TextInput type="number" v-model="Form.nilai_denda" placeholder="Nilai Denda" />
                             <InputError :message="Form.errors.nilai_denda" />
                         </td>
                     </tr>

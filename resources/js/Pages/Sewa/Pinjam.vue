@@ -288,7 +288,7 @@ function statusBayar(value) {
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             <tr v-for="(mobil, index) in status.sewa.data" :key="mobil" :index="index"
-                                class="text-gray-700 dark:text-gray-400">
+                                class="text-gray-700 dark:text-gray-400" :class="mobil.status === 'Telat' ? 'bg-red-200': ''">
                                 <td
                                     class="md:px-2 md:py-1 p-1.5 text-center text-xs md:text-[0.80rem] border whitespace-nowrap">
                                     {{ (status.sewa.current_page - 1) * status.sewa.per_page + index + 1 }}</td>
