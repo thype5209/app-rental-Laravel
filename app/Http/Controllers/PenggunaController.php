@@ -54,13 +54,13 @@ class PenggunaController extends Controller
     public function GetID($id)
     {
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
-            $query->whereIn('status_bayar', ['2', '3', '4']);
+            $query->whereIn('status_bayar', [ '3']);
         })
             ->where('id', $id)
             ->get();
         if ($pengguna->count() > 0) {
             $resp = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
-                $query->whereIn('status_bayar', ['2', '3', '4']);
+                $query->whereIn('status_bayar', [ '3']);
             })->find($id);
             $code = true;
         } else {
