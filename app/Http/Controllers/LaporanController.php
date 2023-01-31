@@ -278,7 +278,7 @@ class LaporanController extends Controller
         $pengguna = Pengguna::where('nik', $request->nik)->get();
         $nama_ktp = null;
         if ($request->foto_ktp != null) {
-            $nama_ktp = $request->nik . '.' .  $request->foto_ktp->getClientOriginalName();
+            $nama_ktp = $request->nik . '-'.$request->nama. '-' .  $request->foto_ktp->getClientOriginalName();
             $request->file('foto_ktp')->storeAs('public/FotoKTP', $nama_ktp);
         }
         if ($pengguna->count() < 1) {
