@@ -857,8 +857,6 @@ function statusBayar(value) {
                             <table class="table w-full">
                                 <tr>
                                     <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Kode</td>
-                                    <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Harga Sewa
-                                    </td>
                                     <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Lama Sewa
                                     </td>
                                     <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Tanggal Sewa
@@ -873,7 +871,6 @@ function statusBayar(value) {
                                 </tr>
                                 <tr v-for="(item, index) in Tunggakan" :key="item" :index="index">
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.kode }}</td>
-                                    <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.harga }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
                                         item.waktusewa.lama_sewa
                                     }}</td>
