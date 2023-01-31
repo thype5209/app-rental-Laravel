@@ -869,6 +869,7 @@ function statusBayar(value) {
                                     <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Status Sewa</td>
                                     <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Status Pembayaran</td>
                                     <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Sisa Bayar</td>
+                                    <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Total Bayar</td>
                                 </tr>
                                 <tr v-for="(item, index) in Tunggakan" :key="item" :index="index">
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.kode }}</td>
@@ -886,6 +887,9 @@ function statusBayar(value) {
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ statusBayar(item.status_bayar) }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
                                         rupiah(item.sisa)
+                                    }} </td>
+                                    <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
+                                        rupiah(item.total)
                                     }} </td>
                                 </tr>
                             </table>
