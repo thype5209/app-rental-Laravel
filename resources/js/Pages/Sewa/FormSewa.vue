@@ -330,7 +330,7 @@ watch(SearchNIK, value => {
     })
 })
 // End
-function reduceArray(array, lamasewa = 1) {
+function reduceArray(array, lamasewa = 1, denda = 0) {
     var arrayToString = array.toString();
     var harga = null;
     if (arrayToString.indexOf(',') > -1 || arrayToString.indexOf('.') > -1) {
@@ -339,7 +339,7 @@ function reduceArray(array, lamasewa = 1) {
     } else {
         harga = array;
     }
-    var total = (parseInt(harga) * lamasewa);
+    var total = (parseInt(harga) * lamasewa) + denda;
 
     return Number(total).toLocaleString();
 }
@@ -402,6 +402,29 @@ const syaratKet = ref(``);
 // const harga = ['10,000', '10,000'];
 // console.log(arraySum(harga));
 // console.log(reduceArray(arraySum(harga),2))
+
+function statusBayar(value) {
+    var hasil = null;
+    switch (value) {
+        case '1' || 1:
+            hasil = 'Lunas'
+            break;
+        case '2' || 2:
+            hasil = 'Denda'
+            break;
+        case '3' || 3:
+            hasil = 'Belum Lunas'
+            break;
+        case '4' || 4:
+            hasil = 'Menunggak Pembayaran'
+            break;
+
+        default:
+            hasil = 'error'
+            break;
+    }
+    return hasil;
+}
 </script>
 
 <template>
@@ -813,7 +836,7 @@ const syaratKet = ref(``);
                     </div>
                 </div>
             </form>
-            <ModalVue :show="ModalShow" :max-width="`2xl`" @close="isClose()">
+            <ModalVue :show="ModalShow" :max-width="`3xl`" @close="isClose()">
                 <div class="relative w-full h-full md:h-auto">
                     <!-- Modal content -->
                     <div class="relative bg-white rounded-lg shadow ">
@@ -843,8 +866,9 @@ const syaratKet = ref(``);
                                     <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Tanggal
                                         Kembali
                                     </td>
-                                    <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Status</td>
-                                    <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Total</td>
+                                    <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Status Sewa</td>
+                                    <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Status Pembayaran</td>
+                                    <td class="sm:px-2 sm:py-1 text-xs capitalize border whitespace-nowrap">Sisa Bayar</td>
                                 </tr>
                                 <tr v-for="(item, index) in Tunggakan" :key="item" :index="index">
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.kode }}</td>
@@ -859,8 +883,9 @@ const syaratKet = ref(``);
                                         item.waktusewa.tgl_kembali
                                     }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ item.status }}</td>
+                                    <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{ statusBayar(item.status_bayar) }}</td>
                                     <td class='text-xs p-1.5 capitalize border whitespace-nowrap'>{{
-                                        reduceArray(item.sisa, item.waktusewa.lama_sewa, item.denda)
+                                        rupiah(item.sisa)
                                     }} </td>
                                 </tr>
                             </table>

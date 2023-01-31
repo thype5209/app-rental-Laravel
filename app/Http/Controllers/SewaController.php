@@ -67,7 +67,7 @@ class SewaController extends Controller
 
         return Inertia::render('Sewa/Riwayat', [
             'sewa' => Sewa::query()
-                ->with(['pengguna', 'waktusewa','sewapengguna'])
+                ->with(['pengguna', 'waktusewa', 'sewapengguna'])
                 ->orderBy('status', 'asc')
                 ->where('status', 'Selesai')
                 ->filter(FacadesRequest::only('search'))
@@ -140,8 +140,7 @@ class SewaController extends Controller
         ]);
         $pengguna = Pengguna::with('sewa', 'sewa.waktusewa')->whereHas('sewa', function ($query) {
             $query->whereIn('status', ['2', '3', '4']);
-        })
-            ->where('nik', $request->nik)
+        })->where('nik', $request->nik)
             ->get();
         if ($pengguna->count() > 0) {
             return Redirect::route('Sewa.index')->with('error', 'Tunggakan Pembayaran Belum Lunas');
@@ -166,7 +165,7 @@ class SewaController extends Controller
      */
     public function show(Sewa $sewa, $id)
     {
-        $data = $sewa->with(['pengguna', 'waktusewa', 'user', 'sopir','sewapengguna'])->find($id);
+        $data = $sewa->with(['pengguna', 'waktusewa', 'user', 'sopir', 'sewapengguna'])->find($id);
         return Inertia::render('Sewa/Show', [
             'sewa' => $data,
         ]);
@@ -181,7 +180,7 @@ class SewaController extends Controller
     public function edit(Sewa $sewa, $id)
     {
         return Inertia::render('Sewa/Edit', [
-            'sewa' => $sewa->with(['waktusewa', 'sopir', 'pengguna','sewapengguna'])->find($id),
+            'sewa' => $sewa->with(['waktusewa', 'sopir', 'pengguna', 'sewapengguna'])->find($id),
         ]);
     }
 
@@ -239,7 +238,7 @@ class SewaController extends Controller
         //     'lama_sewa' => $request->lama_sewa,
         // ]);
 
-        return Redirect::route('Laporan.UpdateSewa', ['id'=> $id]);
+        return Redirect::route('Laporan.UpdateSewa', ['id' => $id]);
     }
 
     /**
@@ -257,7 +256,7 @@ class SewaController extends Controller
         }
         Mobil::whereIn('nopol', $exp)->update(['status' => '2']);
         Sopir::where('id', $data->sopir_id)->update(['status' => '1']);
-        SewaPengguna::where('sewa_id',$id)->delete();
+        SewaPengguna::where('sewa_id', $id)->delete();
         $data->delete();
     }
     /**
