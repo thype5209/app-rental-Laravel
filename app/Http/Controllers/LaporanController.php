@@ -120,7 +120,7 @@ class LaporanController extends Controller
         $this->createSopir($req);
         $this->sewaUpdate($req, $kode, $namaPDF, $id);
         $sewa = Sewa::find($id);
-        if(Storage::disk('public')->exists($sewa->pdf_url)){
+        if (Storage::disk('public')->exists($sewa->pdf_url)) {
             Storage::disk('public')->delete($sewa->pdf_url);
         }
         // Tanggal
@@ -276,9 +276,10 @@ class LaporanController extends Controller
     public function createPengguna($request)
     {
         $pengguna = Pengguna::where('nik', $request->nik)->get();
+        $tgl_foto = Carbon::now()->format('H:i:s');
         $nama_ktp = null;
         if ($request->foto_ktp != null) {
-            $nama_ktp = $request->nik . '-'.$request->nama. '-' .  $request->foto_ktp->getClientOriginalName();
+            $nama_ktp = $request->nik . '-' . $tgl_foto . '-' .  $request->foto_ktp->getClientOriginalName();
             $request->file('foto_ktp')->storeAs('public/FotoKTP', $nama_ktp);
         }
         if ($pengguna->count() < 1) {
@@ -341,7 +342,7 @@ class LaporanController extends Controller
             'ket_syarat' => $request->ket_syarat,
             'nilai_denda' => $request->nilai_denda,
             'total' => intval(array_sum($this->parseStringToNumber($request->nilaisewahari))) * intval($request->lama_sewa),
-            'status'=> $data->status,
+            'status' => $data->status,
         ]);
         WaktuSewa::where('sewa_id', $id)->update([
             'tgl_sewa' => $request->tgl_sewa,
@@ -439,7 +440,7 @@ class LaporanController extends Controller
                     $nilai[] = $item;
                 }
             }
-        }else{
+        } else {
             $nilai = $string_array;
         }
         return $nilai;

@@ -21,7 +21,10 @@ const Form = useForm({
     foto_ktp: data.pengguna.foto_ktp,
 })
 function submit() {
-    Form.put(route('Pengguna.update', data.pengguna.id))
+    Form.post(route('Pengguna.update', data.pengguna.id), {
+        forceFormData: true,
+
+    })
 }
 
 </script>

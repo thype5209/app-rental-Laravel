@@ -171,8 +171,9 @@ class PenggunaController extends Controller
         ]);
         $data = $pengguna->find($id);
         $image = $data->foto_ktp;
-        if(Request::input('foto_ktp') != null){
-            $image = Request::input('nik'). '.' . Request::file('foto_ktp')->getClientOriginalName();
+        if(Request::file('foto_ktp') !== null){
+            // dd(Request::file('foto_ktp'));
+            $image = Request::input('nik').'-'. Request::input('nama') . '-' . Request::file('foto_ktp')->getClientOriginalName();
             Request::file('foto_ktp')->getClientOriginalName();
             Request::file('foto_ktp')->storeAs('public/FotoKTP', $image);
         }

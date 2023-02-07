@@ -100,7 +100,7 @@ Route::middleware(['auth', 'cors'])->group(function () {
             Route::get('/NIK', 'CariNIK')->name('CariNIK');
             Route::get('/GetID{id}', 'GetID')->name('GetID');
             Route::get('/Edit/{id}', 'edit')->name('edit');
-            Route::put('/update/{id}', 'update')->name('update');
+            Route::post('/update/{id}', 'update')->name('update');
             Route::post('/store', 'store')->name('store');
             Route::get('/create', 'create')->name('create');
             Route::get('/Detail/Pengguna/{id}', 'show')->name('show');
