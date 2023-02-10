@@ -24,7 +24,6 @@
 
 <body class="font-sans antialiased overflow-x-hidden">
     @inertia
-
 </body>
 
 </html>

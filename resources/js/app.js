@@ -11,6 +11,9 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import 'aos/dist/aos.css';
 
+const cleanApp = ()=>{
+    document.getElementById('app').removeAttribute('data-page');
+};
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Jasaudagar';
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -21,7 +24,7 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy , VueCarousel, VueSweetalert2)
             .mount(el);
     },
-});
+}).then(cleanApp);
 
 InertiaProgress.init({ color: '#4B5563' });
 

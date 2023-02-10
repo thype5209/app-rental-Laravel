@@ -173,6 +173,7 @@ const data = defineProps({
 <script >
 export default {
     name: 'WelcomeVue',
+    inheritAttrs: true
 
 }
 </script>
